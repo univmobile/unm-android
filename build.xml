@@ -117,6 +117,6 @@
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
 	</target>
 		
-	<import file="build_old.xml" />
+	<import file="build.xml" />
 
 </project>
