@@ -108,7 +108,7 @@
         <property name="out.final.file" location="${out.absolute.dir}/${out.debug-html.file.name}" />
 	</target>
 
-	<target name="debug-lad" depends="-set-debug-files-lad, -do-debug" description="Builds the application and signs it with a debug key.">
+	<target name="debug-lad" depends="-do-debug" description="Builds the application and signs it with a debug key.">
 	    <record-build-info />
 		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
 	</target>
