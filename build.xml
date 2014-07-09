@@ -80,104 +80,43 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
 	
-	<property name="out.debug-a2d.file.name" value="${ant.project.name}-debugA2D.apk" />
-    <property name="out.debug-a2d.file" location="${out.absolute.dir}/${out.debug-a2d.file.name}" />
-	
-    <property name="out.debug-lad.file.name" value="${ant.project.name}-debugLAD.apk" />
-    <property name="out.debug-lad.file" location="${out.absolute.dir}/${out.debug-lad.file.name}" />	
-    
-    <property name="out.debug-html.file.name" value="${ant.project.name}-debugHTML.apk" />
-    <property name="out.debug-html.file" location="${out.absolute.dir}/${out.debug-html.file.name}" />	
+    <property name="out.debug-univ.file.name" value="${ant.project.name}-debuguniv.apk" />
+    <property name="out.debug-univ.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />	
 	
     <property name="out.release.file.name" value="${ant.project.name}-release.apk" />
     <property name="out.release.file" location="${out.absolute.dir}/${out.release.file.name}" />
 
-	<target name="release-lad" depends="-set-release-mode, -release-obfuscation-check, -package, -post-package, -release-prompt-for-password, -release-nosign, -release-sign, -post-build" description="Builds the application and signs it with a debug key.">
+	<target name="release-univ" depends="-set-release-mode, -release-obfuscation-check, -package, -post-package, -release-prompt-for-password, -release-nosign, -release-sign, -post-build" description="Builds the application and signs it with a debug key.">
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-lad.file.name}" />
+        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />
 	</target>
 	
 	<!-- Builds debug output package, provided all the necessary files are already dexed -->
-	<target name="-set-debug-files-lad" depends="-set-mode-check">
+	<target name="-set-debug-files-univ" depends="-set-mode-check">
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-lad.file.name}" />
-	</target>
-	
-	<target name="-set-debug-files-html" depends="-set-mode-check">
-        <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-html.file.name}" />
+        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />
 	</target>
 
-	<target name="debug-lad" depends="-do-debug" description="Builds the application and signs it with a debug key.">
-	    <record-build-info />
-		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
-	</target>
-	
-	<target name="debug-html" depends="-set-debug-files-html, -do-debug" description="Builds the application and signs it with a debug key.">
-	    <record-build-info />
-		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
-	</target>
-	
-	<target name="-set-debug-files-a2d" depends="-set-mode-check">
-        <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-a2d.file.name}" />
-	</target>
-
-	<target name="debug-a2d" depends="-set-debug-files-a2d, -do-debug" description="Builds the application and signs it with a debug key.">
+	<target name="debug-univ" depends="-set-debug-files-univ, -do-debug" description="Builds the application and signs it with a debug key.">
 	    <record-build-info />
 		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
 	</target>
 
-
-	<!-- Copy Config.java to our source tree, replacing custom tokens with values in build.properties. The configuration depends on "clean" because otherwise the build system will not detect changes in the configuration. -->
-	<target name="config-lad" depends="config-with-log">
-		<copy failonerror="false" file="config/test/DfpManager.java" tofile="src/com/ldf/conf/DfpManager.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/ConfigMenu.java" tofile="src/com/ldf/conf/ConfigMenu.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/DataURL.java" tofile="src/com/ldf/conf/DataURL.java" overwrite="true" encoding="utf-8" />
-	</target>
-	
-	<target name="config-html" depends="config-with-log">
-		<copy failonerror="false" file="config/test/DfpManager.java" tofile="src/com/ldf/conf/DfpManager.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/ConfigMenu.java" tofile="src/com/ldf/conf/ConfigMenu.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/bool_html.xml" tofile="res/values/bool_html.xml" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/DataURL.java" tofile="src/com/ldf/conf/DataURL.java" overwrite="true" encoding="utf-8" />
-	</target>
-	
-	<target name="config-release" depends="config-without-log">
-	    <copy failonerror="false" file="config/prod/bool_html.xml" tofile="res/values/bool_html.xml" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/prod/DfpManager.java" tofile="src/com/ldf/conf/DfpManager.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/prod/ConfigMenu.java" tofile="src/com/ldf/conf/ConfigMenu.java" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/prod/strings_api.xml" tofile="res/values/strings_api.xml" overwrite="true" encoding="utf-8" />
-		<copy failonerror="false" file="config/test/DataURL.java" tofile="src/com/ldf/conf/DataURL.java" overwrite="true" encoding="utf-8" />
-	</target>
 	
 	<target name="clean-all" description="Removes output files created by other targets.">
 		<delete dir="${out.absolute.dir}" verbose="${verbose}" />
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
-		<delete dir="../LIB_XITI/bin" verbose="${verbose}" />
-		<delete dir="../LIB_LAMOSEL/bin" verbose="${verbose}" />
-		<delete dir="../LIB_LACAL/bin" verbose="${verbose}" />
 	</target>
 	
 	<target name="clean-classes" description="Removes output files created by other targets.">
 	    <delete dir="${out.absolute.dir}" verbose="${verbose}" includeemptydirs="true">
-	    	<exclude name="**/*Blackberry*"/>
-	    	<exclude name="**/*Appslib*"/>
-	    	<exclude name="**/*Amazon*"/>
-	    	<exclude name="**/*SamsungApps*"/>
-	    	<exclude name="**/*debugHTML*"/>
-	    	<exclude name="**/*Preprod*"/>
-	    	<exclude name="**/*Release*"/>
 	    	<exclude name="${out.release.file.name}" />
 	    	<exclude name="${out.debug-a2d.file.name}" />
-	    	<exclude name="${out.debug-lad.file.name}" />
+	    	<exclude name="${out.debug-univ.file.name}" />
 	    </delete>
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
-		<delete dir="../LIB_XITI/bin" verbose="${verbose}" />
-		<delete dir="../LIB_LAMOSEL/bin" verbose="${verbose}" />
-		<delete dir="../LIB_LACAL/bin" verbose="${verbose}" />
 	</target>
 		
-	<import file="build.xml" />
+	<import file="build_old.xml" />
 
 </project>
