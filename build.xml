@@ -117,6 +117,6 @@
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
 	</target>
 		
-	<import file="build.xml" />
+	<import file="/opt/android-sdk-linux/tools/ant/build.xml" />
 
 </project>
