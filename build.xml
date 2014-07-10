@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project name="UnivMobile">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -80,24 +80,24 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
 	
-    <property name="out.debug-univ.file.name" value="${ant.project.name}-debuguniv.apk" />
-    <property name="out.debug-univ.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />	
+    <property name="out.debug.file.name" value="${ant.project.name}-debuguniv.apk" />
+    <property name="out.debug.file" location="${out.absolute.dir}/${out.debug.file.name}" />	
 	
     <property name="out.release.file.name" value="${ant.project.name}-release.apk" />
     <property name="out.release.file" location="${out.absolute.dir}/${out.release.file.name}" />
 
-	<target name="release-univ" depends="-set-release-mode, -release-obfuscation-check, -package, -post-package, -release-prompt-for-password, -release-nosign, -release-sign, -post-build" description="Builds the application and signs it with a debug key.">
+	<target name="release" depends="-set-release-mode, -release-obfuscation-check, -package, -post-package, -release-prompt-for-password, -release-nosign, -release-sign, -post-build" description="Builds the application and signs it with a debug key.">
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />
+        <property name="out.final.file" location="${out.absolute.dir}/${out.debug.file.name}" />
 	</target>
 	
 	<!-- Builds debug output package, provided all the necessary files are already dexed -->
-	<target name="-set-debug-files-univ" depends="-set-mode-check">
+	<target name="-set-debug-files" depends="-set-mode-check">
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
-        <property name="out.final.file" location="${out.absolute.dir}/${out.debug-univ.file.name}" />
+        <property name="out.final.file" location="${out.absolute.dir}/${out.debug.file.name}" />
 	</target>
 
-	<target name="debug-univ" depends="-set-debug-files-univ, -do-debug" description="Builds the application and signs it with a debug key.">
+	<target name="debug" depends="-set-debug-files, -do-debug" description="Builds the application and signs it with a debug key.">
 	    <record-build-info />
 		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
 	</target>
@@ -112,7 +112,7 @@
 	    <delete dir="${out.absolute.dir}" verbose="${verbose}" includeemptydirs="true">
 	    	<exclude name="${out.release.file.name}" />
 	    	<exclude name="${out.debug-a2d.file.name}" />
-	    	<exclude name="${out.debug-univ.file.name}" />
+	    	<exclude name="${out.debug.file.name}" />
 	    </delete>
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
 	</target>
