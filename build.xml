@@ -80,7 +80,7 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
 	
-    <property name="out.debug.file.name" value="${ant.project.name}-debuguniv.apk" />
+    <property name="out.debug.file.name" value="${ant.project.name}-debug.apk" />
     <property name="out.debug.file" location="${out.absolute.dir}/${out.debug.file.name}" />	
 	
     <property name="out.release.file.name" value="${ant.project.name}-release.apk" />
