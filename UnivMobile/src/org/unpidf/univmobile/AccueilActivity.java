@@ -35,7 +35,7 @@ public class AccueilActivity extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
