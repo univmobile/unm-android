@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">UnivMobil</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">UnivMobile</string>
+    <string name="textAlertDialogJamais">Jamais</string>
+    <string name="textAlertDialogOui">Oui</string>
+    <string name="textAlertDialogNon">Non</string>
+    <string name="textAlertGeoloc">La géolocalisation n\'est actuellement pas activée. Souhaitez vous l\'activer ?</string>
+    <string name="textAlertGeolocTitle">Géolocalisation</string>
 
 </resources>
