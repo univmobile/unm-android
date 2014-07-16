@@ -36,8 +36,6 @@
 //import com.google.android.gms.location.LocationClient;
 //import com.google.android.gms.location.LocationListener;
 //import com.google.android.gms.location.LocationRequest;
-//import com.ldf.grossesse.dialog.DialogErrorLocation;
-//import com.ldf.grossesse.utils.Utils;
 //
 //public class LocManager implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 //
