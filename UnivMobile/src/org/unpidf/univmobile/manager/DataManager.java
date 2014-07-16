@@ -50,9 +50,9 @@ public class DataManager {
 		Utils.execute(new GetListRegionTask());
 	}
 
-	private class GetListRegionTask extends AsyncTask<Void, Object, Boolean>{
+	private class GetListRegionTask extends AsyncTask<Object, Object, Boolean>{
 		@Override
-		protected Boolean doInBackground(Void... params) {
+		protected Boolean doInBackground(Object... params) {
 			JSONObject jsonObject = ApiManager.callAPI(MappingManager.URL_REGIONS);
 			if(jsonObject == null){
 				return false;
