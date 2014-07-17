@@ -1,26 +1,38 @@
 package org.unpidf.univmobile.view;
 
 import org.unpidf.univmobile.R;
-
+import org.unpidf.univmobile.dao.Region;
+import org.unpidf.univmobile.fragments.SelectRegionFragment;
+import org.unpidf.univmobile.fragments.SelectUniversityFragment;
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.MenuItem;
 
 public class SelectUniversityActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_accueil);
-		getFragmentManager().beginTransaction().replace(R.id.fragConteneur, new SelectRegionFragment()).commitAllowingStateLoss();
+		setContentView(R.layout.activity_select_univ);
+		initActionBar();
+		getFragmentManager().beginTransaction().replace(R.id.fragConteneur, SelectRegionFragment.newInstance() , "SelectRegion").commitAllowingStateLoss();
+	}
+
+	private void initActionBar() {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == android.R.id.home){
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
 		if(getFragmentManager().getBackStackEntryCount() == 0){
 			finish();
 		}else{
@@ -28,32 +40,12 @@ public class SelectUniversityActivity extends Activity {
 		}
 	}
 
-	private class SelectRegionFragment extends Fragment{
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			return inflater.inflate(R.layout.frag_list, container, false);
-		}
-
-		@Override
-		public void onViewCreated(View view, Bundle savedInstanceState) {
-			super.onViewCreated(view, savedInstanceState);
-		}
-	}
-
-	private class SelectUniversityFragment extends Fragment{
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			return inflater.inflate(R.layout.frag_list, container, false);
-		}
-
-		@Override
-		public void onViewCreated(View view, Bundle savedInstanceState) {
-			super.onViewCreated(view, savedInstanceState);
-		}
+	public void swichToUniversity(Region region) {
+		getFragmentManager().beginTransaction()
+		.setCustomAnimations(R.anim.slide_in_left, 0, 0, R.anim.slide_in_right) 
+		.add(R.id.fragConteneur, SelectUniversityFragment.newInstance(region) , "SelectUniv")
+		.addToBackStack("SelectUniv")
+		.commitAllowingStateLoss();
 	}
 
 }
