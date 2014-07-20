@@ -47,7 +47,7 @@ public class AccueilActivity extends Activity {
 
 	private void initData() {
 		if(DataManager.getInstance(this).getCurrentUniversity() == null){
-			((TextView)findViewById(R.id.universitySelected)).setText("Aucune université sélectionée.");
+			((TextView)findViewById(R.id.universitySelected)).setText("Aucune université sélectionnée.");
 		}else{
 			((TextView)findViewById(R.id.universitySelected)).setText(DataManager.getInstance(this).getCurrentUniversity().getTitle());
 		}
