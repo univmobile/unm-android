@@ -19,8 +19,9 @@ public class SimpleAppiumTest {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 
 		final File app = new File(
-				"/Users/dandriana/Documents/workspace/unm-android"
-						+ "/UnivMobile/app/build/outputs/apk/app-debug.apk");
+			//	"/Users/dandriana/Documents/workspace/unm-android"
+				//		+ "/UnivMobile/app/build/outputs/apk/app-debug.apk");
+				"/tmp/app-debug.apk");
 
 		capabilities.setCapability(APP, app.getAbsolutePath());
 
