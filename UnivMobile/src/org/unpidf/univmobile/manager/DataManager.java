@@ -1,5 +1,9 @@
 package org.unpidf.univmobile.manager;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 public class DataManager {
 
@@ -21,7 +26,7 @@ public class DataManager {
 	public static final String NOTIF_REGION_ERR = "notif-region-err";
 	public static final String NOTIF_REGION_UNIV_OK = "notif-region-univ-ok";
 	public static final String NOTIF_REGION_UNIV_ERR = "notif-region-univ-err";
-	
+
 	private static Context mContext;
 	private static DataManager mInstance;
 
@@ -41,12 +46,49 @@ public class DataManager {
 	public University getCurrentUniversity() {
 		return currentUniversity;
 	}
-	
+
 	public List<Region> getListRegion() {
 		return listRegion;
 	}
 
 	public void launchRegionGetting() {
+		if(listRegion != null && listRegion.size() > 0){
+			//From Memory
+			LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_OK));
+		}else{
+			JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListRegions");
+			if( jsonCache != null ){
+				//From cache
+				boolean etat = parseRegions(jsonCache);
+				if(etat){
+					LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_OK));
+				}
+			}else{
+				//From app
+				int ressourceId =  mContext.getResources().getIdentifier("ListRegions", "raw", mContext.getPackageName());
+				if(ressourceId != 0){
+					InputStream is = mContext.getResources().openRawResource(ressourceId);
+					try {
+						byte [] buffer = new byte[is.available()];
+						int bytesRead;
+						ByteArrayOutputStream output = new ByteArrayOutputStream();
+						while ((bytesRead = is.read(buffer)) != -1) {
+							output.write(buffer, 0, bytesRead);
+						}
+						byte[] bytes = output.toByteArray();
+						JSONObject jsonRaw = new JSONObject(new String(bytes));
+						boolean etat = parseRegions(jsonRaw);
+						if(etat){
+							LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_OK));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						closeStream(is);
+					}
+				}
+			}
+		}
 		Utils.execute(new GetListRegionTask());
 	}
 
@@ -54,21 +96,11 @@ public class DataManager {
 		@Override
 		protected Boolean doInBackground(Object... params) {
 			JSONObject jsonObject = ApiManager.callAPI(MappingManager.URL_REGIONS);
-			if(jsonObject == null){
-				return false;
+			boolean etat = parseRegions(jsonObject);
+			if(etat){
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListRegions");
 			}
-			try{
-				JSONArray array = jsonObject.getJSONArray("region");
-				List<Region> listRegiontemp = new ArrayList<Region>();
-				for (int i = 0; i < array.length(); i++) {
-					listRegiontemp.add(new Region(array.getJSONObject(i)));
-				}
-				listRegion = listRegiontemp;
-				return true;
-			}catch(JSONException e){
-				e.printStackTrace();
-			}
-			return false;
+			return etat;
 		}
 
 		@Override
@@ -82,8 +114,73 @@ public class DataManager {
 		}
 	}
 	
+	private boolean parseRegions(JSONObject json) {
+		if(json == null){
+			return false;
+		}
+		try{
+			JSONArray array = json.getJSONArray("region");
+			List<Region> listRegiontemp = new ArrayList<Region>();
+			for (int i = 0; i < array.length(); i++) {
+				listRegiontemp.add(new Region(array.getJSONObject(i)));
+			}
+			listRegion = listRegiontemp;
+			return true;
+		}catch(JSONException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public void launchRegionUniversityGetting(Region region) {
+		if(region.getListUniversity().size() != 0){
+			//From Memory
+			LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_UNIV_OK + region.getId()));
+		}else{
+			JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListUniversity-"+region.getId() );
+			if( jsonCache != null ){
+				//From cache
+				boolean etat = parseListRegions(region, jsonCache);
+				if(etat){
+					LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_UNIV_OK + region.getId()));
+				}
+			}else{
+				//From app
+				int ressourceId =  mContext.getResources().getIdentifier("ListUniversity-"+region.getId(), "raw", mContext.getPackageName());
+				if(ressourceId != 0){
+					InputStream is = mContext.getResources().openRawResource(ressourceId);
+					try {
+						byte [] buffer = new byte[is.available()];
+						int bytesRead;
+						ByteArrayOutputStream output = new ByteArrayOutputStream();
+						while ((bytesRead = is.read(buffer)) != -1) {
+							output.write(buffer, 0, bytesRead);
+						}
+						byte[] bytes = output.toByteArray();
+						JSONObject jsonraw = new JSONObject(new String(bytes));
+						boolean etat = parseListRegions(region, jsonraw);
+						if(etat){
+							LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_UNIV_OK + region.getId()));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						closeStream(is);
+					}
+				}
+			}
+		}
 		Utils.execute(new GetListRegionUnivTask(), region);
+	}
+	
+	private static void closeStream(Closeable stream) { 
+		if (stream != null) { 
+			try { 
+				stream.close(); 
+			} catch (IOException e) { 
+				Log.e("DATAMANAGER", "Message : IOException " + e.getMessage());
+			} 
+		} 
 	}
 
 	private class GetListRegionUnivTask extends AsyncTask<Region, Object, Boolean>{
@@ -92,21 +189,11 @@ public class DataManager {
 		protected Boolean doInBackground(Region... params) {
 			region = params[0];
 			JSONObject jsonObject = ApiManager.callAPI(region.getUrl());
-			if(jsonObject == null){
-				return false;
+			boolean etat = parseListRegions(region, jsonObject);
+			if(etat){
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListUniversity-"+region.getId());
 			}
-			try{
-				JSONArray array = jsonObject.getJSONArray("universities");
-				List<University> listUniversitytemp = new ArrayList<University>();
-				for (int i = 0; i < array.length(); i++) {
-					listUniversitytemp.add(new University(array.getJSONObject(i)));
-				}
-				region.setListUniversity(listUniversitytemp);
-				return true;
-			}catch(JSONException e){
-				e.printStackTrace();
-			}
-			return false;
+			return etat;
 		}
 
 		@Override
@@ -117,6 +204,24 @@ public class DataManager {
 			}else{
 				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_UNIV_ERR + region.getId()));
 			}
+		}
+	}
+
+	private boolean parseListRegions(Region region, JSONObject json) {
+		if(json == null){
+			return false;
+		}
+		try{
+			JSONArray array = json.getJSONArray("universities");
+			List<University> listUniversitytemp = new ArrayList<University>();
+			for (int i = 0; i < array.length(); i++) {
+				listUniversitytemp.add(new University(array.getJSONObject(i)));
+			}
+			region.setListUniversity(listUniversitytemp);
+			return true;
+		}catch(JSONException e){
+			e.printStackTrace();
+			return false;
 		}
 	}
 

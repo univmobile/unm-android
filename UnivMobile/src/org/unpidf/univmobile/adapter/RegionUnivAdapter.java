@@ -1,5 +1,6 @@
 package org.unpidf.univmobile.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.unpidf.univmobile.R;
@@ -21,7 +22,7 @@ public class RegionUnivAdapter extends BaseAdapter {
 
 	public RegionUnivAdapter(Context context, List<? extends Object> items) {
 		inflater = LayoutInflater.from(context);
-		this.items = items;
+		this.items = new ArrayList<Object>(items);
 	}
 	
 	@Override
@@ -61,5 +62,10 @@ public class RegionUnivAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		return items.get(position);
+	}
+
+	public void setList(List<? extends Object> itemsToDo) {
+		this.items = new ArrayList<Object>(itemsToDo);
+		notifyDataSetChanged();
 	}
 }

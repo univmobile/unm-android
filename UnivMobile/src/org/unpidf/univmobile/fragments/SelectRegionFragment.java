@@ -17,11 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SelectRegionFragment extends Fragment{
+	
+	private RegionUnivAdapter adapter;
 	
 	public static SelectRegionFragment newInstance(){
 		return new SelectRegionFragment();
@@ -40,10 +42,13 @@ public class SelectRegionFragment extends Fragment{
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(DataManager.NOTIF_REGION_OK)){
-				((ListView)getView().findViewById(R.id.listView)).setAdapter(new RegionUnivAdapter(getActivity(), DataManager.getInstance(getActivity()).getListRegion()));
-				((ListView)getView().findViewById(R.id.listView)).setOnItemClickListener(OnRegionClick);
+				getView().findViewById(R.id.loader).setVisibility(View.GONE);
+				refreshData();
 			}else if(intent.getAction().equals(DataManager.NOTIF_REGION_ERR)){
-				Toast.makeText(getActivity(), "Erreur lors du chargement.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Erreur réseau...", Toast.LENGTH_SHORT).show();
+				if(adapter == null){
+					getActivity().finish();
+				}
 			}
 		}
 	};
@@ -60,7 +65,19 @@ public class SelectRegionFragment extends Fragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		getView().findViewById(R.id.loader).setVisibility(View.VISIBLE);
 		DataManager.getInstance(getActivity()).launchRegionGetting();
+	}
+	
+	private void refreshData() {
+		if(adapter == null){
+			ListView listView = ((ListView)getView().findViewById(R.id.listView));
+			adapter = new RegionUnivAdapter(getActivity(), DataManager.getInstance(getActivity()).getListRegion());
+			listView.setAdapter(adapter);
+			listView.setOnItemClickListener(OnRegionClick);
+		}else{
+			adapter.setList(DataManager.getInstance(getActivity()).getListRegion());
+		}
 	}
 	
 	@Override

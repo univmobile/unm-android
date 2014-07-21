@@ -8,7 +8,6 @@ import org.unpidf.univmobile.view.SelectUniversityActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +41,7 @@ public class AccueilActivity extends Activity {
 			public void onAddressChanged(String address, boolean success) {
 			}
 		});
-		LocManager.getInstance(this).requestUpdate();
+		//LocManager.getInstance(this).requestUpdate();
 	}
 
 	private void initData() {
@@ -58,6 +57,7 @@ public class AccueilActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), SelectUniversityActivity.class));
+				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			}
 		});
 	}

@@ -5,6 +5,7 @@ import org.unpidf.univmobile.adapter.RegionUnivAdapter;
 import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.dao.University;
 import org.unpidf.univmobile.manager.DataManager;
+import org.unpidf.univmobile.view.SelectUniversityActivity;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -17,14 +18,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class SelectUniversityFragment extends Fragment{
-	
+
 	private Region region;
-	
+	private RegionUnivAdapter adapter;
+
 	private OnItemClickListener OnUniversityClick = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
@@ -33,7 +35,7 @@ public class SelectUniversityFragment extends Fragment{
 			getActivity().finish();
 		}
 	};
-	
+
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -41,14 +43,17 @@ public class SelectUniversityFragment extends Fragment{
 				return;
 			}
 			if(intent.getAction().contains(DataManager.NOTIF_REGION_UNIV_OK)){
-				((ListView)getView().findViewById(R.id.listView)).setAdapter(new RegionUnivAdapter(getActivity(), region.getListUniversity()));
-				((ListView)getView().findViewById(R.id.listView)).setOnItemClickListener(OnUniversityClick);
+				getView().findViewById(R.id.loader).setVisibility(View.GONE);
+				refreshData();
 			}else if(intent.getAction().contains(DataManager.NOTIF_REGION_UNIV_ERR)){
-				Toast.makeText(getActivity(), "Erreur lors du chargement.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Erreur réseau...", Toast.LENGTH_SHORT).show();
+				if(adapter == null){
+					((SelectUniversityActivity)getActivity()).onBackPressed();
+				}
 			}
 		}
 	};
-	
+
 	public static Fragment newInstance(Region region) {
 		SelectUniversityFragment frag = new SelectUniversityFragment();
 		Bundle bundle = new Bundle();
@@ -61,6 +66,7 @@ public class SelectUniversityFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		region = (Region) getArguments().getSerializable("region");
+		adapter = null;
 		IntentFilter filter = new IntentFilter(DataManager.NOTIF_REGION_UNIV_OK + region.getId());
 		filter.addAction(DataManager.NOTIF_REGION_UNIV_ERR + region.getId());
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
@@ -70,7 +76,19 @@ public class SelectUniversityFragment extends Fragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		getView().findViewById(R.id.loader).setVisibility(View.VISIBLE);
 		DataManager.getInstance(getActivity()).launchRegionUniversityGetting(region);
+	}
+
+	private void refreshData() {
+		if(adapter == null){
+			ListView listView = ((ListView)getView().findViewById(R.id.listView));
+			adapter = new RegionUnivAdapter(getActivity(), region.getListUniversity());
+			listView.setAdapter(adapter);
+			listView.setOnItemClickListener(OnUniversityClick);
+		}else{
+			adapter.setList(region.getListUniversity());
+		}
 	}
 
 	@Override

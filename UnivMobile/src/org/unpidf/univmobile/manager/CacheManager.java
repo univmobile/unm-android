@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class CacheManager {
 
-	private static final String STORAGE_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data";
+	private static final String STORAGE_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath();
 	private static final String TAG = "CacheManager";
 	
 	public static JSONObject loadCache( String directory, String filename ) {

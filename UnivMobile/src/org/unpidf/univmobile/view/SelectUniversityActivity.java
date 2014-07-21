@@ -4,6 +4,7 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.fragments.SelectRegionFragment;
 import org.unpidf.univmobile.fragments.SelectUniversityFragment;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -39,6 +40,12 @@ public class SelectUniversityActivity extends Activity {
 			getFragmentManager().popBackStack();
 		}
 	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
 
 	public void swichToUniversity(Region region) {
 		getFragmentManager().beginTransaction()
@@ -47,5 +54,5 @@ public class SelectUniversityActivity extends Activity {
 		.addToBackStack("SelectUniv")
 		.commitAllowingStateLoss();
 	}
-
+	
 }

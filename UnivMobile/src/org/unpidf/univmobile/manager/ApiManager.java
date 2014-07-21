@@ -54,7 +54,7 @@ public class ApiManager {
 		HttpGet httpget = new HttpGet( urlApi );  
 		httpget.setHeader("Accept-Encoding", "gzip"); 
 		JSONObject oJsonResult = null;
-
+		
 		try {
 			HttpResponse response = httpclient.execute(httpget);
 			InputStream instream = response.getEntity().getContent();
