@@ -102,6 +102,24 @@
 		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
 	</target>
 
+	<target name="add-variables">
+		<replaceregexp 
+				match="&lt;string name=&quot;gitCommit&quot;(.*)"
+				replace="&lt;string name=&quot;gitCommit&quot;>${GIT_COMMIT}&lt;/string>"
+				byline="true">
+				<fileset dir="res/values">
+					<include name="**/*.xml"/>
+				</fileset>
+		</replaceregexp>
+		<replaceregexp 
+				match="&lt;string name=&quot;buildDisplayName&quot;(.*)"
+				replace="&lt;string name=&quot;buildDisplayName&quot;>${BUILD_DISPLAY_NAME}&lt;/string>"
+				byline="true">
+				<fileset dir="res/values">
+					<include name="**/*.xml"/>
+				</fileset>
+		</replaceregexp>
+	</target>
 	
 	<target name="clean-all" description="Removes output files created by other targets.">
 		<delete dir="${out.absolute.dir}" verbose="${verbose}" />

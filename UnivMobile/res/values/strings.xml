@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="buildDisplayName"></string>
+	<string name="gitCommit"></string>
+    
     <string name="app_name">UnivMobile</string>
     <string name="textAlertDialogJamais">Jamais</string>
     <string name="textAlertDialogOui">Oui</string>
