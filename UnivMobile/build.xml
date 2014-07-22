@@ -109,7 +109,7 @@
 				match="&lt;string name=&quot;gitCommit&quot;(.*)"
 				replace="&lt;string name=&quot;gitCommit&quot;>${GIT_COMMIT}&lt;/string>"
 				byline="true">
-				<fileset dir="res/values">
+				<fileset dir="res">
 					<include name="**/*.xml"/>
 				</fileset>
 		</replaceregexp>
@@ -117,7 +117,7 @@
 				match="&lt;string name=&quot;buildDisplayName&quot;(.*)"
 				replace="&lt;string name=&quot;buildDisplayName&quot;>${BUILD_DISPLAY_NAME}&lt;/string>"
 				byline="true">
-				<fileset dir="res/values">
+				<fileset dir="res">
 					<include name="**/*.xml"/>
 				</fileset>
 		</replaceregexp>
