@@ -1,7 +1,8 @@
-/bin/
-/gen/
+bin/
+gen/
 target/
 .DS_Store
 .idea/
 build/
 .gradle/
+local.properties
