@@ -3,12 +3,15 @@ package org.unpidf.univmobile;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
 import org.unpidf.univmobile.manager.LocManager.LocListener;
+import org.unpidf.univmobile.view.AproposActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -60,6 +63,21 @@ public class AccueilActivity extends Activity {
 				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			}
 		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add("A Propos").setIcon(android.R.drawable.ic_menu_info_details).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);;
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getTitle().equals("A Propos")){
+			startActivity(new Intent(this, AproposActivity.class));
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

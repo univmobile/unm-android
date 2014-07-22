@@ -37,7 +37,10 @@
         <activity
             android:screenOrientation="portrait"
             android:name="org.unpidf.univmobile.view.SelectUniversityActivity">
-            
+        </activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="org.unpidf.univmobile.view.AproposActivity">
         </activity>
     </application>
 
