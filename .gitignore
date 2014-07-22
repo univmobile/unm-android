@@ -7,4 +7,4 @@ build/
 .gradle/
 local.properties
 *.iml
-.settings/
+# .settings/
