@@ -87,6 +87,7 @@
     <property name="out.release.file" location="${out.absolute.dir}/${out.release.file.name}" />
 
 	<target name="release" depends="-set-release-mode, -release-obfuscation-check, -package, -post-package, -release-prompt-for-password, -release-nosign, -release-sign, -post-build" description="Builds the application and signs it with a debug key.">
+        <antcall target="add-variables"></antcall>
         <property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" />
         <property name="out.final.file" location="${out.absolute.dir}/${out.debug.file.name}" />
 	</target>
@@ -99,6 +100,7 @@
 
 	<target name="debug" depends="-set-debug-files, -do-debug" description="Builds the application and signs it with a debug key.">
 	    <record-build-info />
+		<antcall target="add-variables"></antcall>
 		<delete file="${out.absolute.dir}/${ant.project.name}-debug-unaligned.apk" verbose="${verbose}" />
 	</target>
 
