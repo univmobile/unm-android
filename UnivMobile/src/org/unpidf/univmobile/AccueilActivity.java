@@ -67,13 +67,13 @@ public class AccueilActivity extends Activity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add("A Propos").setIcon(android.R.drawable.ic_menu_info_details).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);;
+		menu.add("À propos").setIcon(android.R.drawable.ic_menu_info_details).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);;
 		return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(item.getTitle().equals("A Propos")){
+		if(item.getTitle().equals("À propos")){
 			startActivity(new Intent(this, AproposActivity.class));
 			return true;
 		}
