@@ -4,10 +4,36 @@
 
 Pour installer le projet, l’environnement de développement doit disposer de :
 
-  * un JDK 6 ou supérieur,
-  * un Android SDK,
-  * un fichier « local.properties ».
-  
+  * un JDK 6 ou supérieur
+  * un Android SDK avec au moins la target android-19
+  * un fichier « local.properties »
+
+Pour vérifier la version du JDK : java -version
+
+Exemple :
+
+    $ java -version
+    java version "1.7.0_17"
+    Java(TM) SE Runtime Environment (build 1.7.0_17-b02)
+    Java HotSpot(TM) 64-Bit Server VM (build 23.7-b01, mixed mode)
+
+Pour vérifier que la target android-19 est installée avec l’Android SDK : android list targets
+
+Exemple :
+
+    $ /opt/android-sdk-mac/tools/android list targets
+    Available Android targets:
+    ----------
+    (...)
+    id: 1 or "android-19"
+         Name: Android 4.4.2
+         Type: Platform
+         API level: 19
+         Revision: 3
+         Skins: HVGA, QVGA, WQVGA400, WQVGA432, WSVGA, WVGA800 (default), WVGA854, WXGA720, WXGA800, WXGA800-7in
+     Tag/ABIs : default/armeabi-v7a, default/x86
+    (...)
+
 Le fichier « local.properties » doit être copié dans UnivMobile et dans google-play-services/google-play-services_lib/
 
 Les différents fichiers « local.properties » ne seront pas stockés dans GitHub. Des fichiers sont fournis en exemple — eux sont stockés dans GitHub : « local.properties_jenkins », etc. Chaque fichier « local.properties » doit notamment contenir l’emplacement de l’Android SDK. Par exemple :
@@ -22,7 +48,7 @@ Attention, sur Mac, le nom du répertoire d’installation de l’Android SDK, �
 
 Le projet peut être développé avec Eclipse ADT ou Android Studio.
 
-### Ligne de commande 
+### En ligne de commande 
 
 #### Avec Ant (= Eclipse ADT)
 
