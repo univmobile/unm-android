@@ -16,6 +16,7 @@ public class AproposActivity extends Activity {
 
 	private void initActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle("A propos");
 	}
 
 	@Override
