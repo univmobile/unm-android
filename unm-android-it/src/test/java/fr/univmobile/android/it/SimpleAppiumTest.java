@@ -29,7 +29,7 @@ public class SimpleAppiumTest {
 		//   http://univmobile.vswip.com/job/Android-UnivMobile
 		//     /lastSuccessfulBuild/artifact/UnivMobile/bin/UnivMobile-debug.apk
 		
-		final File app = new File("target/UnivMobile-debug.apk");
+		final File app = new File("apk/UnivMobile-debug.apk");
 
 		capabilities.setCapability(APP, app.getAbsolutePath());
 
