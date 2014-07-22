@@ -52,7 +52,7 @@ Le projet peut être développé avec Eclipse ADT ou Android Studio.
 
 Le projet « UnivMobile » peut être ouvert tel quel.
 
-Les fichiers et répertoire .project, .classpath et .settings/ sont dans GitHub.
+Les fichiers .project et .classpath sont dans GitHub, pas le répertoire .settings/.
 
 #### Android Studio
 
