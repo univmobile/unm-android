@@ -44,9 +44,24 @@ Attention, sur Mac, le nom du répertoire d’installation de l’Android SDK, �
 
     $ sudo ln -s /Applications/Android\ Studio.app/sdk /opt/android-sdk-mac
     
-### IDE
+### IDEs
 
 Le projet peut être développé avec Eclipse ADT ou Android Studio.
+
+#### Eclipse ADT
+
+Le projet « UnivMobile » peut être ouvert tel quel.
+
+Les fichiers et répertoire .project, .classpath et .settings/ sont dans GitHub.
+
+#### Android Studio
+
+Le projet « UnivMobile » peut être ouvert tel quel, en tant que projet Gradle. Attention a bien spécifier :
+
+  * Gradle project: (…)/unm-android/UnivMobile
+  * _et non : (...)/unm-android/UnivMobile/gradle_
+
+Les fichier et répertoire UnivMobile.iml et .idea/ ne sont pas dans GitHub.
 
 ### En ligne de commande 
 
@@ -59,6 +74,11 @@ Configuration testée : Ant 1.8.2, JVM 1.7.0_17
     $ cd UnivMobile/
     $ ant clean-all release
     $ ant clean-classes debug
+
+Les fichiers résultants sont :
+
+    ./bin/UnivMobile-debug.apk
+    ./bin/UnivMobile-release-unsigned.apk
     
 #### Avec Gradle (= Android Studio)
   
@@ -69,6 +89,12 @@ Configuration testée : Gradle 2.0, JVM 1.7.0_17
     $ cd UnivMobile/
     $ ./gradlew wrapper
     $ ./gradlew clean build
-  
+
+Les fichiers résultants sont :
+
+    ./build/outputs/apk/UnivMobile-debug-unaligned.apk
+    ./build/outputs/apk/UnivMobile-debug.apk		
+    ./build/outputs/apk/UnivMobile-release-unsigned.apk  
+        
 Note : les répertoires libs/ et ../google-play-services/ ne sont pas utilisés par Gradle (gestion de dépendances).
 
