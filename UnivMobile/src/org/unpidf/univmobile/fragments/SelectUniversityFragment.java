@@ -83,11 +83,11 @@ public class SelectUniversityFragment extends Fragment{
 	private void refreshData() {
 		if(adapter == null){
 			ListView listView = ((ListView)getView().findViewById(R.id.listView));
-			adapter = new RegionUnivAdapter(getActivity(), region.getListUniversity());
+			adapter = new RegionUnivAdapter(getActivity(), region.getListUniversities());
 			listView.setAdapter(adapter);
 			listView.setOnItemClickListener(OnUniversityClick);
 		}else{
-			adapter.setList(region.getListUniversity());
+			adapter.setList(region.getListUniversities());
 		}
 	}
 

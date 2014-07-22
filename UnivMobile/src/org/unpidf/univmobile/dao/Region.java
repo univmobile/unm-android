@@ -15,7 +15,7 @@ public class Region implements Serializable{
 	private String label;
 	private String url;
 	private String urlProd;
-	private List<University> listUniversity;
+	private List<University> listUniversities;
 	
 	public Region(JSONObject json){
 		this.id = json.optString("id");
@@ -24,15 +24,15 @@ public class Region implements Serializable{
 		this.urlProd = json.optString("url_prod");
 	}
 	
-	public void setListUniversity(List<University> listUniversity) {
-		this.listUniversity = listUniversity;
+	public void setListUniversities(List<University> listUniversities) {
+		this.listUniversities = listUniversities;
 	}
 	
-	public List<University> getListUniversity() {
-		if(listUniversity == null){
+	public List<University> getListUniversities() {
+		if(listUniversities == null){
 			return new ArrayList<University>();
 		}
-		return listUniversity;
+		return listUniversities;
 	}
 	
 	public String getId() {

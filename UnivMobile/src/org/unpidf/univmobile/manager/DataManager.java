@@ -65,7 +65,7 @@ public class DataManager {
 				}
 			}else{
 				//From app
-				int ressourceId =  mContext.getResources().getIdentifier("ListRegions", "raw", mContext.getPackageName());
+				int ressourceId =  mContext.getResources().getIdentifier("listregions", "raw", mContext.getPackageName());
 				if(ressourceId != 0){
 					InputStream is = mContext.getResources().openRawResource(ressourceId);
 					try {
@@ -98,7 +98,7 @@ public class DataManager {
 			JSONObject jsonObject = ApiManager.callAPI(MappingManager.URL_REGIONS);
 			boolean etat = parseRegions(jsonObject);
 			if(etat){
-				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListRegions");
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "listregions");
 			}
 			return etat;
 		}
@@ -133,11 +133,11 @@ public class DataManager {
 	}
 
 	public void launchRegionUniversityGetting(Region region) {
-		if(region.getListUniversity().size() != 0){
+		if(region.getListUniversities().size() != 0){
 			//From Memory
 			LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_UNIV_OK + region.getId()));
 		}else{
-			JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListUniversity-"+region.getId() );
+			JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListUniversities-"+region.getId() );
 			if( jsonCache != null ){
 				//From cache
 				boolean etat = parseListRegions(region, jsonCache);
@@ -146,7 +146,7 @@ public class DataManager {
 				}
 			}else{
 				//From app
-				int ressourceId =  mContext.getResources().getIdentifier("ListUniversity-"+region.getId(), "raw", mContext.getPackageName());
+				int ressourceId =  mContext.getResources().getIdentifier("listuniversities_"+region.getId(), "raw", mContext.getPackageName());
 				if(ressourceId != 0){
 					InputStream is = mContext.getResources().openRawResource(ressourceId);
 					try {
@@ -191,7 +191,7 @@ public class DataManager {
 			JSONObject jsonObject = ApiManager.callAPI(region.getUrl());
 			boolean etat = parseListRegions(region, jsonObject);
 			if(etat){
-				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListUniversity-"+region.getId());
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListUniversities-"+region.getId());
 			}
 			return etat;
 		}
@@ -213,11 +213,11 @@ public class DataManager {
 		}
 		try{
 			JSONArray array = json.getJSONArray("universities");
-			List<University> listUniversitytemp = new ArrayList<University>();
+			List<University> ListUniversitiestemp = new ArrayList<University>();
 			for (int i = 0; i < array.length(); i++) {
-				listUniversitytemp.add(new University(array.getJSONObject(i)));
+				ListUniversitiestemp.add(new University(array.getJSONObject(i)));
 			}
-			region.setListUniversity(listUniversitytemp);
+			region.setListUniversities(ListUniversitiestemp);
 			return true;
 		}catch(JSONException e){
 			e.printStackTrace();
