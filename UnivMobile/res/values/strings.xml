@@ -2,6 +2,7 @@
 <resources>
 	<string name="buildDisplayName"></string>
 	<string name="gitCommit"></string>
+	<string name="buildId"></string>
     
     <string name="app_name">UnivMobile</string>
     <string name="textAlertDialogJamais">Jamais</string>

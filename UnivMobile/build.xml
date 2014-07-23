@@ -119,6 +119,14 @@
 					<include name="**/*.xml"/>
 				</fileset>
 		</replaceregexp>
+		<replaceregexp 
+				match="&lt;string name=&quot;buildId&quot;(.*)"
+				replace="&lt;string name=&quot;buildId&quot;>${BUILD_ID}&lt;/string>"
+				byline="true">
+				<fileset dir="res">
+					<include name="**/*.xml"/>
+				</fileset>
+		</replaceregexp>
 	</target>
 	
 	<target name="clean-all" description="Removes output files created by other targets.">
