@@ -73,11 +73,11 @@ dependencies {
     compile 'com.google.android.gms:play-services:+'
 }
 
-def getNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
+def loadNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
 	return hasProperty('nexusUsername') ? nexusUsername : 'xxx'
 }
 
-def getNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
+def loadNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
 	return hasProperty('nexusPassword') ? nexusPassword : 'xxx'
 }
         
@@ -85,8 +85,8 @@ uploadArchives {
 	repositories.mavenDeployer {
 		repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
 			// These are loaded from: ${HOME}/.gradle/gradle.properties
-            authentication(userName: getNexusUsername(), 
-            	password: getNexusPassword())
+            authentication(userName: loadNexusUsername(), 
+            	password: loadNexusPassword())
         }
     }
 }
