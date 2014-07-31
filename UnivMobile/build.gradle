@@ -1,5 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
+	group 'fr.univmobile'
+    version '0.0.4-SNAPSHOT'
     repositories {
         jcenter()
     }
@@ -14,14 +17,15 @@ allprojects {
     }
 }
 
+apply plugin: 'maven'
 apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
-        applicationId "org.unpidf.univmobile"
+        applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
         targetSdkVersion 19
     }
@@ -49,4 +53,13 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:19.0.0'
     compile 'com.google.android.gms:play-services:+'
+}
+
+uploadArchives {
+	repositories.mavenDeployer {
+		repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
+			// These are loaded from: ${HOME}/.gradle/gradle.properties
+            authentication(userName: nexusUsername, password: nexusPassword)
+        }
+    }
 }
