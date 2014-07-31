@@ -61,6 +61,11 @@ android.applicationVariants.all { variant ->
         exclude '**/BuildConfig.java'
         exclude '**/R.java'
     }
+    task("${variant.name}JavadocJar", type: Jar, 
+    		dependsOn: "generate${variant.name.capitalize()}Javadoc") {
+        classifier = 'javadoc'
+        from "generate${variant.name.capitalize()}Javadoc.destinationDir"
+    }
 }
 
 dependencies {
@@ -68,11 +73,20 @@ dependencies {
     compile 'com.google.android.gms:play-services:+'
 }
 
+def getNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
+	return hasProperty('nexusUsername') ? nexusUsername : 'xxx'
+}
+
+def getNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
+	return hasProperty('nexusPassword') ? nexusPassword : 'xxx'
+}
+        
 uploadArchives {
 	repositories.mavenDeployer {
 		repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
 			// These are loaded from: ${HOME}/.gradle/gradle.properties
-            authentication(userName: nexusUsername, password: nexusPassword)
+            authentication(userName: getNexusUsername(), 
+            	password: getNexusPassword())
         }
     }
 }
