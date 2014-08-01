@@ -11,7 +11,7 @@ import fr.univmobile.it.commons.Scenarios;
 @DeviceNames({ "Android Emulator" })
 public class Scenarios001 extends AppiumAndroidEnabledTest {
 
-	private static final int PAUSE = 2000;
+	private static final int PAUSE = 4000;
 
 	@Scenario("Aller-retour sur la page « À Propos »")
 	@Test
