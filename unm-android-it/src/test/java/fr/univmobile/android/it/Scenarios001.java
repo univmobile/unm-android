@@ -33,5 +33,11 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 		takeScreenshot("about.png");
 
 		savePageSource("pageAbout.xml");
+		
+		elementByName("A propos, Navigate up").click();
+
+		pause(PAUSE);
+
+		takeScreenshot("home2.png");		
 	}
 }
