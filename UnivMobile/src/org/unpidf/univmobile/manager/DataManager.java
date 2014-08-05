@@ -95,7 +95,7 @@ public class DataManager {
 	private class GetListRegionTask extends AsyncTask<Object, Object, Boolean>{
 		@Override
 		protected Boolean doInBackground(Object... params) {
-			JSONObject jsonObject = ApiManager.callAPI(MappingManager.URL_REGIONS);
+			JSONObject jsonObject = ApiManager.callAPI(MappingManager.getUrlRegions(mContext));
 			boolean etat = parseRegions(jsonObject);
 			if(etat){
 				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "listregions");

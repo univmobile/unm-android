@@ -1,9 +1,12 @@
 package org.unpidf.univmobile.view;
 
 import org.unpidf.univmobile.R;
+import org.unpidf.univmobile.manager.MappingManager;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class AproposActivity extends Activity {
 
@@ -12,6 +15,7 @@ public class AproposActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_apropos);
 		initActionBar();
+		((TextView)findViewById(R.id.urlApiId)).setText(MappingManager.getUrlApi(this));
 	}
 
 	private void initActionBar() {
