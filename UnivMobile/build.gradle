@@ -9,7 +9,10 @@ def loadLocalProperty(name, defaultValue) {
 buildscript { 
 	// Inline loadLocalProperty(): buildscript is executed before method defs 
 	def localProperties = new Properties()
-	localProperties.load(new File('local.properties').newDataInputStream())
+	def file0 = new File('local.properties')
+	def file1 = new File('UnivMobile/local.properties')
+	if (file0.exists()) localProperties.load(file0.newDataInputStream())
+	if (file1.exists()) localProperties.load(file1.newDataInputStream())
 	group localProperties.getProperty('group', ('fr.univmobile'))
     version '0.0.4-SNAPSHOT'
     repositories {
