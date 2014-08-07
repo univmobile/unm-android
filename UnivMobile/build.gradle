@@ -1,7 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript {
-	group 'fr.univmobile'
+def loadLocalProperty(name, defaultValue) {
+	Properties properties = new Properties()
+	properties.load(project.file('local.properties').newDataInputStream())
+	return properties.getProperty(name, defaultValue)
+}
+
+buildscript { 
+	// Inline loadLocalProperty(): buildscript is executed before method defs 
+	def localProperties = new Properties()
+	localProperties.load(new File('local.properties').newDataInputStream())
+	group localProperties.getProperty('group', ('fr.univmobile'))
     version '0.0.4-SNAPSHOT'
     repositories {
         jcenter()
@@ -39,7 +48,7 @@ android {
     
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
+            manifest.srcFile loadLocalProperty('manifest.srcFile', 'AndroidManifest.xml')
             java.srcDirs = ['src']
             resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
