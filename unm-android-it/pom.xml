@@ -145,7 +145,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			</plugins>
+		</plugins>
 	</build>
 
 	<name>unm-android-it</name>
@@ -210,17 +210,24 @@
 		</repository>
 	</repositories>
 
+
 	<profiles>
 		<profile>
 			<id>dandriana</id>
 			<properties>
 				<aapt>/Applications/Android Studio.app/sdk/build-tools/android-4.4W/aapt</aapt>
+				<cargo.containerId>tomcat7x</cargo.containerId>
+				<cargo.home>
+					/usr/local/apache-tomcat-7.0.39/
+				</cargo.home>
 			</properties>
 		</profile>
 		<profile>
 			<id>jenkins</id>
 			<properties>
 				<aapt>/opt/android-sdk/build-tools/19.1.0/aapt</aapt>
+				<cargo.containerId>tomcat7x</cargo.containerId>
+				<!-- <cargo.home>/opt/apache-tomcat-7.0.39</cargo.home> -->
 			</properties>
 		</profile>
 	</profiles>
