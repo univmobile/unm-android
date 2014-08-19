@@ -119,7 +119,7 @@ public class DataManager {
 			return false;
 		}
 		try{
-			JSONArray array = json.getJSONArray("region");
+			JSONArray array = json.getJSONArray("regions");
 			List<Region> listRegiontemp = new ArrayList<Region>();
 			for (int i = 0; i < array.length(); i++) {
 				listRegiontemp.add(new Region(array.getJSONObject(i)));
