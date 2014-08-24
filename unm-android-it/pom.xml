@@ -6,7 +6,7 @@
 
 	<parent>
 		<groupId>fr.univmobile</groupId>
-		<artifactId>unm-it-parent</artifactId>
+		<artifactId>unm-backend-it-parent</artifactId>
 		<version>0.0.4-SNAPSHOT</version>
 		<relativePath />
 	</parent>
@@ -14,30 +14,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
-			<artifactId>unm-it-commons</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-android-testutil</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile.localhost</groupId>
 			<artifactId>UnivMobile</artifactId>
 			<type>apk</type>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.univmobile</groupId>
-			<artifactId>unm-backend-it-data</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>fr.univmobile</groupId>
-			<artifactId>unm-backend-app-noshib</artifactId>
-			<type>war</type>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -75,49 +57,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>start</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>start</goal>
-							<!--  
-							<goal>redeploy</goal>
-							-->
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<container>
-						<containerId>${cargo.containerId}</containerId>
-						<type>installed</type>
-						<home>${cargo.home}</home>
-						<output>${project.build.directory}/${cargo.containerId}/tomcat.log</output>
-						<log>${project.build.directory}/cargo.log</log>
-					</container>
-					<configuration>
-						<type>standalone</type>
-						<home>${project.build.directory}/${cargo.containerId}</home>
-						<properties>
-							<cargo.servlet.port>8380</cargo.servlet.port>
-							<cargo.tomcat.ajp.port>8309</cargo.tomcat.ajp.port>
-						</properties>
-					</configuration>
-					<deployables>
-						<deployable>
-							<groupId>fr.univmobile</groupId>
-							<artifactId>unm-backend-app-noshib</artifactId>
-							<type>war</type>
-							<properties>
-								<context>/unm-backend</context>
-							</properties>
-						</deployable>
-					</deployables>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -216,18 +155,12 @@
 			<id>dandriana</id>
 			<properties>
 				<aapt>/Applications/Android Studio.app/sdk/build-tools/android-4.4W/aapt</aapt>
-				<cargo.containerId>tomcat7x</cargo.containerId>
-				<cargo.home>
-					/usr/local/apache-tomcat-7.0.39/
-				</cargo.home>
 			</properties>
 		</profile>
 		<profile>
 			<id>jenkins</id>
 			<properties>
 				<aapt>/opt/android-sdk/build-tools/19.1.0/aapt</aapt>
-				<cargo.containerId>tomcat7x</cargo.containerId>
-				<!-- <cargo.home>/opt/apache-tomcat-7.0.39</cargo.home> -->
 			</properties>
 		</profile>
 	</profiles>
