@@ -29,4 +29,8 @@ public class MappingManager {
 	public static String getUrlRegions(Context context){
 		return getUrlApi(context) + "regions";
 	}
+	
+	public static String getUrlPois(Context context){
+		return getUrlApi(context) + "pois";
+	}
 }

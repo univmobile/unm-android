@@ -10,6 +10,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.unpidf.univmobile.dao.PoiGroup;
 import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.dao.University;
 import org.unpidf.univmobile.utils.Utils;
@@ -26,12 +27,15 @@ public class DataManager {
 	public static final String NOTIF_REGION_ERR = "notif-region-err";
 	public static final String NOTIF_REGION_UNIV_OK = "notif-region-univ-ok";
 	public static final String NOTIF_REGION_UNIV_ERR = "notif-region-univ-err";
+	public static final String NOTIF_POIS_OK = "notif-pois-ok";
+	public static final String NOTIF_POIS_ERR = "notif-pois-err";
 
 	private static Context mContext;
 	private static DataManager mInstance;
 
 	private University currentUniversity;
 	private List<Region> listRegion;
+	private List<PoiGroup> listPois;
 
 	public static DataManager getInstance(Context context){
 		if(mInstance == null){
@@ -98,7 +102,7 @@ public class DataManager {
 			JSONObject jsonObject = ApiManager.callAPI(MappingManager.getUrlRegions(mContext));
 			boolean etat = parseRegions(jsonObject);
 			if(etat){
-				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "listregions");
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListRegions");
 			}
 			return etat;
 		}
@@ -227,5 +231,64 @@ public class DataManager {
 
 	public void setCurrentUniversity(University university) {
 		currentUniversity = university;
+	}
+	
+	public void launchPoisGetting() {
+		JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListPois");
+		if( jsonCache != null ){
+			//From cache
+			boolean etat = parseListPois(jsonCache);
+			if(etat){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_OK));
+			}
+		}
+		Utils.execute(new GetPoiTask());
+	}
+	
+	private class GetPoiTask extends AsyncTask<Object, Object, Boolean>{
+		@Override
+		protected Boolean doInBackground(Object... params) {
+			JSONObject jsonObject = ApiManager.callAPI(MappingManager.getUrlPois(mContext));
+			boolean etat = parseListPois(jsonObject);
+			if(etat){
+				CacheManager.createCache(jsonObject, MappingManager.DIR_DATA, "ListPois");
+			}
+			return etat;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			if(result){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_POIS_OK));
+			}else{
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_POIS_ERR));
+			}
+		}
+	}
+	
+	private boolean parseListPois(JSONObject json) {
+		if(json == null){
+			return false;
+		}
+		try{
+			JSONArray array = json.getJSONArray("groups");
+			List<PoiGroup> listPoiGroupTemp = new ArrayList<PoiGroup>();
+			for (int i = 0; i < array.length(); i++) {
+				listPoiGroupTemp.add(new PoiGroup(array.getJSONObject(i)));
+			}
+			listPois = listPoiGroupTemp;
+			return true;
+		}catch(JSONException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<PoiGroup> getListPois() {
+		if(listPois != null){
+			return listPois;
+		}
+		return new ArrayList<PoiGroup>();
 	}
 }

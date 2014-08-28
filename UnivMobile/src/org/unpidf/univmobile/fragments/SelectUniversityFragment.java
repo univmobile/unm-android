@@ -70,7 +70,7 @@ public class SelectUniversityFragment extends Fragment{
 		IntentFilter filter = new IntentFilter(DataManager.NOTIF_REGION_UNIV_OK + region.getId());
 		filter.addAction(DataManager.NOTIF_REGION_UNIV_ERR + region.getId());
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
-		return inflater.inflate(R.layout.frag_list, container, false);
+		return inflater.inflate(R.layout.frag_list_generic, container, false);
 	}
 
 	@Override

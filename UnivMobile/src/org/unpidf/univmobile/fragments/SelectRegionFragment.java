@@ -59,7 +59,7 @@ public class SelectRegionFragment extends Fragment{
 		IntentFilter filter = new IntentFilter(DataManager.NOTIF_REGION_OK);
 		filter.addAction(DataManager.NOTIF_REGION_ERR);
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
-		return inflater.inflate(R.layout.frag_list, container, false);
+		return inflater.inflate(R.layout.frag_list_generic, container, false);
 	}
 
 	@Override

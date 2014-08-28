@@ -3,12 +3,12 @@
     android:layout_height="match_parent"
     android:background="@android:color/white" >
 
-    <org.unpidf.univmobile.custom.AnimatedExpandableListView
+    <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent" >
-    </org.unpidf.univmobile.custom.AnimatedExpandableListView>
+    </ListView>
 
     <ProgressBar
         android:id="@+id/loader"

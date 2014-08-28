@@ -4,6 +4,7 @@ import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
 import org.unpidf.univmobile.manager.LocManager.LocListener;
 import org.unpidf.univmobile.view.AproposActivity;
+import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
 
 import android.app.Activity;
@@ -61,6 +62,12 @@ public class AccueilActivity extends Activity {
 			public void onClick(View v) {
 				startActivity(new Intent(getApplicationContext(), SelectUniversityActivity.class));
 				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			}
+		});
+		findViewById(R.id.selectGeocampus).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(), GeocampusActivity.class));
 			}
 		});
 	}
