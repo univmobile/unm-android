@@ -142,6 +142,14 @@
 	    </delete>
 	    <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
 	</target>
+	
+	<target name="configuration-mapsapikeytest">
+	    <property file="version.properties" />
+    	<replaceregexp 
+    	    file="res/values/conf_maps.xml" 
+    	    match='&lt;string name="mapsApiKey"&gt;(.*)'
+    	    replace='&lt;string name="mapsApiKey"&gt;AIzaSyCJ5orHZp_3V6ar-NO1A5qJ6P6Bvy3OH3U&lt;/string&gt;'/>
+	</target>
 		
 	<import file="${sdk.dir}/tools/ant/build.xml" />
 

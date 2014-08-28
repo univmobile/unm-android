@@ -26,7 +26,10 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-
+/**
+ * MasterFragment to create quickly a maps using GMS
+ *
+ */
 public abstract class BaseMapsFragment extends Fragment {
 
 	protected int idConteneur;

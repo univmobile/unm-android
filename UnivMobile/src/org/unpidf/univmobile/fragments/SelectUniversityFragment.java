@@ -21,7 +21,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
+/**
+ * Display universities for a specific region. Fragment for: {@link SelectUniversityActivity}
+ * @author Michel
+ *
+ */
 public class SelectUniversityFragment extends Fragment{
 
 	private Region region;

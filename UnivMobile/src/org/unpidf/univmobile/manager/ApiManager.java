@@ -21,7 +21,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-
+/**
+ * Network data Getter
+ */
 public class ApiManager {
 
 	public static final int TIMEOUT = 5000;

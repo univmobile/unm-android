@@ -13,7 +13,9 @@ import org.json.JSONObject;
 
 import android.os.Environment;
 import android.util.Log;
-
+/**
+ * CacheManager for data
+ */
 public class CacheManager {
 
 	private static final String STORAGE_DIRECTORY = Environment.getExternalStorageDirectory().getAbsolutePath();

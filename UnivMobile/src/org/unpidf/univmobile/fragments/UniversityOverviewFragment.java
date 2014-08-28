@@ -12,15 +12,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-public class UniversityItemFragment extends Fragment{
+/**
+ * Display some information about a university. Fragment for viewpager in : {@link MapsPoiFragment}
+ * @author Michel
+ *
+ */
+public class UniversityOverviewFragment extends Fragment{
 
 	private Poi poi;
 	
-	public static UniversityItemFragment newInstance(Poi poi) {
+	public static UniversityOverviewFragment newInstance(Poi poi) {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("poi", poi);
-		UniversityItemFragment frag = new UniversityItemFragment();
+		UniversityOverviewFragment frag = new UniversityOverviewFragment();
 		frag.setArguments(bundle);
 		return frag;
 	}

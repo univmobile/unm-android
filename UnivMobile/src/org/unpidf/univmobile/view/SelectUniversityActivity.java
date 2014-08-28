@@ -8,7 +8,11 @@ import org.unpidf.univmobile.fragments.SelectUniversityFragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
-
+/**
+ * Activity for selecting a university
+ * @author Michel
+ *
+ */
 public class SelectUniversityActivity extends Activity {
 
 	@Override

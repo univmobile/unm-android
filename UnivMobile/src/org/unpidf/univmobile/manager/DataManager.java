@@ -20,7 +20,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
+/**
+ * Singleton, launching request and hosting data.
+ */
 public class DataManager {
 
 	public static final String NOTIF_REGION_OK = "notif-region-ok";

@@ -20,7 +20,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
+/**
+ * Display regions. Fragment for: {@link SelectUniversityActivity}
+ * @author Michel
+ *
+ */
 public class SelectRegionFragment extends Fragment{
 	
 	private RegionUnivAdapter adapter;

@@ -9,6 +9,7 @@ import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.dao.PoiGroup;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.utils.Utils;
+import org.unpidf.univmobile.view.GeocampusActivity;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
@@ -34,11 +35,13 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
+/**
+ * Locate all universities on map. Fragment for: {@link GeocampusActivity}
+ * @author Michel
+ *
+ */
 public class MapsPoiFragment extends BaseMapsFragment{
 
-	private LinearLayout linearVide;
-	private Poi itemCourant;
 	private List<Poi> listPois;
 	private ViewPager pager;
 	private List<MarkerOptions> listMarkers;
@@ -106,7 +109,7 @@ public class MapsPoiFragment extends BaseMapsFragment{
 		pager = (ViewPager) getView().findViewById(R.id.pagerUniversity);
 		List<Fragment> listFrag = new ArrayList<Fragment>();
 		for (int i = 0; i < listPois.size(); i++) {
-			listFrag.add(UniversityItemFragment.newInstance(listPois.get(i)));
+			listFrag.add(UniversityOverviewFragment.newInstance(listPois.get(i)));
 		}
 		PagerAdapter adapter = new PagerAdapter(getFragmentManager(), listFrag);
 		pager.setAdapter(adapter);
@@ -148,12 +151,13 @@ public class MapsPoiFragment extends BaseMapsFragment{
 				tv = new TextView(getActivity());
 				tv.setTextColor(Color.BLACK);
 			}
-
+			private LinearLayout linearVide;
+			{
+				linearVide = new LinearLayout(getActivity());
+			}
+			
 			@Override
 			public View getInfoWindow(Marker marker) {
-				if(linearVide == null){
-					linearVide = new LinearLayout(getActivity());
-				}
 				return linearVide;
 			}
 

@@ -18,6 +18,11 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * App Entry Point
+ * @author Michel
+ *
+ */
 public class AccueilActivity extends Activity {
 
 	@Override

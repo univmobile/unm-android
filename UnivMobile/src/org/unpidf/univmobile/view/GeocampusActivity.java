@@ -16,7 +16,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.MenuItem;
-
+/**
+ *  List and locate universities
+ * @author Michel
+ *
+ */
 public class GeocampusActivity extends Activity{
 
 	private ViewPager mViewPager;

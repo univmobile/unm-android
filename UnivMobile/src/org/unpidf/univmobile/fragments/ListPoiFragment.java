@@ -4,6 +4,7 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.adapter.ListPoiAdapter;
 import org.unpidf.univmobile.custom.AnimatedExpandableListView;
 import org.unpidf.univmobile.manager.DataManager;
+import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.UniversityActivity;
 
 import android.app.Fragment;
@@ -19,7 +20,11 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-
+/**
+ * List regions and universities. Fragment for: {@link GeocampusActivity}
+ * @author Michel
+ *
+ */
 public class ListPoiFragment extends Fragment{
 
 	private ListPoiAdapter adapter;

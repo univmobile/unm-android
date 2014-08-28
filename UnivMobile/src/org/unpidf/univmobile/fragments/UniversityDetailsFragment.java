@@ -2,6 +2,7 @@ package org.unpidf.univmobile.fragments;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.dao.Poi;
+import org.unpidf.univmobile.view.UniversityActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,18 +14,22 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-public class DetailsUniversityFragment extends BaseMapsFragment{
+/**
+ * See all details of a specific university. Fragment for: {@link UniversityActivity}
+ * @author Michel
+ *
+ */
+public class UniversityDetailsFragment extends BaseMapsFragment{
 
 	private static final int MAX_TRY = 5;
 	private Poi poi;
 	private int count;
 	
-	public static DetailsUniversityFragment newInstance(Poi poi, String title) {
+	public static UniversityDetailsFragment newInstance(Poi poi, String title) {
 		Bundle bundle = new Bundle();
 		bundle.putString("title", title);
 		bundle.putSerializable("poi", poi);
-		DetailsUniversityFragment frag = new DetailsUniversityFragment();
+		UniversityDetailsFragment frag = new UniversityDetailsFragment();
 		frag.setArguments(bundle);
 		return frag;
 	}

@@ -2,22 +2,27 @@ package org.unpidf.univmobile.fragments;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.dao.Poi;
+import org.unpidf.univmobile.view.UniversityActivity;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-public class CommentaireUniversityFragment extends Fragment{
+/**
+ * See all comments of a specific university. Fragment for: {@link UniversityActivity}
+ * @author Michel
+ *
+ */
+public class UniversityCommentFragment extends Fragment{
 
 	private Poi poi;
 	
-	public static CommentaireUniversityFragment newInstance(Poi poi, String title) {
+	public static UniversityCommentFragment newInstance(Poi poi, String title) {
 		Bundle bundle = new Bundle();
 		bundle.putString("title", title);
 		bundle.putSerializable("poi", poi);
-		CommentaireUniversityFragment frag = new CommentaireUniversityFragment();
+		UniversityCommentFragment frag = new UniversityCommentFragment();
 		frag.setArguments(bundle);
 		return frag;
 	}

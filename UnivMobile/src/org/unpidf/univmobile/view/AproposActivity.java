@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+/**
+ * About Activity containing useful information
+ * @author Michel
+ *
+ */
 public class AproposActivity extends Activity {
 
 	@Override
