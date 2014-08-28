@@ -10,6 +10,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.unpidf.univmobile.dao.Comment;
+import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.dao.PoiGroup;
 import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.dao.University;
@@ -31,6 +33,8 @@ public class DataManager {
 	public static final String NOTIF_REGION_UNIV_ERR = "notif-region-univ-err";
 	public static final String NOTIF_POIS_OK = "notif-pois-ok";
 	public static final String NOTIF_POIS_ERR = "notif-pois-err";
+	public static final String NOTIF_COMMENT_OK = "notif-comment-ok";
+	public static final String NOTIF_COMMENT_ERR = "notif-comment-err";
 
 	private static Context mContext;
 	private static DataManager mInstance;
@@ -38,6 +42,7 @@ public class DataManager {
 	private University currentUniversity;
 	private List<Region> listRegion;
 	private List<PoiGroup> listPois;
+	private List<Comment> listComments;
 
 	public static DataManager getInstance(Context context){
 		if(mInstance == null){
@@ -119,7 +124,7 @@ public class DataManager {
 			}
 		}
 	}
-	
+
 	private boolean parseRegions(JSONObject json) {
 		if(json == null){
 			return false;
@@ -178,7 +183,7 @@ public class DataManager {
 		}
 		Utils.execute(new GetListRegionUnivTask(), region);
 	}
-	
+
 	private static void closeStream(Closeable stream) { 
 		if (stream != null) { 
 			try { 
@@ -234,19 +239,19 @@ public class DataManager {
 	public void setCurrentUniversity(University university) {
 		currentUniversity = university;
 	}
-	
+
 	public void launchPoisGetting() {
 		JSONObject jsonCache = CacheManager.loadCache( MappingManager.DIR_DATA, "ListPois");
 		if( jsonCache != null ){
 			//From cache
 			boolean etat = parseListPois(jsonCache);
 			if(etat){
-				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_REGION_OK));
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_POIS_OK));
 			}
 		}
 		Utils.execute(new GetPoiTask());
 	}
-	
+
 	private class GetPoiTask extends AsyncTask<Object, Object, Boolean>{
 		@Override
 		protected Boolean doInBackground(Object... params) {
@@ -268,7 +273,7 @@ public class DataManager {
 			}
 		}
 	}
-	
+
 	private boolean parseListPois(JSONObject json) {
 		if(json == null){
 			return false;
@@ -286,11 +291,63 @@ public class DataManager {
 			return false;
 		}
 	}
-
+	
 	public List<PoiGroup> getListPois() {
 		if(listPois != null){
 			return listPois;
 		}
 		return new ArrayList<PoiGroup>();
+	}
+
+	public void launchPoisCommentGetting(Poi poi) {
+		Utils.execute(new GetCommentTask(), poi);
+	}
+
+	private class GetCommentTask extends AsyncTask<Poi, Object, Boolean>{
+		private Poi poi;
+		@Override
+		protected Boolean doInBackground(Poi... params) {
+			poi = params[0];
+			System.out.println("---URL = "+poi.getCommentUrl());
+			JSONObject jsonObject = ApiManager.callAPI(poi.getCommentUrl());
+			System.out.println("---JSON = "+jsonObject);
+			boolean etat = parseListComments(jsonObject);
+			return etat;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			super.onPostExecute(result);
+			if(result){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_COMMENT_OK + "-" + poi.getId()));
+			}else{
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTIF_COMMENT_ERR + "-" + poi.getId()));
+			}
+		}
+	}
+
+	private boolean parseListComments(JSONObject json) {
+		if(json == null){
+			return false;
+		}
+		try{
+			JSONArray array = json.getJSONArray("comments");
+			List<Comment> listCommentTemp = new ArrayList<Comment>();
+			for (int i = 0; i < array.length(); i++) {
+				listCommentTemp.add(new Comment(array.getJSONObject(i)));
+			}
+			listComments = listCommentTemp;
+			return true;
+		}catch(JSONException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<Comment> getListComments() {
+		if(listComments != null){
+			return listComments;
+		}
+		return new ArrayList<Comment>();
 	}
 }

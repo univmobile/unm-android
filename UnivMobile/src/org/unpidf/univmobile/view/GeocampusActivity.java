@@ -8,7 +8,6 @@ import org.unpidf.univmobile.adapter.HomePagerAdapter;
 import org.unpidf.univmobile.custom.PagerSlidingTabStrip;
 import org.unpidf.univmobile.fragments.ListPoiFragment;
 import org.unpidf.univmobile.fragments.MapsPoiFragment;
-import org.unpidf.univmobile.manager.DataManager;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -33,7 +32,6 @@ public class GeocampusActivity extends Activity{
 		setContentView(R.layout.activity_geocampus);
 		initActionBar();
 		initTabsPager();
-		DataManager.getInstance(this).launchPoisGetting();
 	}
 
 	/**

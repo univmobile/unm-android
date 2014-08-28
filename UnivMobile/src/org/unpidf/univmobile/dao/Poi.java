@@ -16,6 +16,7 @@ public class Poi implements Serializable{
 	private String phone;
 	private Double latitude;
 	private Double longitude;
+	private String commentUrl;
 	
 	public Poi(JSONObject json){
 		this.id = json.optString("id");
@@ -24,6 +25,7 @@ public class Poi implements Serializable{
 		this.phone = json.optString("phone");
 		this.latitude = json.optDouble("lat");
 		this.longitude = json.optDouble("lng");
+		this.commentUrl = json.optJSONObject("comments").optString("url");
 	}
 	
 	public String getId() {
@@ -48,6 +50,10 @@ public class Poi implements Serializable{
 
 	public Double getLongitude() {
 		return longitude;
+	}
+	
+	public String getCommentUrl() {
+		return commentUrl;
 	}
 
 }

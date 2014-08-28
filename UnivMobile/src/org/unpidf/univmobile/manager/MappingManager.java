@@ -33,4 +33,5 @@ public class MappingManager {
 	public static String getUrlPois(Context context){
 		return getUrlApi(context) + "pois";
 	}
+	
 }
