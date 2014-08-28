@@ -105,6 +105,9 @@ public class MapsPoiFragment extends BaseMapsFragment{
 		super.onViewCreated(view, savedInstanceState);
 	}
 
+	/**
+	 * Init ViewPager used to display UniversityOverview
+	 */
 	protected void initPager() {
 		pager = (ViewPager) getView().findViewById(R.id.pagerUniversity);
 		List<Fragment> listFrag = new ArrayList<Fragment>();
@@ -116,6 +119,10 @@ public class MapsPoiFragment extends BaseMapsFragment{
 		pager.setOnPageChangeListener(onPageChange);
 	}
 
+	/**
+	 * Show marker : go to right item in ViewPager
+	 * @param marker
+	 */
 	private void showInfo(Marker marker) {
 		getView().findViewById(R.id.pagerUniversity).setVisibility(View.VISIBLE);
 		int pos = findPosWithId(marker.getSnippet());
@@ -135,6 +142,9 @@ public class MapsPoiFragment extends BaseMapsFragment{
 		return -1;
 	}
 
+	/**
+	 * Hide ViewPager
+	 */
 	private void hideInfo() {
 		getView().findViewById(R.id.pagerUniversity).setVisibility(View.GONE);
 	}
@@ -189,6 +199,9 @@ public class MapsPoiFragment extends BaseMapsFragment{
 		map.setMyLocationEnabled(true);
 	}
 
+	/**
+	 * Add markers related to Pois on map
+	 */
 	private synchronized void addMarkers() {
 		if(map == null){
 			return;

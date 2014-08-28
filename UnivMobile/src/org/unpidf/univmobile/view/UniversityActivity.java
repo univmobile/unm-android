@@ -32,7 +32,7 @@ public class UniversityActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_university);
 		initActionBar();
-		init();
+		initTabsPager();
 	}
 
 	private void initActionBar() {
@@ -40,7 +40,10 @@ public class UniversityActivity extends Activity {
 		getActionBar().setTitle(((Poi) getIntent().getSerializableExtra("poi")).getTitle());
 	}
 	
-	private void init() {
+	/**
+	 * Init {@link PagerSlidingTabStrip} of this activity
+	 */
+	private void initTabsPager() {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		listFraments = new ArrayList<Fragment>();

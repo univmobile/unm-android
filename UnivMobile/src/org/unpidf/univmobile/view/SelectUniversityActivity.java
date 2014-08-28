@@ -51,6 +51,10 @@ public class SelectUniversityActivity extends Activity {
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
+	/**
+	 * Switch fragment to go to {@link SelectUniversityFragment}
+	 * @param region
+	 */
 	public void swichToUniversity(Region region) {
 		getFragmentManager().beginTransaction()
 		.setCustomAnimations(R.anim.slide_in_left, 0, 0, R.anim.slide_in_right) 

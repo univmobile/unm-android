@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 /**
  * App Entry Point
- * @author Michel
+ * This is the first activity launched from launcher
  *
  */
 public class AccueilActivity extends Activity {
