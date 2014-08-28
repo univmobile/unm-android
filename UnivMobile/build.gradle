@@ -81,7 +81,7 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.0.0'
+    compile 'com.android.support:support-v13:19.0.0'
     compile 'com.google.android.gms:play-services:+'
 }
 
