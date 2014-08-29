@@ -28,7 +28,7 @@
         
         <meta-data
             android:name="jsonURL"
-            android:value="http://192.168.0.40:8080/unm-backend/json/" />
+            android:value="http://localhost:8380/unm-backend/json/" />
         
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
