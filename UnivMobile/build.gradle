@@ -101,15 +101,11 @@ task unitTest(type: Test, dependsOn: assemble) {
 
 dependencies {
     compile 'com.android.support:support-v13:19.0.0'
-    compile 'com.google.android.gms:play-services:+'
+    // compile 'com.google.android.gms:play-services:+'
+    compile 'com.google.android.gms:play-services:5.0.89'
     unitTestCompile 'junit:junit:4.11'
     unitTestCompile 'org.json:json:20140107'
     unitTestCompile files("${project.buildDir}/intermediates/classes/debug")
-    unitTestCompile 'com.android.support:support-v13:19.0.0'
-    unitTestCompile 'com.google.android.gms:play-services:+'
-    // unitTestCompile 'com.android.support:support-v13:19.0.0'
-    // unitTestCompile 'com.google.android.gms:play-services:+'
-    // TODO Use configurations { testCompile.extendsFrom compile } 
 }
 
 // check.dependsOn test
