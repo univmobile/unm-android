@@ -308,9 +308,9 @@ public class DataManager {
 		@Override
 		protected Boolean doInBackground(Poi... params) {
 			poi = params[0];
-			System.out.println("---URL = "+poi.getCommentUrl());
-			JSONObject jsonObject = ApiManager.callAPI(poi.getCommentUrl());
-			System.out.println("---JSON = "+jsonObject);
+			// System.out.println("---URL = "+poi.getCommentsUrl());
+			JSONObject jsonObject = ApiManager.callAPI(poi.getCommentsUrl());
+			// System.out.println("---JSON = "+jsonObject);
 			boolean etat = parseListComments(jsonObject);
 			return etat;
 		}

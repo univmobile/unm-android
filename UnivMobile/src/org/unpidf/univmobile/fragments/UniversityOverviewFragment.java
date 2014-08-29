@@ -39,7 +39,7 @@ public class UniversityOverviewFragment extends Fragment{
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		((TextView)getView().findViewById(R.id.textId)).setText(poi.getTitle());
-		((TextView)getView().findViewById(R.id.adresseId)).setText(poi.getAdress() == null ? "" : poi.getAdress());
+		((TextView)getView().findViewById(R.id.addressId)).setText(poi.getAddress() == null ? "" : poi.getAddress());
 		getView().findViewById(R.id.rootUnivItem).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

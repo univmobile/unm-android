@@ -14,21 +14,21 @@ public class Poi implements Serializable{
 	
 	private final String id;
 	private final String title;
-	private final String adress;
+	private final String address;
 	private final String phone;
 	private final Double latitude;
 	private final Double longitude;
-	private final String commentUrl;
+	private final String commentsUrl;
 	private final String webUrl;
 	
 	public Poi(JSONObject json){
 		this.id = optString(json, "id");
 		this.title = optString(json, "name");
-		this.adress = optString(json, "address");
+		this.address = optString(json, "address");
 		this.phone = optString(json,"phone");
 		this.latitude = json.optDouble("lat");
 		this.longitude = json.optDouble("lng");
-		this.commentUrl = optString(json.optJSONObject("comments"), "url");
+		this.commentsUrl = optString(json.optJSONObject("comments"), "url");
 		this.webUrl = optString(json,"url");
 	}
 	
@@ -40,8 +40,8 @@ public class Poi implements Serializable{
 		return title;
 	}
 	
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 	
 	public String getPhone() {
@@ -56,8 +56,8 @@ public class Poi implements Serializable{
 		return longitude;
 	}
 	
-	public String getCommentUrl() {
-		return commentUrl;
+	public String getCommentsUrl() {
+		return commentsUrl;
 	}
 	
 	public String getWebUrl() {

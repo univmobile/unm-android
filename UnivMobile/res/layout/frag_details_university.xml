@@ -70,7 +70,7 @@
             android:background="@android:color/black" />
 
         <TextView
-            android:id="@+id/adressLabel"
+            android:id="@+id/addressLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -84,7 +84,7 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/adressId"
+            android:id="@+id/addressId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -98,7 +98,7 @@
             android:textSize="16sp" />
         
         <View
-            android:id="@+id/adressSep"
+            android:id="@+id/addressSep"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="2dp"

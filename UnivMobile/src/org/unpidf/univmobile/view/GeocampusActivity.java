@@ -47,6 +47,7 @@ public class GeocampusActivity extends Activity{
 		HomePagerAdapter adapter = new HomePagerAdapter(getFragmentManager(), listFraments);
 		mViewPager.setAdapter(adapter);
 		mTabs.setViewPager(mViewPager);
+        /*
 		mTabs.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int arg0) {
@@ -58,6 +59,7 @@ public class GeocampusActivity extends Activity{
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
+		*/
 	}
 	
 	private void initActionBar() {

@@ -51,12 +51,12 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		((TextView)getView().findViewById(R.id.titleId)).setText(poi.getTitle());
-		if(poi.getAdress() != null){
-			((TextView)getView().findViewById(R.id.adressId)).setText(poi.getAdress());
+		if(poi.getAddress() != null){
+			((TextView)getView().findViewById(R.id.addressId)).setText(poi.getAddress());
 		}else{
-			getView().findViewById(R.id.adressId).setVisibility(View.GONE);
-			getView().findViewById(R.id.adressLabel).setVisibility(View.GONE);
-			getView().findViewById(R.id.adressSep).setVisibility(View.GONE);
+			getView().findViewById(R.id.addressId).setVisibility(View.GONE);
+			getView().findViewById(R.id.addressLabel).setVisibility(View.GONE);
+			getView().findViewById(R.id.addressSep).setVisibility(View.GONE);
 		}
 		if(poi.getPhone() != null){
 			((TextView)getView().findViewById(R.id.phoneId)).setText(poi.getPhone());
