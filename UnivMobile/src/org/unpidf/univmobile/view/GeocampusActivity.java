@@ -42,7 +42,7 @@ public class GeocampusActivity extends Activity{
 		mTabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		listFraments = new ArrayList<Fragment>();
 		listFraments.add(ListPoiFragment.newInstance("Liste"));
-		listFraments.add(MapsPoiFragment.newInstance("Plans"));
+		listFraments.add(MapsPoiFragment.newInstance("Plan"));
 
 		HomePagerAdapter adapter = new HomePagerAdapter(getFragmentManager(), listFraments);
 		mViewPager.setAdapter(adapter);
@@ -62,7 +62,7 @@ public class GeocampusActivity extends Activity{
 	
 	private void initActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle("Geocampus");
+		getActionBar().setTitle("Géocampus");
 	}
 
 	@Override

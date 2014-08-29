@@ -96,6 +96,9 @@ public class ListPoiFragment extends Fragment{
 				}
 			});
 		}
+		for (int i = 0; i < DataManager.getInstance(getActivity()).getListPois().size(); i++) {
+			listView.expandGroup(i);
+		}
 	}
 
 	@Override
