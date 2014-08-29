@@ -35,202 +35,228 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 /**
  * Locate all universities on map. Fragment for: {@link GeocampusActivity}
- * @author Michel
  *
+ * @author Michel
  */
-public class MapsPoiFragment extends BaseMapsFragment{
+public class MapsPoiFragment extends BaseMapsFragment {
 
-	private List<Poi> listPois;
-	private ViewPager pager;
-	private List<MarkerOptions> listMarkers;
+    private List<Poi> listPois;
+    private ViewPager pager;
+    //private List<MarkerOptions> listMarkerOptions;
+    private List<Marker> listMarkers;
 
-	public static MapsPoiFragment newInstance(String title) {
-		Bundle bundle = new Bundle();
-		bundle.putString("title", title);
-		MapsPoiFragment frag = new MapsPoiFragment();
-		frag.setArguments(bundle);
-		return frag;
-	}
+    public static MapsPoiFragment newInstance(String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString("title", title);
+        MapsPoiFragment frag = new MapsPoiFragment();
+        frag.setArguments(bundle);
+        return frag;
+    }
 
-	private BroadcastReceiver receiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if(getView() == null || getActivity() == null || map == null){
-				return;
-			}
-			if(intent.getAction().equals(DataManager.NOTIF_POIS_OK)){
-				listPois = new ArrayList<Poi>();
-				List<PoiGroup> listGroupPois = DataManager.getInstance(getActivity()).getListPois();
-				for (int i = 0; i < listGroupPois.size(); i++) {
-					listPois.addAll(listGroupPois.get(i).getListPois());
-				}
-				addMarkers();
-				initPager();
-			}
-		}
-	};
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (getView() == null || getActivity() == null || map == null) {
+                return;
+            }
+            if (intent.getAction().equals(DataManager.NOTIF_POIS_OK)) {
+                listPois = new ArrayList<Poi>();
+                List<PoiGroup> listGroupPois = DataManager.getInstance(getActivity()).getListPois();
+                for (int i = 0; i < listGroupPois.size(); i++) {
+                    listPois.addAll(listGroupPois.get(i).getListPois());
+                }
+                addMarkers();
+                initPager();
+            }
+        }
+    };
 
-	private OnPageChangeListener onPageChange = new OnPageChangeListener() {
-		@Override
-		public void onPageSelected(int arg0) {
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listPois.get(arg0).getLatitude(), listPois.get(arg0).getLongitude()), MAP_ZOOM));
-		}
+    private OnPageChangeListener onPageChange = new OnPageChangeListener() {
+        @Override
+        public void onPageSelected(int arg0) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listPois.get(arg0).getLatitude(), listPois.get(arg0).getLongitude()), MAP_ZOOM));
+        }
 
-		@Override
-		public void onPageScrolled(int arg0, float arg1, int arg2) {
-		}
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
 
-		@Override
-		public void onPageScrollStateChanged(int arg0) {
-		}
-	};
-	
-	public void onCreate(Bundle savedInstanceState) {
-		idConteneur = R.id.map_container;
-		super.onCreate(savedInstanceState);
-	}
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+    };
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		IntentFilter filter = new IntentFilter(DataManager.NOTIF_POIS_OK);
-		filter.addAction(DataManager.NOTIF_POIS_ERR);
-		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
-		return inflater.inflate(R.layout.frag_maps, container, false);
-	}
+    public void onCreate(Bundle savedInstanceState) {
+        idConteneur = R.id.map_container;
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		DataManager.getInstance(getActivity()).launchPoisGetting();
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        IntentFilter filter = new IntentFilter(DataManager.NOTIF_POIS_OK);
+        filter.addAction(DataManager.NOTIF_POIS_ERR);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
+        return inflater.inflate(R.layout.frag_maps, container, false);
+    }
 
-	/**
-	 * Init ViewPager used to display UniversityOverview
-	 */
-	protected void initPager() {
-		pager = (ViewPager) getView().findViewById(R.id.pagerUniversity);
-		List<Fragment> listFrag = new ArrayList<Fragment>();
-		for (int i = 0; i < listPois.size(); i++) {
-			listFrag.add(UniversityOverviewFragment.newInstance(listPois.get(i)));
-		}
-		PagerAdapter adapter = new PagerAdapter(getFragmentManager(), listFrag);
-		pager.setAdapter(adapter);
-		pager.setOnPageChangeListener(onPageChange);
-	}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
-	/**
-	 * Show marker : go to right item in ViewPager
-	 * @param marker
-	 */
-	private void showInfo(Marker marker) {
-		getView().findViewById(R.id.pagerUniversity).setVisibility(View.VISIBLE);
-		int pos = findPosWithId(marker.getSnippet());
-		if(pos >= 0){
-			pager.setCurrentItem(pos, true);
-		}else{
-			hideInfo();
-		}
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        DataManager.getInstance(getActivity()).launchPoisGetting();
+    }
 
-	private int findPosWithId(String id) {
-		for (int i = 0; i < listPois.size(); i++) {
-			if(listPois.get(i).getId().equals(id)){
-				return i;
-			}
-		}
-		return -1;
-	}
+    /**
+     * Init ViewPager used to display UniversityOverview
+     */
+    protected void initPager() {
+        pager = (ViewPager) getView().findViewById(R.id.pagerUniversity);
+        List<Fragment> listFrag = new ArrayList<Fragment>();
+        for (int i = 0; i < listPois.size(); i++) {
+            listFrag.add(UniversityOverviewFragment.newInstance(listPois.get(i)));
+        }
+        PagerAdapter adapter = new PagerAdapter(getFragmentManager(), listFrag);
+        pager.setAdapter(adapter);
+        pager.setOnPageChangeListener(onPageChange);
+    }
 
-	/**
-	 * Hide ViewPager
-	 */
-	private void hideInfo() {
-		getView().findViewById(R.id.pagerUniversity).setVisibility(View.GONE);
-	}
+    /**
+     * Show marker: go to right item in ViewPager
+     *
+     * @param marker
+     */
+    private void showInfo(Marker marker) {
+        getView().findViewById(R.id.pagerUniversity).setVisibility(View.VISIBLE);
+        int pos = findPosWithId(marker.getSnippet());
+        if (pos >= 0) {
+            pager.setCurrentItem(pos, true);
+        } else {
+            hideInfo();
+        }
+    }
 
-	@Override
-	protected void setUpMap() {
-		int fiveDIp = Utils.convertDpToPixel(5, getResources());
-		int paddingBottom = Utils.convertDpToPixel(105, getResources());
-		
-		map.setPadding(fiveDIp, fiveDIp, fiveDIp, paddingBottom);
-		map.setInfoWindowAdapter(new InfoWindowAdapter() {
-			private TextView tv;
-			{
-				tv = new TextView(getActivity());
-				tv.setTextColor(Color.BLACK);
-			}
-			private LinearLayout linearVide;
-			{
-				linearVide = new LinearLayout(getActivity());
-			}
-			
-			@Override
-			public View getInfoWindow(Marker marker) {
-				return linearVide;
-			}
+    private int findPosWithId(String id) {
+        for (int i = 0; i < listPois.size(); i++) {
+            if (listPois.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
-			@Override
-			public View getInfoContents(Marker marker) {
-				return null;
-			}
-		});
-		map.setOnMapClickListener(new OnMapClickListener() {
-			@Override
-			public void onMapClick(LatLng arg0) {
-				hideInfo();
-			}
-		});
+    /**
+     * Hide ViewPager
+     */
+    private void hideInfo() {
+        getView().findViewById(R.id.pagerUniversity).setVisibility(View.GONE);
+    }
 
-		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-			@Override
-			public void onInfoWindowClick(Marker marker) {
-			}
-		});
-		map.setOnMarkerClickListener(new OnMarkerClickListener() {
-			@Override
-			public boolean onMarkerClick(final Marker marker) {
-				showInfo(marker);
-				map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude), MAP_ZOOM));
-				return true;
-			}
-		});
-		map.setMyLocationEnabled(true);
-	}
+    @Override
+    protected void setUpMap() {
+        int fiveDIp = Utils.convertDpToPixel(5, getResources());
+        int paddingBottom = Utils.convertDpToPixel(105, getResources());
 
-	/**
-	 * Add markers related to Pois on map
-	 */
-	private synchronized void addMarkers() {
-		if(map == null){
-			return;
-		}
-		map.clear();
-		listMarkers = new ArrayList<MarkerOptions>();
-		for (int i = 0; i < listPois.size() ; i++) {
-			Poi poi = listPois.get(i);
-			listMarkers.add(new MarkerOptions().position(new LatLng(poi.getLatitude(), poi.getLongitude())).title(poi.getTitle()).snippet(poi.getId()));
-			map.addMarker(listMarkers.get(i));
-		}
-	}
+        map.setPadding(fiveDIp, fiveDIp, fiveDIp, paddingBottom);
+        map.setInfoWindowAdapter(new InfoWindowAdapter() {
+            private TextView tv;
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		if(getActivity() != null){
-			try{
-				LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-			}catch(IllegalArgumentException e){
-				e.printStackTrace();
-			}
-		}
-	}
+            {
+                tv = new TextView(getActivity());
+                tv.setTextColor(Color.BLACK);
+            }
 
+            private LinearLayout linearVide;
+
+            {
+                linearVide = new LinearLayout(getActivity());
+            }
+
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return linearVide;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        });
+        map.setOnMapClickListener(new OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng arg0) {
+                hideInfo();
+            }
+        });
+
+        map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+            }
+        });
+        map.setOnMarkerClickListener(new OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final Marker marker) {
+                return true;
+            }
+        });
+        map.setMyLocationEnabled(true);
+    }
+
+    /**
+     * Add markers related to Pois on map
+     */
+    private synchronized void addMarkers() {
+        if (map == null) {
+            return;
+        }
+        map.clear();
+        //listMarkerOptions = new ArrayList<MarkerOptions>();
+        listMarkers = new ArrayList<Marker>();
+        for (final Poi poi : listPois) {
+            final MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(poi.getLatitude(), poi.getLongitude())).title(poi.getTitle()).snippet(poi.getId());
+            //listMarkerOptions.add(markerOptions);
+            final Marker marker = map.addMarker(markerOptions);
+            listMarkers.add(marker);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (getActivity() != null) {
+            try {
+                LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * move a map to a given marker.
+     */
+    private void selectMarker(final Marker marker) {
+
+        showInfo(marker);
+
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(new
+                LatLng(marker.getPosition()
+                .latitude, marker.getPosition().longitude), MAP_ZOOM));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (listMarkers != null && !listMarkers.isEmpty()) {
+            selectMarker(listMarkers.iterator().next()); // Select the first element
+        }
+    }
 }
