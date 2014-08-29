@@ -29,8 +29,8 @@ public class Poi implements Serializable{
 		this.latitude = json.optDouble("lat");
 		this.longitude = json.optDouble("lng");
 		this.commentUrl = json.optJSONObject("comments").optString("url");
-		String welUrl = json.optString("url");
-		this.webUrl = ((webUrl == null || webUrl.equals("null")) ? null : welUrl);
+		String webUrl = json.optString("url");
+		this.webUrl = ((webUrl == null || webUrl.equals("null")) ? null : webUrl);
 	}
 	
 	public String getId() {
