@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
-public class Comment implements Serializable{
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
+public class Comment implements Serializable {
 	/**
 	 * 
 	 */
@@ -12,21 +14,23 @@ public class Comment implements Serializable{
 	private String userName;
 	private String displayName;
 	private String text;
-	
-	public Comment(JSONObject jsonOnject){
-		this.userName = jsonOnject.optJSONObject("author").optString("username");
-		this.displayName = jsonOnject.optJSONObject("author").optString("displayName");
-		this.text = jsonOnject.optString("text");
+
+	public Comment(JSONObject jsonOnject) {
+		this.userName = optString(jsonOnject.optJSONObject("author"),
+				"username");
+		this.displayName = optString(jsonOnject.optJSONObject("author"),
+				"displayName");
+		this.text = optString(jsonOnject, "text");
 	}
-	
+
 	public String getDisplayName() {
 		return displayName;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
-	
+
 	public String getUserName() {
 		return userName;
 	}

@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 public class PoiGroup implements Serializable{
 	/**
 	 * 
@@ -18,7 +20,7 @@ public class PoiGroup implements Serializable{
 	private List<Poi> listPois;
 
 	public PoiGroup(JSONObject json) throws JSONException{
-		this.groupLabel = json.optString("groupLabel");
+		this.groupLabel = optString(json,"groupLabel");
 		JSONArray array = json.optJSONArray("pois");
 		List<Poi> listTemp = new ArrayList<Poi>();
 		if(array != null){

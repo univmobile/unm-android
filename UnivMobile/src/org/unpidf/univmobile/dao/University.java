@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 public class University implements Serializable{
 	/**
 	 * 
@@ -16,8 +18,8 @@ public class University implements Serializable{
 	}
 	
 	public University(JSONObject jsonObject){
-		this.id = jsonObject.optString("id");
-		this.title = jsonObject.optString("title");
+		this.id = optString(jsonObject, "id");
+		this.title = optString(jsonObject, "title");
 	}
 	
 	public String getTitle() {
