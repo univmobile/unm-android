@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 /**
@@ -21,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class UniversityDetailsFragment extends BaseMapsFragment{
 
-	private static final int MAX_TRY = 5;
+	private static final int MAX_TRY = 10;
 	private Poi poi;
 	private int count;
 	
@@ -42,16 +43,34 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		poi = (Poi) getArguments().getSerializable("poi");
-		int count = 0;
 		return inflater.inflate(R.layout.frag_details_university, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		((TextView)getView().findViewById(R.id.textId)).setText(poi.getTitle());
-		((TextView)getView().findViewById(R.id.adresseId)).setText(poi.getAdress());
-		((TextView)getView().findViewById(R.id.phoneId)).setText(poi.getPhone());
+		((TextView)getView().findViewById(R.id.titleId)).setText(poi.getTitle());
+		if(poi.getAdress() != null){
+			((TextView)getView().findViewById(R.id.adressId)).setText(poi.getAdress());
+		}else{
+			getView().findViewById(R.id.adressId).setVisibility(View.GONE);
+			getView().findViewById(R.id.adressLabel).setVisibility(View.GONE);
+			getView().findViewById(R.id.adressSep).setVisibility(View.GONE);
+		}
+		if(poi.getPhone() != null){
+			((TextView)getView().findViewById(R.id.phoneId)).setText(poi.getPhone());
+		}else{
+			getView().findViewById(R.id.phoneId).setVisibility(View.GONE);
+			getView().findViewById(R.id.phoneLabel).setVisibility(View.GONE);
+			getView().findViewById(R.id.phoneSep).setVisibility(View.GONE);
+		}
+		if(poi.getWebUrl() != null){
+			((TextView)getView().findViewById(R.id.webUrlId)).setText(poi.getWebUrl());
+		}else{
+			getView().findViewById(R.id.webUrlId).setVisibility(View.GONE);
+			getView().findViewById(R.id.webUrlLabel).setVisibility(View.GONE);
+			getView().findViewById(R.id.webUrlSep).setVisibility(View.GONE);
+		}
 		waitForMap();
 	}
 
@@ -65,7 +84,7 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 						waitForMap();
 						count++;
 					}
-				}, 500);
+				}, 200);
 			}
 		}
 	}
@@ -74,7 +93,7 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 	protected void setUpMap() {
 		map.getUiSettings().setZoomControlsEnabled(false);
 		map.addMarker(new MarkerOptions().position(new LatLng(poi.getLatitude(), poi.getLongitude())).title(poi.getTitle()).snippet(poi.getId()));
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(poi.getLatitude(), poi.getLongitude()), MAP_ZOOM));
+		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(new LatLng(poi.getLatitude(), poi.getLongitude())).zoom(MAP_ZOOM).build()));
 	}
 
 }

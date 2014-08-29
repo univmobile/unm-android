@@ -20,7 +20,7 @@ import android.widget.TextView;
 public class UniversityOverviewFragment extends Fragment{
 
 	private Poi poi;
-	
+
 	public static UniversityOverviewFragment newInstance(Poi poi) {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("poi", poi);
@@ -39,7 +39,9 @@ public class UniversityOverviewFragment extends Fragment{
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		((TextView)getView().findViewById(R.id.textId)).setText(poi.getTitle());
-		((TextView)getView().findViewById(R.id.adresseId)).setText(poi.getAdress());
+		if(poi.getAdress() != null){
+			((TextView)getView().findViewById(R.id.adresseId)).setText(poi.getAdress());
+		}
 		getView().findViewById(R.id.rootUnivItem).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
