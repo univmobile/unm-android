@@ -14,7 +14,7 @@ import fr.univmobile.it.commons.Scenarios;
 @Scenarios("Scénarios simples")
 @DeviceNames({ "Android Emulator" })
 public class Scenarios001 extends AppiumAndroidEnabledTest {
-	
+
 	@Before
 	public void setUpData() throws Exception {
 
@@ -47,11 +47,48 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 		takeScreenshot("about.png");
 
 		savePageSource("pageAbout.xml");
-		
+
 		elementByName("A propos, Navigate up").click();
 
 		pause(PAUSE);
 
-		takeScreenshot("home2.png");		
+		takeScreenshot("home2.png");
+	}
+
+	@Scenario("Géocampus")
+	@Test
+	public void Geocampus_000() throws Exception {
+
+		takeScreenshot("home.png");
+
+		elementById("org.unpidf.univmobile:id/selectGeocampus").click();
+
+		pause(PAUSE);
+
+		takeScreenshot("geocampus_list.png");
+
+		elementByName("Plan").click();
+
+		pause(10000);
+
+		takeScreenshot("geocampus_map.png");
+
+		// elementById("link-poiNav-3792").click(); // Cergy Pointoise
+
+		// pause(2000);
+
+		// takeScreenshot("geocampus_map_infoWindow.png");
+
+		elementById("org.unpidf.univmobile:id/pagerUniversity").click();
+
+		pause(2000);
+
+		takeScreenshot("geocampus_details.png");
+
+		elementById("android:id/up").click();
+
+		pause(10000);
+
+		takeScreenshot("geocampus_back_to_map.png");
 	}
 }
