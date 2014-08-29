@@ -33,47 +33,52 @@ import com.google.android.gms.maps.model.LatLng;
 public abstract class BaseMapsFragment extends Fragment {
 
 	protected int idConteneur;
+	protected LatLng pos;
 	public static final int MAP_ZOOM = 16;
-    protected MapFragment mapFragment;
-    protected GoogleMap map;
+	protected MapFragment mapFragment;
+	protected GoogleMap map;
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        createMapFragmentIfNeeded();
-    }
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		createMapFragmentIfNeeded();
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		setUpMapIfNeeded();
+	}
 
-    private void createMapFragmentIfNeeded() {
-        FragmentManager fm = getFragmentManager();
-        mapFragment = (MapFragment) fm.findFragmentById(idConteneur);
-        if (mapFragment == null) {
-            mapFragment = createMapFragment();
-            FragmentTransaction tx = fm.beginTransaction();
-            tx.add(idConteneur, mapFragment);
-            tx.commit();
-        }
-    }
+	private void createMapFragmentIfNeeded() {
+		FragmentManager fm = getFragmentManager();
+		mapFragment = (MapFragment) fm.findFragmentById(idConteneur);
+		if (mapFragment == null) {
+			mapFragment = createMapFragment();
+			FragmentTransaction tx = fm.beginTransaction();
+			tx.add(idConteneur, mapFragment);
+			tx.commit();
+		}
+	}
 
-    protected MapFragment createMapFragment() {
-    	GoogleMapOptions options = new GoogleMapOptions();
-    	options.camera(CameraPosition.fromLatLngZoom(new LatLng(48.84650925911,2.3459243774), MAP_ZOOM - 7));
-        return MapFragment.newInstance(options);
-    }
+	protected MapFragment createMapFragment() {
+		GoogleMapOptions options = new GoogleMapOptions();
+		if(pos != null){
+			options.camera(CameraPosition.fromLatLngZoom(pos, MAP_ZOOM));
+		}else{
+			options.camera(CameraPosition.fromLatLngZoom(new LatLng(48.84650925911,2.3459243774), MAP_ZOOM - 7));
+		}
+		return MapFragment.newInstance(options);
+	}
 
-    protected void setUpMapIfNeeded() {
-        if (map == null) {
-            map = mapFragment.getMap();
-            if (map != null) {
-                setUpMap();
-            }
-        }
-    }
+	protected void setUpMapIfNeeded() {
+		if (map == null) {
+			map = mapFragment.getMap();
+			if (map != null) {
+				setUpMap();
+			}
+		}
+	}
 
-    protected abstract void setUpMap();
+	protected abstract void setUpMap();
 }

@@ -25,7 +25,7 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 	private static final int MAX_TRY = 10;
 	private Poi poi;
 	private int count;
-	
+
 	public static UniversityDetailsFragment newInstance(Poi poi, String title) {
 		Bundle bundle = new Bundle();
 		bundle.putString("title", title);
@@ -37,12 +37,13 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 
 	public void onCreate(Bundle savedInstanceState) {
 		idConteneur = R.id.map_container_bis;
+		poi = (Poi) getArguments().getSerializable("poi");
+		super.pos = new LatLng(poi.getLatitude(), poi.getLongitude());
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		poi = (Poi) getArguments().getSerializable("poi");
 		return inflater.inflate(R.layout.frag_details_university, container, false);
 	}
 
@@ -93,7 +94,6 @@ public class UniversityDetailsFragment extends BaseMapsFragment{
 	protected void setUpMap() {
 		map.getUiSettings().setZoomControlsEnabled(false);
 		map.addMarker(new MarkerOptions().position(new LatLng(poi.getLatitude(), poi.getLongitude())).title(poi.getTitle()).snippet(poi.getId()));
-		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(new LatLng(poi.getLatitude(), poi.getLongitude())).zoom(MAP_ZOOM).build()));
 	}
 
 }
