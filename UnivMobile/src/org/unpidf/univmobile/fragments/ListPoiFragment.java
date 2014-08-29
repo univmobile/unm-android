@@ -69,7 +69,7 @@ public class ListPoiFragment extends Fragment{
 	protected void refreshData() {
 		final AnimatedExpandableListView listView = (AnimatedExpandableListView) getView().findViewById(R.id.listView);
 		if(adapter != null){
-			((ListPoiAdapter)listView.getAdapter()).setList(DataManager.getInstance(getActivity()).getListPois());
+			adapter.setList(DataManager.getInstance(getActivity()).getListPois());
 		}else{
 			listView.setChildIndicator(null);
 			listView.setGroupIndicator(null);
