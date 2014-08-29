@@ -59,7 +59,7 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-    }
+	}
 }
 
 android.applicationVariants.all { variant ->
@@ -80,10 +80,40 @@ android.applicationVariants.all { variant ->
     }
 }
 
+sourceSets {
+    unitTest {
+        java.srcDir file('tests/src')
+        // resources.srcDir file('tests/resources')
+        resources.srcDir file('tests/res')
+    }
+}
+
+configurations {
+    unitTestCompile.extendsFrom compile 
+    unitTestRuntime.extendsFrom unitTestCompile
+}
+
+task unitTest(type: Test, dependsOn: assemble) {
+	description = 'Run Unit Tests'
+	testClassesDir = project.sourceSets.unitTest.output.classesDir
+	classpath = project.sourceSets.unitTest.runtimeClasspath
+}
+
 dependencies {
     compile 'com.android.support:support-v13:19.0.0'
     compile 'com.google.android.gms:play-services:+'
+    unitTestCompile 'junit:junit:4.11'
+    unitTestCompile 'org.json:json:20140107'
+    unitTestCompile files("${project.buildDir}/intermediates/classes/debug")
+    unitTestCompile 'com.android.support:support-v13:19.0.0'
+    unitTestCompile 'com.google.android.gms:play-services:+'
+    // unitTestCompile 'com.android.support:support-v13:19.0.0'
+    // unitTestCompile 'com.google.android.gms:play-services:+'
+    // TODO Use configurations { testCompile.extendsFrom compile } 
 }
+
+// check.dependsOn test
+build.dependsOn unitTest
 
 def loadNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
 	return hasProperty('nexusUsername') ? nexusUsername : 'xxx'
