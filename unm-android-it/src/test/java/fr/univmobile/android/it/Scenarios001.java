@@ -63,7 +63,7 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		elementById("org.unpidf.univmobile:id/selectGeocampus").click();
 
-		pause(PAUSE);
+		pause(20000);
 
 		takeScreenshot("geocampus_list.png");
 
