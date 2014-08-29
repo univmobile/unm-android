@@ -68,8 +68,8 @@ public class MapsPoiFragment extends BaseMapsFragment {
                 for (int i = 0; i < listGroupPois.size(); i++) {
                     listPois.addAll(listGroupPois.get(i).getListPois());
                 }
-                addMarkers();
                 initPager();
+                addMarkers();
             }
         }
     };
@@ -119,8 +119,8 @@ public class MapsPoiFragment extends BaseMapsFragment {
     protected void initPager() {
         pager = (ViewPager) getView().findViewById(R.id.pagerUniversity);
         List<Fragment> listFrag = new ArrayList<Fragment>();
-        for (int i = 0; i < listPois.size(); i++) {
-            listFrag.add(UniversityOverviewFragment.newInstance(listPois.get(i)));
+        for (final Poi poi : listPois) {
+            listFrag.add(UniversityOverviewFragment.newInstance(poi));
         }
         PagerAdapter adapter = new PagerAdapter(getFragmentManager(), listFrag);
         pager.setAdapter(adapter);
@@ -165,18 +165,13 @@ public class MapsPoiFragment extends BaseMapsFragment {
 
         map.setPadding(fiveDIp, fiveDIp, fiveDIp, paddingBottom);
         map.setInfoWindowAdapter(new InfoWindowAdapter() {
-            private TextView tv;
+            private final TextView tv = new TextView(getActivity());
 
             {
-                tv = new TextView(getActivity());
                 tv.setTextColor(Color.BLACK);
             }
 
-            private LinearLayout linearVide;
-
-            {
-                linearVide = new LinearLayout(getActivity());
-            }
+            private final LinearLayout linearVide =  new LinearLayout(getActivity());
 
             @Override
             public View getInfoWindow(Marker marker) {
@@ -225,6 +220,8 @@ public class MapsPoiFragment extends BaseMapsFragment {
             final Marker marker = map.addMarker(markerOptions);
             listMarkers.add(marker);
         }
+
+        selectFirstMarker();
     }
 
     @Override
@@ -240,7 +237,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
     }
 
     /**
-     * move a map to a given marker.
+     * move the map to a given marker.
      */
     private void selectMarker(final Marker marker) {
 
@@ -251,12 +248,20 @@ public class MapsPoiFragment extends BaseMapsFragment {
                 .latitude, marker.getPosition().longitude), MAP_ZOOM));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    /**
+     * move the map to the first marker, if any.
+     */
+    private void selectFirstMarker() {
 
         if (listMarkers != null && !listMarkers.isEmpty()) {
             selectMarker(listMarkers.iterator().next()); // Select the first element
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        selectFirstMarker();
     }
 }
