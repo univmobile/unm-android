@@ -33,9 +33,9 @@ public class ListPoiFragment extends Fragment {
     public static ListPoiFragment newInstance(String title) {
         final Bundle bundle = new Bundle();
         bundle.putString("title", title);
-        ListPoiFragment frag = new ListPoiFragment();
-        frag.setArguments(bundle);
-        return frag;
+        final ListPoiFragment fragment = new ListPoiFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -55,7 +55,7 @@ public class ListPoiFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         adapter = null;
-        IntentFilter filter = new IntentFilter();
+        final IntentFilter filter = new IntentFilter();
         filter.addAction(DataManager.NOTIF_POIS_OK);
         filter.addAction(DataManager.NOTIF_POIS_ERR);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
@@ -116,5 +116,4 @@ public class ListPoiFragment extends Fragment {
             }
         }
     }
-
 }
