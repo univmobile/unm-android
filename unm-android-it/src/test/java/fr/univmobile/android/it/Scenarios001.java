@@ -63,13 +63,13 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		elementById("org.unpidf.univmobile:id/selectGeocampus").click();
 
-		pause(20000);
+		pause(8000);
 
 		takeScreenshot("geocampus_list.png");
 
 		elementByName("Plan").click();
 
-		pause(10000);
+		pause(8000);
 
 		takeScreenshot("geocampus_map.png");
 
@@ -81,13 +81,13 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		elementById("org.unpidf.univmobile:id/pagerUniversity").click();
 
-		pause(10000);
+		pause(8000);
 
 		takeScreenshot("geocampus_details.png");
 
 		elementById("android:id/up").click();
 
-		pause(10000);
+		pause(8000);
 
 		takeScreenshot("geocampus_back_to_map.png");
 	}
