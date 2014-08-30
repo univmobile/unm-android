@@ -13,7 +13,8 @@ public class ApkTest {
 
 		// mvn dependency:copy, see POM File: pom.xml
 
-		final File apkFile = new File("target", "UnivMobile_localhost.apk");
+		final File apkFile = // new File("target", "UnivMobile_localhost.apk");
+				new File("apk", "UnivMobile-release.apk");
 
 		final AndroidManifest androidManifest = ApkUtils
 				.loadAndroidManifest(apkFile);

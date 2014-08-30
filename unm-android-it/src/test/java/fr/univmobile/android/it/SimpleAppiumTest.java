@@ -28,7 +28,8 @@ public class SimpleAppiumTest {
 		// Get this .apk file from: Maven repository 
 		// -- fr.univmobile.localhost:UnivMobile:${version}:apk
 
-		final File app = new File("target", "UnivMobile_localhost.apk");
+		final File app = // new File("target", "UnivMobile_localhost.apk");
+				new File("apk", "UnivMobile-release.apk");
 
 		capabilities.setCapability(APP, app.getAbsolutePath());
 
