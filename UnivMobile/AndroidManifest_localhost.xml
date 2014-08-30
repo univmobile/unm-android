@@ -27,12 +27,22 @@
             android:value="@integer/google_play_services_version" />
         
         <meta-data
+            android:name="appVersion"
+            android:value="0.0.4-SNAPSHOT" />
+            
+        <meta-data
             android:name="jsonURL"
             android:value="http://10.0.2.2:8380/unm-backend/json/" />
         <!--
         <meta-data
             android:name="jsonURL"
+            android:value="http://10.0.2.2:8380/unm-backend/json/" />
+        <meta-data
+            android:name="jsonURL"
             android:value="http://192.168.0.40:8080/unm-backend/json/" />
+        <meta-data
+            android:name="jsonURL"
+            android:value="http://univmobile.vswip.com/unm-backend/json/" />
         -->
         
         <meta-data
