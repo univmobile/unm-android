@@ -171,7 +171,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
                 tv.setTextColor(Color.BLACK);
             }
 
-            private final LinearLayout linearVide =  new LinearLayout(getActivity());
+            private final LinearLayout linearVide = new LinearLayout(getActivity());
 
             @Override
             public View getInfoWindow(Marker marker) {
@@ -198,6 +198,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
         map.setOnMarkerClickListener(new OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(final Marker marker) {
+                selectMarker(marker);
                 return true;
             }
         });
