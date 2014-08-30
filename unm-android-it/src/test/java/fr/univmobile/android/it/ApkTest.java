@@ -18,7 +18,10 @@ public class ApkTest {
 		final AndroidManifest androidManifest = ApkUtils
 				.loadAndroidManifest(apkFile);
 
-		assertEquals("http://localhost:8380/unm-backend/json/",
+		assertEquals(
+				// "10.0.2.2" is the host loopback interface, as seen from
+				// within the Android emulator (itself 10.0.2.15).
+				"http://10.0.2.2:8380/unm-backend/json/",
 				androidManifest.getJsonURL());
 	}
 }
