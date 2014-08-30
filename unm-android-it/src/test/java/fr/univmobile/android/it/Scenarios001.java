@@ -48,7 +48,7 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		savePageSource("pageAbout.xml");
 
-		elementByName("A propos, Navigate up").click();
+		elementByName("À propos, Navigate up").click();
 
 		pause(PAUSE);
 
