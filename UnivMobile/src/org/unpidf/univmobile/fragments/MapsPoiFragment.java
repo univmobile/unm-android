@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Locate all universities on map. Fragment for: {@link GeocampusActivity}
- * 
+ *
  * @author Michel
  */
 public class MapsPoiFragment extends BaseMapsFragment {
@@ -49,11 +49,11 @@ public class MapsPoiFragment extends BaseMapsFragment {
     private List<Marker> listMarkers;
 
     public static MapsPoiFragment newInstance(String title) {
-        Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
         bundle.putString("title", title);
-        MapsPoiFragment frag = new MapsPoiFragment();
-        frag.setArguments(bundle);
-        return frag;
+        final MapsPoiFragment fragment = new MapsPoiFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -65,7 +65,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
             if (intent.getAction().equals(DataManager.NOTIF_POIS_OK)) {
                 listPois = new ArrayList<Poi>();
                 final Iterable<PoiGroup> listGroupPois = //
-                DataManager.getInstance(getActivity()).getListPois();
+                        DataManager.getInstance(getActivity()).getListPois();
                 for (final PoiGroup poiGroup : listGroupPois) {
                     listPois.addAll(poiGroup.getListPois());
                 }
@@ -77,9 +77,10 @@ public class MapsPoiFragment extends BaseMapsFragment {
 
     private OnPageChangeListener onPageChange = new OnPageChangeListener() {
         @Override
-        public void onPageSelected(int arg0) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listPois.get(arg0)
-                    .getLatitude(), listPois.get(arg0).getLongitude()), MAP_ZOOM));
+        public void onPageSelected(int index) {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(listPois.get(index)
+                    .getLatitude(), listPois.get(index).getLongitude()
+            ), MAP_ZOOM));
         }
 
         @Override
@@ -97,7 +98,8 @@ public class MapsPoiFragment extends BaseMapsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         IntentFilter filter = new IntentFilter(DataManager.NOTIF_POIS_OK);
         filter.addAction(DataManager.NOTIF_POIS_ERR);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
@@ -131,7 +133,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
 
     /**
      * Show marker: go to right item in ViewPager
-     * 
+     *
      * @param marker
      */
     private void showInfo(Marker marker) {
@@ -218,8 +220,8 @@ public class MapsPoiFragment extends BaseMapsFragment {
         // listMarkerOptions = new ArrayList<MarkerOptions>();
         listMarkers = new ArrayList<Marker>();
         for (final Poi poi : listPois) {
-            final MarkerOptions markerOptions = new MarkerOptions()
-                    .position(new LatLng(poi.getLatitude(), poi.getLongitude()))
+            final MarkerOptions markerOptions = new MarkerOptions() //
+                    .position(new LatLng(poi.getLatitude(), poi.getLongitude())) //
                     .title(poi.getTitle()).snippet(poi.getId());
             // listMarkerOptions.add(markerOptions);
             final Marker marker = map.addMarker(markerOptions);
