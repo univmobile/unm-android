@@ -8,16 +8,16 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 public class HomePagerAdapter extends FragmentPagerAdapter {
 
-	private List<Fragment> list;
+	private final List<Fragment> list;
 	
 	public HomePagerAdapter(FragmentManager fm, List<Fragment> listFrag) {
 		super(fm);
-		list = listFrag;
+		this.list = listFrag;
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		String title = list.get(position).getArguments().getString("title");
+		final String title = list.get(position).getArguments().getString("title");
 		return title;
 	}
 
@@ -30,5 +30,4 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int position) {
 		return list.get(position);
 	}
-
 }

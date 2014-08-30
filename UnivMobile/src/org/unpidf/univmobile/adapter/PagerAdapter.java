@@ -8,11 +8,11 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
 
-	private List<Fragment> list;
+	private final List<Fragment> list;
 	
 	public PagerAdapter(FragmentManager fm, List<Fragment> listFrag) {
 		super(fm);
-		list = listFrag;
+		this.list = listFrag;
 	}
 
 	@Override

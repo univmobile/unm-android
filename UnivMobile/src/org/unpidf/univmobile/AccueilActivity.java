@@ -97,5 +97,4 @@ public class AccueilActivity extends Activity {
 		super.onResume();
 		initData();
 	}
-
 }

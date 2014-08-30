@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="buildDisplayName"></string>
-	<string name="gitCommit"></string>
-	<string name="buildId"></string>
-	<string name="mapsApiKey">AIzaSyD61Afm00SQHMKpkd81Rn50nPJCAaIRxGg</string>
-    
+
+    <!-- appVersion: The app version, mapped to a Maven project version, e.g. "0.0.4-SNAPSHOT" -->
+    <string name="appVersion"></string>
+
+    <!-- buildDisplayName: The date of the build, set by Jenkins, e.g. "2014-08-30_05-33-10" -->
+    <string name="buildDisplayName"></string>
+
+    <!-- gitCommit: The git commit ID for this build, e.g. "2d7033dd46057983fc74ae2165448477f8c4f509" -->
+    <string name="gitCommit"></string>
+
+    <!-- buildId: The number of the build, set by Jenkins, e.g. "#4" -->
+    <string name="buildId"></string>
+
+    <!-- urlApiID: The base URL used to connect to the backend endpoints -->
+    <string name="urlApiId"></string>
+
+    <!-- jsonBaseURL: The real backend base URL, returned at runtime by a HTTP call to xxx/json -->
+    <string name="jsonBaseURL"></string>
+
+    <string name="mapsApiKey">AIzaSyD61Afm00SQHMKpkd81Rn50nPJCAaIRxGg</string>
+
     <string name="app_name">UnivMobile</string>
     <string name="textAlertDialogJamais">Jamais</string>
     <string name="textAlertDialogOui">Oui</string>
