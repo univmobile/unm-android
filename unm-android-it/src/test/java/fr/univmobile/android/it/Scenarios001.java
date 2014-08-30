@@ -71,7 +71,7 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		elementByName("Plan").click();
 
-		pause(8000);
+		pause(10000);
 
 		takeScreenshot("geocampus_map.png");
 
