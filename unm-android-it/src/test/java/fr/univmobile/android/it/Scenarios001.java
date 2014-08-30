@@ -93,4 +93,37 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 
 		takeScreenshot("geocampus_back_to_map.png");
 	}
+
+	@Scenario("Géocampus, commentaires")
+	@Test
+	public void Geocampus_001() throws Exception {
+
+		pause(PAUSE);
+		
+		takeScreenshot("home.png");
+
+		elementById("org.unpidf.univmobile:id/selectGeocampus").click();
+
+		pause(8000);
+
+		takeScreenshot("geocampus_list.png");
+
+		elementByName("Plan").click();
+
+		pause(10000);
+
+		takeScreenshot("geocampus_map.png");
+
+		elementById("org.unpidf.univmobile:id/pagerUniversity").click();
+
+		pause(8000);
+
+		takeScreenshot("geocampus_details.png");
+
+		elementByName("Commentaires").click();
+
+		pause(8000);
+
+		takeScreenshot("comments.png");
+	}
 }
