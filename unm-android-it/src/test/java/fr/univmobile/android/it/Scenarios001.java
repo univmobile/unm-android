@@ -59,6 +59,8 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 	@Test
 	public void Geocampus_000() throws Exception {
 
+		pause(PAUSE);
+		
 		takeScreenshot("home.png");
 
 		elementById("org.unpidf.univmobile:id/selectGeocampus").click();
