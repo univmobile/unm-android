@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 public class Region implements Serializable{
 	/**
 	 * 
@@ -18,10 +20,10 @@ public class Region implements Serializable{
 	private List<University> listUniversities;
 	
 	public Region(JSONObject json){
-		this.id = json.optString("id");
-		this.label = json.optString("label");
-		this.url = json.optString("url");
-		this.urlProd = json.optString("url_prod");
+		this.id = optString(json, "id");
+		this.label = optString(json, "label");
+		this.url = optString(json, "url");
+		this.urlProd = optString(json, "url_prod");
 	}
 	
 	public void setListUniversities(List<University> listUniversities) {

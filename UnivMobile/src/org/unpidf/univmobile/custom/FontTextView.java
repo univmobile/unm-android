@@ -9,7 +9,9 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
+/**
+ * TextView allowing to set a custom Typeface in Xml.
+ */
 public class FontTextView extends TextView {
 
 	private static HashMap<String, Typeface> listFont = new HashMap<String, Typeface>();

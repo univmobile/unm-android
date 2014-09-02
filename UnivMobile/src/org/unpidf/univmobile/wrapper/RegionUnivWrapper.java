@@ -7,18 +7,17 @@ import android.widget.TextView;
 
 public class RegionUnivWrapper {
 
-	private View baseView;
-	private TextView textView = null;
+    private final View baseView;
+    private TextView textView = null;
 
-	public RegionUnivWrapper(View base) {
-		this.baseView = base;
-	}
+    public RegionUnivWrapper(View base) {
+        this.baseView = base;
+    }
 
-	public TextView getTextView() {
-		if (textView == null) {
-			textView = (TextView) baseView.findViewById(R.id.textId);
-		}
-		return (textView);
-	}
-	
+    public TextView getTextView() {
+        if (textView == null) {
+            textView = (TextView) baseView.findViewById(R.id.textId);
+        }
+        return textView;
+    }
 }

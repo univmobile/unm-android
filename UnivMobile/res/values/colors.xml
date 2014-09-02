@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="tab_text_color_unselected">#000000</color>
+    <color name="tab_text_color_selected">#000000</color>
+    <color name="tab_back_color">#EEEEEE</color>
+    <color name="tab_sep_color">#CCCCCC</color>
+    <color name="tab_indicator_color">#333333</color>
+    <color name="container_background">#FFE6E6E6</color>
+
+</resources>

@@ -6,16 +6,21 @@
 
 	<parent>
 		<groupId>fr.univmobile</groupId>
-		<artifactId>unm-it-parent</artifactId>
-		<version>0.0.3</version>
+		<artifactId>unm-backend-it-parent</artifactId>
+		<version>0.0.4</version>
 		<relativePath />
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
-			<artifactId>unm-it-commons</artifactId>
-		</dependency>	
+			<artifactId>unm-android-testutil</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.univmobile.localhost</groupId>
+			<artifactId>UnivMobile</artifactId>
+			<type>apk</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -25,6 +30,61 @@
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>fr.univmobile.localhost</groupId>
+									<artifactId>UnivMobile</artifactId>
+									<type>apk</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<destFileName>UnivMobile_localhost.apk</destFileName>
+								</artifactItem>
+							</artifactItems>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>fr.univmobile</groupId>
+									<artifactId>unm-backend-app</artifactId>
+									<type>war</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/unm-backend-app</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+							<overWriteReleases>true</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<name>unm-android-it</name>
@@ -32,7 +92,7 @@
 		Integration tests for the UnivMobile Android project.
 	</description>
 	<url>
-        http://univmobile.vswip.com/nexus/content/sites/pub/${project.artifactId}/${project.version}
+        http://univmobile.vswip.com/nexus/content/sites/pub/${project.artifactId}/${project.version}/
     </url>
 
 	<scm>
@@ -89,12 +149,19 @@
 		</repository>
 	</repositories>
 
+
 	<profiles>
 		<profile>
 			<id>dandriana</id>
+			<properties>
+				<aapt>/Applications/Android Studio.app/sdk/build-tools/android-4.4W/aapt</aapt>
+			</properties>
 		</profile>
 		<profile>
 			<id>jenkins</id>
+			<properties>
+				<aapt>/opt/android-sdk/build-tools/19.1.0/aapt</aapt>
+			</properties>
 		</profile>
 	</profiles>
 

@@ -25,11 +25,11 @@ public class SimpleAppiumTest {
 
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 
-		// Get this .apk file from:
-		//   http://univmobile.vswip.com/job/Android-UnivMobile
-		//     /lastSuccessfulBuild/artifact/UnivMobile/bin/UnivMobile-debug.apk
-		
-		final File app = new File("apk/UnivMobile-debug.apk");
+		// Get this .apk file from: Maven repository 
+		// -- fr.univmobile.localhost:UnivMobile:${version}:apk
+
+		final File app = // new File("target", "UnivMobile_localhost.apk");
+				new File("apk", "UnivMobile-release.apk");
 
 		capabilities.setCapability(APP, app.getAbsolutePath());
 

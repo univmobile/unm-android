@@ -4,6 +4,7 @@ import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
 import org.unpidf.univmobile.manager.LocManager.LocListener;
 import org.unpidf.univmobile.view.AproposActivity;
+import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
 
 import android.app.Activity;
@@ -17,6 +18,11 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * App Entry Point
+ * This is the first activity launched from launcher
+ *
+ */
 public class AccueilActivity extends Activity {
 
 	@Override
@@ -63,6 +69,12 @@ public class AccueilActivity extends Activity {
 				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			}
 		});
+		findViewById(R.id.selectGeocampus).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(), GeocampusActivity.class));
+			}
+		});
 	}
 	
 	@Override
@@ -85,5 +97,4 @@ public class AccueilActivity extends Activity {
 		super.onResume();
 		initData();
 	}
-
 }

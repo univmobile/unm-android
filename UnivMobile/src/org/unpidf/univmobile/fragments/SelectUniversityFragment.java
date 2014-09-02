@@ -21,7 +21,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-
+/**
+ * Display universities for a specific region. Fragment for: {@link SelectUniversityActivity}
+ * @author Michel
+ *
+ */
 public class SelectUniversityFragment extends Fragment{
 
 	private Region region;
@@ -70,7 +74,7 @@ public class SelectUniversityFragment extends Fragment{
 		IntentFilter filter = new IntentFilter(DataManager.NOTIF_REGION_UNIV_OK + region.getId());
 		filter.addAction(DataManager.NOTIF_REGION_UNIV_ERR + region.getId());
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, filter);
-		return inflater.inflate(R.layout.frag_list, container, false);
+		return inflater.inflate(R.layout.frag_list_generic, container, false);
 	}
 
 	@Override
