@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.unpidf.univmobile"
-    android:versionCode="17"
+    android:versionCode="18"
     android:versionName="3.0 alpha 3" >
 
     <uses-sdk
@@ -28,7 +28,7 @@
         
         <meta-data
             android:name="appVersion"
-            android:value="0.0.4-SNAPSHOT" />
+            android:value="0.0.4" />
             
         <meta-data
             android:name="jsonURL"
