@@ -121,7 +121,7 @@ def loadNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
         
 uploadArchives {
 	repositories.mavenDeployer {
-		repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/releases') {
+		repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
 			// These are loaded from: ${HOME}/.gradle/gradle.properties
             authentication(userName: loadNexusUsername(), 
             	password: loadNexusPassword())
