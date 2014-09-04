@@ -9,9 +9,9 @@
 		description="Generate an installation page for different versions of the UnivMobile Android application">
 
 		<xslt force="true"
-			style="src/main/xslt/android-installation-page.html.xsl"
+			style="src/main/xslt/android-installation-page.php.xsl"
 			in="src/main/xml/android-installation-page.xml"
-			out="target/android-installation-page/index.html"/>
+			out="target/android-installation-page/index.php"/>
 		
 	</target>
 
