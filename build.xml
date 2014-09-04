@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="unm-android" default="all">
+
+	<target name="all" depends="generate-android-installation-page">
+		
+	</target>
+
+	<target name="generate-android-installation-page"
+		description="Generate an installation page for different versions of the UnivMobile Android application">
+
+		<xslt force="true"
+			style="src/main/xslt/android-installation-page.html.xsl"
+			in="src/main/xml/android-installation-page.xml"
+			out="target/android-installation-page/index.html"/>
+		
+	</target>
+
+	<property name="jsonBaseURL" value="http://localhost:8380/unm-backend/json/"/>
+
+	<target name="update-AndroidManifest">
+	
+		<xslt style="src/main/xslt/update_AndroidManifest.xsl"
+				in="UnivMobile/AndroidManifest.xml"
+				out="target/AndroidManifest.xml">
+			<param name="jsonBaseURL" expression="${jsonBaseURL}"/>
+		</xslt>
+      
+		<copy overwrite="true"
+			file="target/AndroidManifest.xml"
+			tofile="UnivMobile/AndroidManifest.xml"/>
+
+	</target>	
+	
+</project>

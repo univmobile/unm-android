@@ -1,0 +1,21 @@
+<!-- 
+
+In Xcode:
+	- Product, Archive
+	- Organizer, Distribute…: Save for Enterprise or Ad Hoc Deployment
+	- Save for Enterprise Distribution
+	
+For Application URL, use:
+http://univmobile.vswip.com/android/<git-commit>/UnivMobile-release.apk
+
+-->
+
+<android-installation-page>
+
+<android-installation
+	date="2014-09-03 23:16"
+	git-commit="e211ba32a806a23a45cf15b6a23e3eedbab57bc8"
+	build-displayName="#2"
+	label="Release ité 2"/>
+
+</android-installation-page>
