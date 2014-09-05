@@ -1,7 +1,10 @@
-UnivMobile
-==========
+Android-UnivMobile
+==================
 
-Application Android du projet UnivMobile.
+_Application Android du projet UnivMobile_
 
-Informations pour le développement :
-[Développement Android UnivMobile](Devel.md)
+Documentation parente : [unm-android](../README.md "Documentation parente : unm-ios/README.md") — _Projet Android UnivMobile_
+
+Autre documentation :
+
+  * [Développement : Android-UnivMobile](Devel.md "Documentation : Android-UnivMobile/Devel.md")

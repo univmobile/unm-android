@@ -1,5 +1,7 @@
 # Développement Android UnivMobile
 
+Documentation parente : [Android-UnivMobile](README.md "Documentation parente : UnivMobile/README.md") — _Application Android du projet UnivMobile_
+
 ### Environnement de développement
 
 Pour installer le projet, l’environnement de développement doit disposer de :
