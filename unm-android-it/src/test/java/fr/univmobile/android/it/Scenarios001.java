@@ -27,10 +27,10 @@ public class Scenarios001 extends AppiumAndroidEnabledTest {
 		final String dataDir = TestBackend.readBackendAppDataDir(new File(
 				"target", "unm-backend-app/WEB-INF/web.xml"));
 
-		final Connection cxn = DriverManager.getConnection(
-				PropertiesUtils.getTestProperty("mysqlUrl"),
-				PropertiesUtils.getTestProperty("mysqlUsername"),
-				PropertiesUtils.getTestProperty("mysqlPassword"));
+		final Connection cxn = DriverManager.getConnection( //
+				PropertiesUtils.getTestProperty("mysql.url"), //
+				PropertiesUtils.getTestProperty("mysql.username"), //
+				PropertiesUtils.getSettingsTestRefProperty("mysql.password.ref"));
 		try {
 
 			TestBackend.setUpData("001", new File(dataDir), MYSQL, cxn);
