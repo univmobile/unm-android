@@ -7,7 +7,7 @@ Documentation parente : [unm-devel](https://github.com/univmobile/unm-devel/blo
 
 Autre documentation :
 
-  * [Android-UnivMobile](UnivMobile/README.md) — _Application Android du projet UnivMobile_
+  * [Développement : Android-UnivMobile](Devel.md "Documentation : Android-UnivMobile/Devel.md")
 
 Ce projet contient :
 

@@ -11,3 +11,7 @@ local.properties
 /.settings/
 /.classpath
 /.project
+src/site/apt/
+*/src/site/apt/
+src/site/xhtml/
+*/src/site/xhtml/
