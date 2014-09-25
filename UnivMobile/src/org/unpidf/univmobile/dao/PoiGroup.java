@@ -1,5 +1,7 @@
 package org.unpidf.univmobile.dao;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +9,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static org.unpidf.univmobile.dao.JSONEnabled.optString;
 
 public class PoiGroup implements Serializable {
     /**

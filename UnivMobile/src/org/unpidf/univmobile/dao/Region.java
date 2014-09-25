@@ -1,12 +1,12 @@
 package org.unpidf.univmobile.dao;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
-
-import static org.unpidf.univmobile.dao.JSONEnabled.optString;
 
 public class Region implements Serializable{
 	/**

@@ -4,12 +4,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -56,7 +60,7 @@ public class ApiManager {
 		HttpGet httpget = new HttpGet( urlApi );  
 		httpget.setHeader("Accept-Encoding", "gzip"); 
 		JSONObject oJsonResult = null;
-		
+
 		try {
 			HttpResponse response = httpclient.execute(httpget);
 			InputStream instream = response.getEntity().getContent();
@@ -82,6 +86,36 @@ public class ApiManager {
 			closeStream(os); 
 		}
 		return oJsonResult;
+	}
+
+	public static JSONObject callAPIPost(String url, MultipartEntity param) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost post = new HttpPost();
+		ByteArrayOutputStream os = null;
+		JSONObject json = null;
+		try {
+			post.setURI(new URI(url));
+			HttpResponse response = null;
+			post.setEntity(param);
+			response = httpclient.execute(post);
+			if( response == null ){
+				return null;
+			}
+			os = new ByteArrayOutputStream();
+			response.getEntity().writeTo(os);
+			json = new JSONObject( os.toString() );
+		} catch (URISyntaxException e1) {
+			Log.e(TAG, "Exception " + e1.getMessage());
+		} catch (IOException e) {
+			Log.e(TAG, "Failed : Bad request IOException " + e.getMessage() );
+		} catch (JSONException e) {
+			Log.e(TAG, "Failed : Bad request JSONException "+ e.getMessage() );
+		} catch (OutOfMemoryError e) {
+			Log.e(TAG,  "Failed : Bad request OutOfMemoryError "+ e.getMessage() );
+		} finally { 
+			closeStream(os); 
+		}
+		return json;
 	}
 
 	public static String callAPIString(String urlApi ){
@@ -126,14 +160,6 @@ public class ApiManager {
 				Log.e(TAG, "IOException " + e.getMessage());
 			} 
 		} 
-	}  
+	}
 
 }
-
-
-
-
-
-
-
-

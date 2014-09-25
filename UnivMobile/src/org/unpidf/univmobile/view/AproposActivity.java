@@ -1,9 +1,6 @@
 package org.unpidf.univmobile.view;
 
-import org.json.JSONObject;
 import org.unpidf.univmobile.R;
-import org.unpidf.univmobile.manager.ApiManager;
-import org.unpidf.univmobile.manager.CacheManager;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.MappingManager;
 
@@ -26,7 +23,6 @@ public class AproposActivity extends Activity {
         initActionBar();
         ((TextView) findViewById(R.id.urlApiId)).setText(MappingManager.getUrlApi(this));
         ((TextView) findViewById(R.id.appVersion)).setText(MappingManager.getAppVersion(this));
-
     }
 
     private void initActionBar() {

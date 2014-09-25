@@ -34,7 +34,7 @@ public abstract class BaseMapsFragment extends Fragment {
 
 	protected int idConteneur;
 	protected LatLng pos;
-	public static final int MAP_ZOOM = 16;
+	public static int MAP_ZOOM = 16;
 	protected MapFragment mapFragment;
 	protected GoogleMap map;
 

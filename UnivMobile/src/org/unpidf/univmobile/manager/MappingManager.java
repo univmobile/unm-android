@@ -1,17 +1,17 @@
 package org.unpidf.univmobile.manager;
 
+import static android.content.pm.PackageManager.GET_META_DATA;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-
-import static android.content.pm.PackageManager.GET_META_DATA;
-
+import android.location.Location;
 import android.os.Bundle;
 
 public class MappingManager {
 
     public static final String DIR_DATA = "/Android/data/org.unpidf.univmobile";
+    public static final String API_KEY = "toto";
     private static String URL = null;
     private static String APP_VERSION = null;
 
@@ -30,6 +30,14 @@ public class MappingManager {
 
     public static String getUrlPois(Context context) {
         return getUrlApi(context) + "pois";
+    }
+    
+    public static String getUrlSession(Context context) {
+        return getUrlApi(context) + "session";
+    }
+    
+    public static String getUrlPois(Context context, Location loc) {
+        return getUrlApi(context) + "pois" + "?lat="+loc.getLatitude()+"&lng="+loc.getLongitude();
     }
 
     public static String getAppVersion(Context context) {
