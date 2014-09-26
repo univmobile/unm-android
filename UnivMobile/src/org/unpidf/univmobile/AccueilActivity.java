@@ -8,7 +8,7 @@ import org.unpidf.univmobile.view.AproposActivity;
 import org.unpidf.univmobile.view.ConnectionActivity;
 import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
-import org.unpidf.univmobile.view.UserProfileActivity;
+import org.unpidf.univmobile.view.UserProfilActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,9 +33,7 @@ public class AccueilActivity extends Activity {
 		setContentView(R.layout.activity_accueil);
 		initEvents();
 		LocManager.getInstance(this).requestUpdate();
-		if(UserManager.getInstance(this).getUser() != null){
-			UserManager.getInstance(this).checkConnection(UserManager.getInstance(this).getUser());
-		}
+		UserManager.getInstance(this).checkConnection();
 	}
 
 	private void initUser() {
@@ -45,7 +43,7 @@ public class AccueilActivity extends Activity {
 			((Button)findViewById(R.id.userTextView)).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(AccueilActivity.this, UserProfileActivity.class));
+					startActivity(new Intent(AccueilActivity.this, UserProfilActivity.class));
 				}
 			});
 		}else{
@@ -82,20 +80,20 @@ public class AccueilActivity extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		initData();
 		initUser();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add("À propos").setIcon(android.R.drawable.ic_menu_info_details).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);;
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if(item.getTitle().equals("À propos")){

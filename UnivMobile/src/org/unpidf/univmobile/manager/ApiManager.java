@@ -90,6 +90,30 @@ public class ApiManager {
 		return oJsonResult;
 	}
 
+	public static boolean callAPIPost(String url, List<NameValuePair> param, boolean onlyCode) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost post = new HttpPost();
+		try {
+			post.setURI(new URI(url));
+			HttpResponse response = null;
+			post.setEntity(new UrlEncodedFormEntity(param));
+			response = httpclient.execute(post);
+			if( response == null ){
+				return false;
+			}
+			if(response.getStatusLine().getStatusCode() == 200){
+				return true;
+			}
+		} catch (URISyntaxException e1) {
+			Log.e(TAG, "Exception " + e1.getMessage());
+		} catch (IOException e) {
+			Log.e(TAG, "Failed : Bad request IOException " + e.getMessage() );
+		} catch (OutOfMemoryError e) {
+			Log.e(TAG,  "Failed : Bad request OutOfMemoryError "+ e.getMessage() );
+		}
+		return false;
+	}
+	
 	public static JSONObject callAPIPost(String url, List<NameValuePair> param) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost post = new HttpPost();

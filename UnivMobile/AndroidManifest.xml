@@ -65,7 +65,7 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name="org.unpidf.univmobile.view.UserProfileActivity">
+            android:name="org.unpidf.univmobile.view.UserProfilActivity">
         </activity>
         <activity
             android:screenOrientation="portrait"

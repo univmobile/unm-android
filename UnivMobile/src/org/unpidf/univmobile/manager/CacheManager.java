@@ -47,6 +47,20 @@ public class CacheManager {
 		return jsonObject;
 	}	
 	
+	public static boolean clearCache(String directory, String filename ){
+		FileOutputStream out = null;
+		try {
+			createDirectoryIfNeeded(STORAGE_DIRECTORY + "/" + directory);
+			File cacheMediaFile = new File( STORAGE_DIRECTORY + "/" + directory, filename );
+			return cacheMediaFile.delete();
+		} catch (OutOfMemoryError e) {
+			Log.e( TAG, "OutOfMemoryError : saveJson : " + e.getMessage());
+		} finally { 
+			closeStream(out); 
+		}
+		return false;
+	}
+	
 	public static void createCache(JSONObject jsonObject, String directory, String filename ){
 		FileOutputStream out = null;
 		try {
