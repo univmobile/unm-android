@@ -1,24 +1,26 @@
 package org.unpidf.univmobile.manager;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.protocol.HTTP;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 import org.unpidf.univmobile.dao.User;
 import org.unpidf.univmobile.utils.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 
 /**
  * Singleton, managing users.
  */
 public class UserManager {
 
+	public static final String NOTI_CONNEXION_OK = "connexion-ok";
+	public static final String NOTI_CONNEXION_ERR = "connexion-err";
 	private static Context mContext;
 	private static UserManager mInstance;
 	private User user;
@@ -41,27 +43,31 @@ public class UserManager {
 	private class GetUser extends AsyncTask<String, Object, Boolean> {
 		@Override
 		protected Boolean doInBackground(String... params) {
-			MultipartEntity part = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-			try {
-				part.addPart("apiKey", new StringBody(MappingManager.API_KEY,	Charset.forName(HTTP.UTF_8)));
-				part.addPart("login", new StringBody(params[0],	Charset.forName(HTTP.UTF_8)));
-				part.addPart("passxord", new StringBody(params[1],	Charset.forName(HTTP.UTF_8)));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), part);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("apiKey", MappingManager.API_KEY));
+	        nameValuePairs.add(new BasicNameValuePair("login", params[0]));
+	        nameValuePairs.add(new BasicNameValuePair("password", params[1]));
+			
+			JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), nameValuePairs);
+			System.out.println("---JSON = "+json);
 			if(parseUser(json)){
 				CacheManager.createCache(json, MappingManager.DIR_DATA, "User");
+				return true;
 			}
-			return true;
+			return false;
 		}
 
 		protected void onPostExecute(Boolean result) {
+			if(result){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_CONNEXION_OK));
+			}else{
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_CONNEXION_ERR));
+			}
 			super.onPostExecute(result);
 		}
 	}
 
-	public void checkConnewtion(User user) {
+	public void checkConnection(User user) {
 		Utils.execute(new CheckConnection(), user);
 	}
 
@@ -69,14 +75,12 @@ public class UserManager {
 	private class CheckConnection extends AsyncTask<User, Object, Boolean> {
 		@Override
 		protected Boolean doInBackground(User... user) {
-			MultipartEntity part = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-			try {
-				part.addPart("apiKey", new StringBody(MappingManager.API_KEY,	Charset.forName(HTTP.UTF_8)));
-				part.addPart("appTokenId", new StringBody(user[0].getId(),	Charset.forName(HTTP.UTF_8)));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
-			JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), part);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("apiKey", MappingManager.API_KEY));
+	        nameValuePairs.add(new BasicNameValuePair("appTokenId", user[0].getId()));
+
+	        JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), nameValuePairs);
+			System.out.println("---JSON = "+json);
 			if(parseUser(json)){
 				CacheManager.createCache(json, MappingManager.DIR_DATA, "User");
 			}

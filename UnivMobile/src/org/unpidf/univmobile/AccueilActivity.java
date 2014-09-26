@@ -1,10 +1,14 @@
 package org.unpidf.univmobile;
 
+import org.unpidf.univmobile.dao.User;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
+import org.unpidf.univmobile.manager.UserManager;
 import org.unpidf.univmobile.view.AproposActivity;
+import org.unpidf.univmobile.view.ConnectionActivity;
 import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
+import org.unpidf.univmobile.view.UserProfileActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -28,6 +33,30 @@ public class AccueilActivity extends Activity {
 		setContentView(R.layout.activity_accueil);
 		initEvents();
 		LocManager.getInstance(this).requestUpdate();
+		if(UserManager.getInstance(this).getUser() != null){
+			UserManager.getInstance(this).checkConnection(UserManager.getInstance(this).getUser());
+		}
+	}
+
+	private void initUser() {
+		User user = UserManager.getInstance(this).getUser();
+		if(user != null){
+			((Button)findViewById(R.id.userTextView)).setText(user.getDisplayName());
+			((Button)findViewById(R.id.userTextView)).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(AccueilActivity.this, UserProfileActivity.class));
+				}
+			});
+		}else{
+			((Button)findViewById(R.id.userTextView)).setText("Se connecter");
+			((Button)findViewById(R.id.userTextView)).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(AccueilActivity.this, ConnectionActivity.class));
+				}
+			});
+		}
 	}
 
 	private void initData() {
@@ -55,6 +84,13 @@ public class AccueilActivity extends Activity {
 	}
 	
 	@Override
+	protected void onResume() {
+		super.onResume();
+		initData();
+		initUser();
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add("À propos").setIcon(android.R.drawable.ic_menu_info_details).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);;
 		return true;
@@ -69,9 +105,4 @@ public class AccueilActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		initData();
-	}
 }

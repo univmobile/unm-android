@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -88,7 +90,7 @@ public class ApiManager {
 		return oJsonResult;
 	}
 
-	public static JSONObject callAPIPost(String url, MultipartEntity param) {
+	public static JSONObject callAPIPost(String url, List<NameValuePair> param) {
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost post = new HttpPost();
 		ByteArrayOutputStream os = null;
@@ -96,7 +98,7 @@ public class ApiManager {
 		try {
 			post.setURI(new URI(url));
 			HttpResponse response = null;
-			post.setEntity(param);
+			post.setEntity(new UrlEncodedFormEntity(param));
 			response = httpclient.execute(post);
 			if( response == null ){
 				return null;

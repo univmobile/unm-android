@@ -216,73 +216,63 @@ public class MapsPoiFragment extends BaseMapsFragment {
 	/**
 	 * Add markers related to Pois on map
 	 */
-	 private synchronized void addMarkers() {
-		 if (map == null) {
-			 return;
-		 }
-		 map.clear();
-		 // listMarkerOptions = new ArrayList<MarkerOptions>();
-		 listMarkers = new ArrayList<Marker>();
-		 for (final Poi poi : listPois) {
-			 final MarkerOptions markerOptions = new MarkerOptions() //
-			 .position(new LatLng(poi.getLatitude(), poi.getLongitude())) //
-			 .title(poi.getTitle()).snippet(poi.getId());
-			 // listMarkerOptions.add(markerOptions);
-			 final Marker marker = map.addMarker(markerOptions);
-			 listMarkers.add(marker);
-		 }
-		 
-		 if(!alreadyMoved){
-			 alreadyMoved = true;
-			 selectFirstMarker();
-		 }
-	 }
+	private synchronized void addMarkers() {
+		if (map == null) {
+			return;
+		}
+		map.clear();
+		// listMarkerOptions = new ArrayList<MarkerOptions>();
+		listMarkers = new ArrayList<Marker>();
+		for (final Poi poi : listPois) {
+			final MarkerOptions markerOptions = new MarkerOptions() //
+			.position(new LatLng(poi.getLatitude(), poi.getLongitude())) //
+			.title(poi.getTitle()).snippet(poi.getId());
+			// listMarkerOptions.add(markerOptions);
+			final Marker marker = map.addMarker(markerOptions);
+			listMarkers.add(marker);
+		}
 
-	 @Override
-	 public void onDestroyView() {
-		 super.onDestroyView();
-		 if (getActivity() != null) {
-			 try {
-				 LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
-			 } catch (IllegalArgumentException e) {
-				 e.printStackTrace();
-			 }
-		 }
-	 }
+		selectFirstMarker();
+	}
 
-	 /**
-	  * move the map to a given marker.
-	  */
-	 private void selectMarker(final Marker marker) {
-		 showInfo(marker);
-		 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( //
-				 marker.getPosition().latitude, //
-				 marker.getPosition().longitude), MAP_ZOOM));
-	 }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		if (getActivity() != null) {
+			try {
+				LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-	 /**
-	  * move the map to the first marker, if any.
-	  */
-	 private void selectFirstMarker() {
-		 if (listMarkers != null && !listMarkers.isEmpty()) {
-			 // Select the first element
-			 selectMarker(listMarkers.iterator().next());
-		 }
-	 }
+	/**
+	 * move the map to a given marker.
+	 */
+	private void selectMarker(final Marker marker) {
+		showInfo(marker);
+		Location loc = LocManager.getLocation();
+		if(loc != null && loc.getLatitude() != 0 && loc.getLongitude() != 0 && !alreadyMoved){
+			alreadyMoved = true;
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( //
+					loc.getLatitude(), //
+					loc.getLongitude()), MAP_ZOOM));
+		}else{
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( //
+					marker.getPosition().latitude, //
+					marker.getPosition().longitude), MAP_ZOOM));
+		}
+	}
 
-	 @Override
-	 public void onResume() {
-		 super.onResume();
-		 if(!alreadyMoved){
-			 alreadyMoved = true;
-			 Location loc = LocManager.getLocation();
-			 if(loc != null && loc.getLatitude() != 0 && loc.getLongitude() != 0){
-				 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( //
-						 loc.getLatitude(), //
-						 loc.getLongitude()), MAP_ZOOM));
-			 }else if(listMarkers != null){
-				 selectFirstMarker();
-			 }
-		 }
-	 }
+	/**
+	 * move the map to the first marker, if any.
+	 */
+	private void selectFirstMarker() {
+		if (listMarkers != null && !listMarkers.isEmpty()) {
+			// Select the first element
+			selectMarker(listMarkers.iterator().next());
+		}
+	}
+
 }
