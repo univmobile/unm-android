@@ -1,7 +1,5 @@
 package org.unpidf.univmobile.dao;
 
-import java.io.Serializable;
-
 import org.json.JSONObject;
 
 /**

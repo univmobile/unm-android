@@ -1,10 +1,10 @@
 package org.unpidf.univmobile.dao;
 
+import static org.unpidf.univmobile.dao.JSONEnabled.optString;
+
 import java.io.Serializable;
 
 import org.json.JSONObject;
-
-import static org.unpidf.univmobile.dao.JSONEnabled.optString;
 
 public class Comment implements Serializable {
 	/**
