@@ -102,7 +102,8 @@ task unitTest(type: Test, dependsOn: assemble) {
 dependencies {
     compile 'com.android.support:support-v13:19.0.0'
     compile 'com.google.android.gms:play-services:+'
-    compile 'org.apache.httpcomponents:httpmime:4.3.5'
+    // compile 'org.apache.httpcomponents:httpmime:4.3.5'
+    compile 'org.apache.httpcomponents:httpmime:4.1.1'
     // compile 'com.google.android.gms:play-services:5.0.89'
     unitTestCompile 'junit:junit:4.11'
     unitTestCompile 'org.json:json:20140107'
