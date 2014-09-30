@@ -312,12 +312,11 @@ public class MapsPoiFragment extends BaseMapsFragment {
 
 	public boolean isMapsCentered(Poi poi) {
 		if(map != null){
-			System.out.println("---CAMERA lat= "+map.getCameraPosition().target.latitude);
-			System.out.println("---CAMERA lng= "+map.getCameraPosition().target.longitude);
-			System.out.println("---poi lat= "+poi.getLatitude());
-			System.out.println("---poi lng= "+poi.getLongitude());
-			if(map.getCameraPosition().target.latitude == poi.getLatitude() 
-					&& map.getCameraPosition().target.longitude == poi.getLongitude()){
+			double latCam = Utils.roundParam(map.getCameraPosition().target.latitude, 3);
+			double lngCam = Utils.roundParam(map.getCameraPosition().target.longitude, 3);
+			double latPoi = Utils.roundParam(poi.getLatitude(), 3);
+			double lngPoi = Utils.roundParam(poi.getLongitude(), 3);
+			if(latCam == latPoi && lngCam == lngPoi){
 				return true;
 			}
 		}

@@ -82,6 +82,10 @@ public class Utils {
 		editor.putBoolean(pref, value);
 		editor.commit();
 	}
+	
+	public static double roundParam(double d, int round){
+		return (double)Math.round(d * round) / round;
+	}
 
 
 }
