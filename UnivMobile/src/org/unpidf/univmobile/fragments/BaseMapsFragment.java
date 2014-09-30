@@ -15,15 +15,15 @@
  */
 package org.unpidf.univmobile.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 /**
@@ -35,7 +35,7 @@ public abstract class BaseMapsFragment extends Fragment {
 	protected int idConteneur;
 	protected LatLng pos;
 	public static int MAP_ZOOM = 16;
-	protected MapFragment mapFragment;
+	protected SupportMapFragment mapFragment;
 	protected GoogleMap map;
 
 	@Override
@@ -51,8 +51,8 @@ public abstract class BaseMapsFragment extends Fragment {
 	}
 
 	private void createMapFragmentIfNeeded() {
-		FragmentManager fm = getFragmentManager();
-		mapFragment = (MapFragment) fm.findFragmentById(idConteneur);
+		FragmentManager fm = getChildFragmentManager();
+		mapFragment = (SupportMapFragment) fm.findFragmentById(idConteneur);
 		if (mapFragment == null) {
 			mapFragment = createMapFragment();
 			FragmentTransaction tx = fm.beginTransaction();
@@ -61,14 +61,14 @@ public abstract class BaseMapsFragment extends Fragment {
 		}
 	}
 
-	protected MapFragment createMapFragment() {
+	protected SupportMapFragment createMapFragment() {
 		GoogleMapOptions options = new GoogleMapOptions();
 		if(pos != null){
 			options.camera(CameraPosition.fromLatLngZoom(pos, MAP_ZOOM));
 		}else{
 			options.camera(CameraPosition.fromLatLngZoom(new LatLng(48.84650925911,2.3459243774), MAP_ZOOM - 7));
 		}
-		return MapFragment.newInstance(options);
+		return SupportMapFragment.newInstance(options);
 	}
 
 	protected void setUpMapIfNeeded() {

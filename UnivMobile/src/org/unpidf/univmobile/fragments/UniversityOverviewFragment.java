@@ -4,9 +4,9 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.view.UniversityActivity;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +43,13 @@ public class UniversityOverviewFragment extends Fragment{
 		getView().findViewById(R.id.rootUnivItem).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(getActivity(), UniversityActivity.class).putExtra("poi", poi));
+				//Check if University is at centerPoint
+				boolean isCenter = ((MapsPoiFragment)getParentFragment()).isMapsCentered(poi);
+				if(isCenter){
+					startActivity(new Intent(getActivity(), UniversityActivity.class).putExtra("poi", poi));
+				}else{
+					((MapsPoiFragment)getParentFragment()).centerMap(poi);
+				}
 			}
 		});
 	}

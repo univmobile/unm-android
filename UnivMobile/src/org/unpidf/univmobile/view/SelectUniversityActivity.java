@@ -5,22 +5,22 @@ import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.fragments.SelectRegionFragment;
 import org.unpidf.univmobile.fragments.SelectUniversityFragment;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 /**
  * Activity for selecting a university
  * @author Michel
  *
  */
-public class SelectUniversityActivity extends Activity {
+public class SelectUniversityActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_univ);
 		initActionBar();
-		getFragmentManager().beginTransaction().replace(R.id.fragConteneur, SelectRegionFragment.newInstance() , "SelectRegion").commitAllowingStateLoss();
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragConteneur, SelectRegionFragment.newInstance() , "SelectRegion").commitAllowingStateLoss();
 	}
 
 	private void initActionBar() {
@@ -38,10 +38,10 @@ public class SelectUniversityActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		if(getFragmentManager().getBackStackEntryCount() == 0){
+		if(getSupportFragmentManager().getBackStackEntryCount() == 0){
 			finish();
 		}else{
-			getFragmentManager().popBackStack();
+			getSupportFragmentManager().popBackStack();
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class SelectUniversityActivity extends Activity {
 	 * @param region
 	 */
 	public void swichToUniversity(Region region) {
-		getFragmentManager().beginTransaction()
+		getSupportFragmentManager().beginTransaction()
 		.setCustomAnimations(R.anim.slide_in_left, 0, 0, R.anim.slide_in_right) 
 		.add(R.id.fragConteneur, SelectUniversityFragment.newInstance(region) , "SelectUniv")
 		.addToBackStack("SelectUniv")

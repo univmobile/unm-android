@@ -9,9 +9,9 @@ import org.unpidf.univmobile.custom.PagerSlidingTabStrip;
 import org.unpidf.univmobile.fragments.ListPoiFragment;
 import org.unpidf.univmobile.fragments.MapsPoiFragment;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 /**
@@ -19,7 +19,7 @@ import android.view.MenuItem;
  * @author Michel
  *
  */
-public class GeocampusActivity extends Activity{
+public class GeocampusActivity extends FragmentActivity{
 
 	private ViewPager mViewPager;
 	private PagerSlidingTabStrip mTabs;
@@ -43,7 +43,7 @@ public class GeocampusActivity extends Activity{
 		listFraments.add(ListPoiFragment.newInstance("Liste"));
 		listFraments.add(MapsPoiFragment.newInstance("Plan"));
 
-		HomePagerAdapter adapter = new HomePagerAdapter(getFragmentManager(), listFraments);
+		HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), listFraments);
 		mViewPager.setAdapter(adapter);
 		mTabs.setViewPager(mViewPager);
 	}

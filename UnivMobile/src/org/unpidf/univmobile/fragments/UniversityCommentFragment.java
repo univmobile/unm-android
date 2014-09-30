@@ -1,22 +1,26 @@
 package org.unpidf.univmobile.fragments;
 
+import java.util.List;
+
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.adapter.CommentPoiAdapter;
+import org.unpidf.univmobile.dao.Comment;
 import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.view.UniversityActivity;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * See all comments of a specific university. Fragment for: {@link UniversityActivity}
@@ -65,17 +69,20 @@ public class UniversityCommentFragment extends Fragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		((TextView)getView().findViewById(R.id.noData)).setText("Aucun commentaire");
 		DataManager.getInstance(getActivity()).launchPoisCommentGetting(poi);
 	}
-	
+
 	protected void refreshData() {
+		List<Comment> list = DataManager.getInstance(getActivity()).getListComments();
 		final ListView listView = (ListView) getView().findViewById(R.id.listView);
 		if(adapter != null){
-			((CommentPoiAdapter)listView.getAdapter()).setList(DataManager.getInstance(getActivity()).getListComments());
+			((CommentPoiAdapter)listView.getAdapter()).setList(list);
 		}else{
-			adapter = new CommentPoiAdapter(getActivity(), DataManager.getInstance(getActivity()).getListComments());
+			adapter = new CommentPoiAdapter(getActivity(), list);
 			listView.setAdapter(adapter);
 		}
+		getView().findViewById(R.id.noData).setVisibility((list.size() == 0) ? View.VISIBLE : View.GONE);
 	}
 
 	@Override

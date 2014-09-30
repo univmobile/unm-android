@@ -9,10 +9,10 @@ import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.dao.PoiGroup;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
+import org.unpidf.univmobile.manager.LocManager.LocListener;
 import org.unpidf.univmobile.utils.Utils;
 import org.unpidf.univmobile.view.GeocampusActivity;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -95,6 +96,28 @@ public class MapsPoiFragment extends BaseMapsFragment {
 		public void onPageScrollStateChanged(int arg0) {
 		}
 	};
+	
+	private LocListener locListener = new LocListener() {
+		@Override
+		public void onLocationNotChanged(String address) {
+			Location loc = LocManager.getLocation();
+			if(map != null){
+				map.setMyLocationEnabled(loc.getLatitude() != 0 && loc.getLongitude() != 0);
+			}
+		}
+		
+		@Override
+		public void onLocationChanged(Location loc) {
+			if(map != null){
+				map.setMyLocationEnabled(loc.getLatitude() != 0 && loc.getLongitude() != 0);
+			}
+		}
+		
+		@Override
+		public void onAddressChanged(String address, boolean success) {
+			
+		}
+	};
 
 	public void onCreate(Bundle savedInstanceState) {
 		idConteneur = R.id.map_container;
@@ -120,6 +143,19 @@ public class MapsPoiFragment extends BaseMapsFragment {
 		super.onActivityCreated(savedInstanceState);
 		DataManager.getInstance(getActivity()).launchPoisGetting(LocManager.getLocation());
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		LocManager.getInstance(getActivity()).addLocationListener(locListener);
+		LocManager.getInstance(getActivity()).requestUpdate();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		LocManager.getInstance(getActivity()).removeLocationListener(locListener);
+	}
 
 	/**
 	 * Init ViewPager used to display UniversityOverview
@@ -130,7 +166,7 @@ public class MapsPoiFragment extends BaseMapsFragment {
 		for (final Poi poi : listPois) {
 			listFrag.add(UniversityOverviewFragment.newInstance(poi));
 		}
-		PagerAdapter adapter = new PagerAdapter(getFragmentManager(), listFrag);
+		PagerAdapter adapter = new PagerAdapter(getChildFragmentManager(), listFrag);
 		pager.setAdapter(adapter);
 		pager.setOnPageChangeListener(onPageChange);
 	}
@@ -210,7 +246,6 @@ public class MapsPoiFragment extends BaseMapsFragment {
 				return true;
 			}
 		});
-		map.setMyLocationEnabled(true);
 	}
 
 	/**
@@ -272,6 +307,24 @@ public class MapsPoiFragment extends BaseMapsFragment {
 		if (listMarkers != null && !listMarkers.isEmpty()) {
 			// Select the first element
 			selectMarker(listMarkers.iterator().next());
+		}
+	}
+
+	public boolean isMapsCentered(Poi poi) {
+		if(map != null){
+			if(map.getCameraPosition().target.latitude == poi.getLatitude() 
+					&& map.getCameraPosition().target.longitude == poi.getLongitude()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void centerMap(Poi poi) {
+		if(map != null){
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng( //
+					poi.getLatitude(), 
+					poi.getLongitude()), MAP_ZOOM));
 		}
 	}
 

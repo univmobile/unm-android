@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
-    <objectAnimator
-        android:interpolator="@android:interpolator/decelerate_quint"
-        android:valueFrom="0dp" android:valueTo="500dp"
-        android:valueType="floatType"
-        android:propertyName="translationX"
-        android:duration="500" />
+    <translate
+     android:fromXDelta="0%" android:toXDelta="100%"
+     android:fromYDelta="0%" android:toYDelta="0%"
+     android:duration="400" />
 </set>

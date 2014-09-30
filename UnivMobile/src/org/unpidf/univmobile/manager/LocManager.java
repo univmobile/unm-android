@@ -16,11 +16,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.unpidf.univmobile.dialog.DialogErrorLocation;
+import org.unpidf.univmobile.dialog.DialogFragment;
 import org.unpidf.univmobile.utils.Utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Criteria;
@@ -30,6 +29,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,7 +44,7 @@ import com.google.android.gms.location.LocationRequest;
 public class LocManager implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, LocationListener {
 
 	private static LocManager instance;
-	private static Activity mContext;
+	private static FragmentActivity mContext;
 	private static LocationClient mLocationClient;
 	private static LocationRequest mLocationRequest;
 	private static List<LocListener> listLocationListener;
@@ -88,7 +88,7 @@ public class LocManager implements GooglePlayServicesClient.ConnectionCallbacks,
 		}
 	};
 
-	public static LocManager getInstance(Activity context){
+	public static LocManager getInstance(FragmentActivity context){
 		if(context != null){
 			mContext = context;
 		}
@@ -487,7 +487,7 @@ public class LocManager implements GooglePlayServicesClient.ConnectionCallbacks,
 		return addr;
 	}
 
-	public static boolean checkLocationAvailable(Activity context, boolean needPopUp) {
+	public static boolean checkLocationAvailable(FragmentActivity context, boolean needPopUp) {
 		LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -501,7 +501,7 @@ public class LocManager implements GooglePlayServicesClient.ConnectionCallbacks,
 		}else if(!Utils.isPrefs("Geoloc", "fin", context.getApplicationContext()) && needPopUp){
 			DialogFragment dialogExit = DialogErrorLocation.newInstance();
 			if(dialogExit != null){
-				dialogExit.show(context.getFragmentManager(), "dialogGeoloc"); 
+				dialogExit.show(context.getSupportFragmentManager(), "dialogGeoloc"); 
 			}
 		}
 		if(logEnabled){

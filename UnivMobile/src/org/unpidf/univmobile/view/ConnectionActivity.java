@@ -28,6 +28,7 @@ public class ConnectionActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(UserManager.NOTI_CONNEXION_OK)){
 				Toast.makeText(ConnectionActivity.this, "Connecté !", Toast.LENGTH_SHORT).show();
+				startActivity(new Intent(ConnectionActivity.this, UserProfilActivity.class));
 				finish();
 			}else{
 				Toast.makeText(ConnectionActivity.this, "Erreur...", Toast.LENGTH_SHORT).show();

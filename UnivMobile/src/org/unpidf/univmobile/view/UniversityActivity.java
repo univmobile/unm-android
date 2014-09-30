@@ -10,9 +10,9 @@ import org.unpidf.univmobile.dao.Poi;
 import org.unpidf.univmobile.fragments.UniversityCommentFragment;
 import org.unpidf.univmobile.fragments.UniversityDetailsFragment;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.MenuItem;
@@ -21,7 +21,7 @@ import android.view.MenuItem;
  * @author Michel
  *
  */
-public class UniversityActivity extends Activity {
+public class UniversityActivity extends FragmentActivity {
 
 	private ViewPager mViewPager;
 	private PagerSlidingTabStrip mTabs;
@@ -50,7 +50,7 @@ public class UniversityActivity extends Activity {
 		listFraments.add(UniversityDetailsFragment.newInstance((Poi) getIntent().getSerializableExtra("poi"), "Détails"));
 		listFraments.add(UniversityCommentFragment.newInstance((Poi) getIntent().getSerializableExtra("poi"), "Commentaires"));
 
-		HomePagerAdapter adapter = new HomePagerAdapter(getFragmentManager(), listFraments);
+		HomePagerAdapter adapter = new HomePagerAdapter(getSupportFragmentManager(), listFraments);
 		mViewPager.setAdapter(adapter);
 		mTabs.setViewPager(mViewPager);
 		mTabs.setOnPageChangeListener(new OnPageChangeListener() {

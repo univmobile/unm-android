@@ -6,12 +6,12 @@ import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
 
-import android.app.Fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
