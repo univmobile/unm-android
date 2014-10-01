@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>unm-android-it</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.8</version>
 
 	<parent>
 		<groupId>fr.univmobile</groupId>
@@ -19,10 +19,36 @@
 			<version>0.0.5</version>
 		</dependency>
 		<dependency>
+			<groupId>fr.univmobile</groupId>
+			<artifactId>unm-testutil</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.univmobile</groupId>
+			<artifactId>unm-it-commons</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.univmobile</groupId>
+			<artifactId>unm-backend-app-noshib</artifactId>
+			<type>war</type>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.univmobile</groupId>
+			<artifactId>unm-backend-it-data</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.univmobile</groupId>
+			<artifactId>unm-backend-core</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
 			<groupId>fr.univmobile.localhost</groupId>
 			<artifactId>UnivMobile</artifactId>
 			<type>apk</type>
-			<version>0.0.7</version>
+			<version>0.0.8</version>
 		</dependency>
 	</dependencies>
 
