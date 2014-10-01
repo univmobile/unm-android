@@ -72,7 +72,7 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>fr.univmobile</groupId>
-									<artifactId>unm-backend-app</artifactId>
+									<artifactId>unm-backend-app-noshib</artifactId>
 									<type>war</type>
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/unm-backend-app</outputDirectory>
