@@ -28,7 +28,7 @@
         
         <meta-data
             android:name="appVersion"
-            android:value="0.0.5-SNAPSHOT" />
+            android:value="0.0.5" />
             
         <meta-data
             android:name="jsonURL"

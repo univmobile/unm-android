@@ -14,7 +14,7 @@ buildscript {
 	if (file0.exists()) localProperties.load(file0.newDataInputStream())
 	if (file1.exists()) localProperties.load(file1.newDataInputStream())
 	group localProperties.getProperty('group', ('fr.univmobile'))
-    version '0.0.5-SNAPSHOT'
+    version '0.0.5'
     repositories {
         jcenter()
     }
