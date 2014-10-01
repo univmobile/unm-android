@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>unm-android-testutil</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10-SNAPSHOT</version>
 	
 	<parent>
 		<groupId>fr.univmobile</groupId>
 		<artifactId>unm-it-parent</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
@@ -16,12 +16,12 @@
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-it-commons</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-testutil</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

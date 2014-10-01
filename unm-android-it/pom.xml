@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>unm-android-it</artifactId>
-	<version>0.0.9</version>
+	<version>0.0.10-SNAPSHOT</version>
 
 	<parent>
 		<groupId>fr.univmobile</groupId>
 		<artifactId>unm-backend-it-parent</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
@@ -16,49 +16,49 @@
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-android-testutil</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-testutil</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-it-commons</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-backend-app-noshib</artifactId>
 			<type>war</type>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-backend-it-data</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-backend-core</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile.localhost</groupId>
 			<artifactId>UnivMobile</artifactId>
 			<type>apk</type>
-			<version>0.0.9</version>
+			<version>0.0.10-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-commons-datasource</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>fr.univmobile</groupId>
 			<artifactId>unm-http</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
