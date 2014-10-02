@@ -6,7 +6,7 @@
 		<menu name="Workspace">
 			<item href="http://univmobile.vswip.com/job/unm-android-testutil"
 				name="Job Jenkins" />
-			<item href="../../unm-android/0.1.0-SNAPSHOT/index.html"
+			<item href="../../unm-android/0.1.0/index.html"
 				name="unm-android" />
 		</menu>
 		

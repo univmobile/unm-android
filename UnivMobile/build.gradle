@@ -14,7 +14,7 @@ buildscript {
 	if (file0.exists()) localProperties.load(file0.newDataInputStream())
 	if (file1.exists()) localProperties.load(file1.newDataInputStream())
 	group localProperties.getProperty('group', ('fr.univmobile'))
-    version '0.1.0-SNAPSHOT'
+    version '0.1.0'
     repositories {
         jcenter()
     }
@@ -134,8 +134,8 @@ def loadNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
         
 uploadArchives {
 	repositories.mavenDeployer {
-	repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
-	// repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/releases') {
+	// repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
+	repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/releases') {
 			// These are loaded from: ${HOME}/.gradle/gradle.properties
             authentication(userName: loadNexusUsername(), 
             	password: loadNexusPassword())
