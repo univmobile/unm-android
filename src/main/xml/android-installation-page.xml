@@ -13,10 +13,16 @@ http://univmobile.vswip.com/android/<git-commit>/UnivMobile-release.apk
 <android-installation-page>
 
 <android-installation
+	date="2014-10-02 17:50"
+	git-commit="f6103585f42f969bdea844ded628a5eff880676d"
+	build-displayName="#9"
+	label="Release ité 3 finale"/>
+
+<android-installation
 	date="2014-10-01 14:39"
 	git-commit="0ba972fc64e330ca0e75ead366628747774fcde3"
 	build-displayName="#8"
-	label="Release ité 3"/>
+	label="Release ité 3 (preview)"/>
 
 <android-installation
 	date="2014-09-03 23:16"
