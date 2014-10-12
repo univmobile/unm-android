@@ -60,6 +60,12 @@ public class DataManager {
 	}
 
 	public University getCurrentUniversity() {
+		if(currentUniversity == null){
+			JSONObject json = CacheManager.loadCache(MappingManager.DIR_DATA, "Univ");
+			if(json != null){
+				currentUniversity = new University(json);
+			}
+		}
 		return currentUniversity;
 	}
 
@@ -256,7 +262,12 @@ public class DataManager {
 	}
 
 	public void setCurrentUniversity(University university) {
-		currentUniversity = university;
+		try{
+			CacheManager.createCache(new JSONObject(university.getJson()), MappingManager.DIR_DATA, "Univ");
+			currentUniversity = university;
+		}catch(JSONException e){
+			e.printStackTrace();
+		}
 	}
 
 	public void launchPoisGetting(Location loc) {
@@ -324,7 +335,7 @@ public class DataManager {
 			return false;
 		}
 	}
-	
+
 	public MapInfo getMapInfo() {
 		return mapInfo;
 	}
@@ -410,7 +421,7 @@ public class DataManager {
 			return jsonBaseURL;
 		}
 
-		final String urlApi = MappingManager.getUrlApi(mContext);
+		final String urlApi = MappingManager.getUrlApiJson(mContext);
 
 		final AsyncTask<String, Object, String> task = new AsyncTask<String, Object, String>() {
 

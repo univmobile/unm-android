@@ -21,7 +21,7 @@ public class AproposActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apropos);
         initActionBar();
-        ((TextView) findViewById(R.id.urlApiId)).setText(MappingManager.getUrlApi(this));
+        ((TextView) findViewById(R.id.urlApiId)).setText(MappingManager.getUrlApiJson(this));
         ((TextView) findViewById(R.id.appVersion)).setText(MappingManager.getAppVersion(this));
     }
 

@@ -24,6 +24,8 @@ public class UserManager {
 	public static final String NOTI_CONNEXION_ERR = "connexion-err";
 	public static final String NOTI_DISCONNEXION_OK = "disconnexion-ok";
 	public static final String NOTI_DISCONNEXION_ERR = "disconnexion-err";
+	public static final String NOTI_SHIBBO_PREPARE_OK = "shibbo-ok";
+	public static final String NOTI_SHIBBO_PREPARE_ERR = "shibbo-err";
 	private static Context mContext;
 	private static UserManager mInstance;
 	private User user;
@@ -150,6 +152,65 @@ public class UserManager {
 				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_DISCONNEXION_ERR));
 			}
 			super.onPostExecute(result);
+		}
+	}
+	
+	public void prepareShibbo(){
+		Utils.execute(new ShibboPrepare());
+	}
+	
+	private class ShibboPrepare extends AsyncTask<String, String, String[]> {
+		@Override
+		protected String[] doInBackground(String... params) {
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("apiKey", MappingManager.API_KEY));
+	        nameValuePairs.add(new BasicNameValuePair("prepare", null));
+			
+			JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), nameValuePairs);
+			System.out.println("---JSON PREPARE = "+json);
+			if(json != null){
+				String loginToken = json.optString("loginToken");
+				String key = json.optString("key");
+				return new String[]{loginToken, key};
+			}
+			return null;
+		}
+
+		protected void onPostExecute(String[] result) {
+			if(result != null && result.length >=2){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_SHIBBO_PREPARE_OK).putExtra("loginToken", result[0]).putExtra("key", result[1]));
+			}else{
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_SHIBBO_PREPARE_ERR));
+			}
+		}
+	}
+	
+	public void retriveShibbo(String loginToken, String key){
+		Utils.execute(new ShibboRetrive(), loginToken, key);
+	}
+	
+	private class ShibboRetrive extends AsyncTask<String, Object, Boolean> {
+		@Override
+		protected Boolean doInBackground(String... params) {
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("apiKey", MappingManager.API_KEY));
+	        nameValuePairs.add(new BasicNameValuePair("loginToken", params[0]));
+	        nameValuePairs.add(new BasicNameValuePair("key", params[1]));
+			
+			JSONObject json = ApiManager.callAPIPost(MappingManager.getUrlSession(mContext), nameValuePairs);
+			if(parseUser(json)){
+				CacheManager.createCache(json, MappingManager.DIR_DATA, "User");
+				return true;
+			}
+			return true;
+		}
+
+		protected void onPostExecute(Boolean result) {
+			if(result){
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_CONNEXION_OK));
+			}else{
+				LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent(NOTI_CONNEXION_ERR));
+			}
 		}
 	}
 	

@@ -21,17 +21,18 @@ import android.widget.Toast;
  *
  * @author Michel
  */
-public class ConnectionActivity extends Activity {
+public class ConnectionStandardActivity extends Activity {
 
 	private BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(UserManager.NOTI_CONNEXION_OK)){
-				Toast.makeText(ConnectionActivity.this, "Connecté !", Toast.LENGTH_SHORT).show();
-				startActivity(new Intent(ConnectionActivity.this, UserProfilActivity.class));
+				Toast.makeText(ConnectionStandardActivity.this, "Connecté !", Toast.LENGTH_SHORT).show();
+				startActivity(new Intent(ConnectionStandardActivity.this, UserProfilActivity.class));
+				ConnectionStandardActivity.this.setResult(RESULT_OK);
 				finish();
 			}else{
-				Toast.makeText(ConnectionActivity.this, "Erreur...", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ConnectionStandardActivity.this, "Erreur...", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -39,7 +40,7 @@ public class ConnectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_connection);
+		setContentView(R.layout.activity_standard_connection);
 		IntentFilter filter = new IntentFilter(UserManager.NOTI_CONNEXION_OK);
 		filter.addAction(UserManager.NOTI_CONNEXION_ERR);
 		LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
@@ -54,9 +55,9 @@ public class ConnectionActivity extends Activity {
 				String login = ((EditText)findViewById(R.id.editText1)).getText().toString().trim();
 				String password = ((EditText)findViewById(R.id.editText2)).getText().toString().trim();
 				if(login.length() == 0 || password.length() == 0){
-					Toast.makeText(ConnectionActivity.this, "Veuillez entrer un login et un mot de passe", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ConnectionStandardActivity.this, "Veuillez entrer un login et un mot de passe", Toast.LENGTH_SHORT).show();
 				}else{
-					UserManager.getInstance(ConnectionActivity.this).connect(login, password);
+					UserManager.getInstance(ConnectionStandardActivity.this).connect(login, password);
 				}
 			}
 		});
@@ -64,7 +65,7 @@ public class ConnectionActivity extends Activity {
 
 	private void initActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setTitle("Connexion");
+		getActionBar().setTitle("Connexion Standard");
 	}
 
 	@Override

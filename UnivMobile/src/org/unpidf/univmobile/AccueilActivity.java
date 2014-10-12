@@ -5,7 +5,7 @@ import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
 import org.unpidf.univmobile.manager.UserManager;
 import org.unpidf.univmobile.view.AproposActivity;
-import org.unpidf.univmobile.view.ConnectionActivity;
+import org.unpidf.univmobile.view.ConnectionAccueilActivity;
 import org.unpidf.univmobile.view.GeocampusActivity;
 import org.unpidf.univmobile.view.SelectUniversityActivity;
 import org.unpidf.univmobile.view.UserProfilActivity;
@@ -51,7 +51,7 @@ public class AccueilActivity extends FragmentActivity {
 			((Button)findViewById(R.id.userTextView)).setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(AccueilActivity.this, ConnectionActivity.class));
+					startActivity(new Intent(AccueilActivity.this, ConnectionAccueilActivity.class));
 				}
 			});
 		}

@@ -19,7 +19,7 @@
     <!-- jsonBaseURL: The real backend base URL, returned at runtime by a HTTP call to xxx/json -->
     <string name="jsonBaseURL"></string>
 
-    <string name="mapsApiKey">AIzaSyD61Afm00SQHMKpkd81Rn50nPJCAaIRxGg</string>
+    <string name="mapsApiKey">AIzaSyCJ5orHZp_3V6ar-NO1A5qJ6P6Bvy3OH3U</string>
 
     <string name="app_name">UnivMobile</string>
     <string name="textAlertDialogJamais">Jamais</string>
