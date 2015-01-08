@@ -8,4 +8,7 @@
     <color name="tab_indicator_color">#333333</color>
     <color name="container_background">#FFE6E6E6</color>
 
+
+    <color name="green">#6bac34</color>
+    <color name="selected_green">#446728</color>
 </resources>

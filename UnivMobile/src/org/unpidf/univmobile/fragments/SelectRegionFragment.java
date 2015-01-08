@@ -4,7 +4,7 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.adapter.RegionUnivAdapter;
 import org.unpidf.univmobile.dao.Region;
 import org.unpidf.univmobile.manager.DataManager;
-import org.unpidf.univmobile.view.SelectUniversityActivity;
+import org.unpidf.univmobile.ui.activities.SelectUniversityActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,7 +38,7 @@ public class SelectRegionFragment extends Fragment{
 		public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
 			Region region = (Region) parent.getItemAtPosition(position);
-			((SelectUniversityActivity)getActivity()).swichToUniversity(region);
+		//	((SelectUniversityActivity)getActivity()).swichToUniversity(region);
 		}
 	};
 	

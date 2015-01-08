@@ -1,25 +1,25 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 def loadLocalProperty(name, defaultValue) {
-	Properties properties = new Properties()
-	properties.load(project.file('local.properties').newDataInputStream())
-	return properties.getProperty(name, defaultValue)
+    Properties properties = new Properties()
+    properties.load(project.file('local.properties').newDataInputStream())
+    return properties.getProperty(name, defaultValue)
 }
 
-buildscript { 
-	// Inline loadLocalProperty(): buildscript is executed before method defs 
-	def localProperties = new Properties()
-	def file0 = new File('local.properties')
-	def file1 = new File('UnivMobile/local.properties')
-	if (file0.exists()) localProperties.load(file0.newDataInputStream())
-	if (file1.exists()) localProperties.load(file1.newDataInputStream())
-	group localProperties.getProperty('group', ('fr.univmobile'))
+buildscript {
+    // Inline loadLocalProperty(): buildscript is executed before method defs
+    def localProperties = new Properties()
+    def file0 = new File('local.properties')
+    def file1 = new File('UnivMobile/local.properties')
+    if (file0.exists()) localProperties.load(file0.newDataInputStream())
+    if (file1.exists()) localProperties.load(file1.newDataInputStream())
+    group localProperties.getProperty('group', ('fr.univmobile'))
     version '0.1.1-SNAPSHOT'
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -30,7 +30,7 @@ allprojects {
 }
 
 apply plugin: 'maven'
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
@@ -39,16 +39,16 @@ android {
     defaultConfig {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
-        targetSdkVersion 19
+        targetSdkVersion 21
     }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+//        }
+//    }
 
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-    
     sourceSets {
         main {
             manifest.srcFile loadLocalProperty('manifest.srcFile', 'AndroidManifest.xml')
@@ -59,7 +59,7 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-	}
+    }
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -70,7 +70,7 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
-    }    
+    }
 }
 
 android.applicationVariants.all { variant ->
@@ -84,8 +84,8 @@ android.applicationVariants.all { variant ->
         exclude '**/BuildConfig.java'
         exclude '**/R.java'
     }
-    task("${variant.name}JavadocJar", type: Jar, 
-    		dependsOn: "generate${variant.name.capitalize()}Javadoc") {
+    task("${variant.name}JavadocJar", type: Jar,
+            dependsOn: "generate${variant.name.capitalize()}Javadoc") {
         classifier = 'javadoc'
         from "generate${variant.name.capitalize()}Javadoc.destinationDir"
     }
@@ -100,45 +100,47 @@ sourceSets {
 }
 
 configurations {
-    unitTestCompile.extendsFrom compile 
+    unitTestCompile.extendsFrom compile
     unitTestRuntime.extendsFrom unitTestCompile
 }
 
 task unitTest(type: Test, dependsOn: assemble) {
-	description = 'Run Unit Tests'
-	testClassesDir = project.sourceSets.unitTest.output.classesDir
-	classpath = project.sourceSets.unitTest.runtimeClasspath
+    description = 'Run Unit Tests'
+    testClassesDir = project.sourceSets.unitTest.output.classesDir
+    classpath = project.sourceSets.unitTest.runtimeClasspath
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:19.0.0'
-    compile 'com.google.android.gms:play-services:+'
+    compile 'com.android.support:support-v4:21.0.3'
+    //compile 'com.google.android.gms:play-services:+'
     // compile 'org.apache.httpcomponents:httpmime:4.3.5'
     compile 'org.apache.httpcomponents:httpmime:4.1.1'
-    // compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.google.android.gms:play-services:5.0.89'
     unitTestCompile 'junit:junit:4.11'
     unitTestCompile 'org.json:json:20140107'
     unitTestCompile files("${project.buildDir}/intermediates/classes/debug")
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
+    compile 'com.google.code.gson:gson:2.3'
 }
 
 // check.dependsOn test
 build.dependsOn unitTest
 
-def loadNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
-	return hasProperty('nexusUsername') ? nexusUsername : 'xxx'
-}
+//def loadNexusUsername() { // nexusUsername in ~/.gradle/gradle.properties
+//	return hasProperty('nexusUsername') ? nexusUsername : 'xxx'
+//}
+//
+//def loadNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
+//	return hasProperty('nexusPassword') ? nexusPassword : 'xxx'
+//}
 
-def loadNexusPassword() { // nexusPassword in ~/.gradle/gradle.properties
-	return hasProperty('nexusPassword') ? nexusPassword : 'xxx'
-}
-        
-uploadArchives {
-	repositories.mavenDeployer {
-	repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
-	// repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/releases') {
-			// These are loaded from: ${HOME}/.gradle/gradle.properties
-            authentication(userName: loadNexusUsername(), 
-            	password: loadNexusPassword())
-        }
-    }
-}
+//uploadArchives {
+//	repositories.mavenDeployer {
+//	repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/snapshots') {
+//	// repository (url: 'http://univmobile.vswip.com/nexus/content/repositories/releases') {
+//			// These are loaded from: ${HOME}/.gradle/gradle.properties
+//            authentication(userName: loadNexusUsername(),
+//            	password: loadNexusPassword())
+//        }
+//    }
+//}

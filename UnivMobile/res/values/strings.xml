@@ -18,14 +18,19 @@
 
     <!-- jsonBaseURL: The real backend base URL, returned at runtime by a HTTP call to xxx/json -->
     <string name="jsonBaseURL"></string>
-
     <string name="mapsApiKey">AIzaSyCJ5orHZp_3V6ar-NO1A5qJ6P6Bvy3OH3U</string>
-
     <string name="app_name">UnivMobile</string>
     <string name="textAlertDialogJamais">Jamais</string>
     <string name="textAlertDialogOui">Oui</string>
     <string name="textAlertDialogNon">Non</string>
     <string name="textAlertGeoloc">La géolocalisation n\'est actuellement pas activée. Souhaitez vous l\'activer ?</string>
     <string name="textAlertGeolocTitle">Géolocalisation</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
+    <!-- Select region and university -->
+    <string name="accept">VALIDER</string>
+    <string name="select_region">Choisir sa région</string>
+    <string name="select_university">Choisir son université</string>
 </resources>

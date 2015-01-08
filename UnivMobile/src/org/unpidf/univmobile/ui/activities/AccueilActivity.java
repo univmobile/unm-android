@@ -1,5 +1,6 @@
-package org.unpidf.univmobile;
+package org.unpidf.univmobile.ui.activities;
 
+import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.dao.User;
 import org.unpidf.univmobile.manager.DataManager;
 import org.unpidf.univmobile.manager.LocManager;
@@ -7,7 +8,6 @@ import org.unpidf.univmobile.manager.UserManager;
 import org.unpidf.univmobile.view.AproposActivity;
 import org.unpidf.univmobile.view.ConnectionAccueilActivity;
 import org.unpidf.univmobile.view.GeocampusActivity;
-import org.unpidf.univmobile.view.SelectUniversityActivity;
 import org.unpidf.univmobile.view.UserProfilActivity;
 
 import android.content.Intent;
