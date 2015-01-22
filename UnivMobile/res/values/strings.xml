@@ -1,36 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- appVersion: The app version, mapped to a Maven project version, e.g. "0.0.4-SNAPSHOT" -->
-    <string name="appVersion"></string>
-
-    <!-- buildDisplayName: The date of the build, set by Jenkins, e.g. "2014-08-30_05-33-10" -->
-    <string name="buildDisplayName"></string>
-
-    <!-- gitCommit: The git commit ID for this build, e.g. "2d7033dd46057983fc74ae2165448477f8c4f509" -->
-    <string name="gitCommit"></string>
-
-    <!-- buildId: The number of the build, set by Jenkins, e.g. "#4" -->
-    <string name="buildId"></string>
-
-    <!-- urlApiID: The base URL used to connect to the backend endpoints -->
-    <string name="urlApiId"></string>
-
-    <!-- jsonBaseURL: The real backend base URL, returned at runtime by a HTTP call to xxx/json -->
-    <string name="jsonBaseURL"></string>
-    <string name="mapsApiKey">AIzaSyCJ5orHZp_3V6ar-NO1A5qJ6P6Bvy3OH3U</string>
+    <!-- global -->
     <string name="app_name">UnivMobile</string>
-    <string name="textAlertDialogJamais">Jamais</string>
-    <string name="textAlertDialogOui">Oui</string>
-    <string name="textAlertDialogNon">Non</string>
-    <string name="textAlertGeoloc">La géolocalisation n\'est actuellement pas activée. Souhaitez vous l\'activer ?</string>
-    <string name="textAlertGeolocTitle">Géolocalisation</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <!-- Select region and university -->
     <string name="accept">VALIDER</string>
     <string name="select_region">Choisir sa région</string>
     <string name="select_university">Choisir son université</string>
+
+    <!-- home activity -->
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_section1">ShibboletLogin</string>
+    <string name="title_section2">Map</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+
 </resources>

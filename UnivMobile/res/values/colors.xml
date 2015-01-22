@@ -11,4 +11,13 @@
 
     <color name="green">#6bac34</color>
     <color name="selected_green">#446728</color>
+    <color name="list_item_green">#eaffd9</color>
+
+    <color name="list_item_selected">#14ffffff</color>
+
+    <color name="group_1_color">#df6138</color>
+    <color name="group_2_color">#ffb103</color>
+    <color name="group_3_color">#34c978</color>
+    <color name="group_4_color">#45b2c9</color>
+
 </resources>

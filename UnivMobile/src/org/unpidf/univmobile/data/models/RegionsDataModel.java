@@ -1,6 +1,7 @@
 package org.unpidf.univmobile.data.models;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.unpidf.univmobile.data.entities.Regions;
+import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
 
 /**
  * Created by Rokas on 2015-01-07.
@@ -21,6 +23,7 @@ import org.unpidf.univmobile.data.entities.Regions;
  */
 public class RegionsDataModel {
 
+	private static final String PREF_UNIVERSITY = "pref_university";
 	private static final String REGIONS_URL = "http://vps111534.ovh.net/unm-backend/api/regions";
 
 	private Context mContext;
@@ -59,6 +62,14 @@ public class RegionsDataModel {
 			}
 		});
 		queue.add(stringRequest);
+	}
+
+	public void saveUniversity(int universityID) {
+		SharedPreferencesRepo.saveInt(mContext, PREF_UNIVERSITY, universityID);
+	}
+
+	public int getSavedUnversity() {
+		return SharedPreferencesRepo.getInt(mContext, PREF_UNIVERSITY);
 	}
 
 	public interface RegionsDataModelObserver {

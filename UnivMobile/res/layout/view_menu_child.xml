@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/selector_list_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="#25ffffff"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/separator"/>
+
+    <TextView
+        android:background="@color/list_item_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/menu_child_name"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
+        android:textSize="12sp"
+        android:gravity="end"/>
+</LinearLayout>

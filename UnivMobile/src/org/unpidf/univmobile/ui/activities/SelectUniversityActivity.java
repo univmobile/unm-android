@@ -4,7 +4,9 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.data.entities.Region;
 import org.unpidf.univmobile.data.entities.Regions;
 import org.unpidf.univmobile.data.entities.University;
+import org.unpidf.univmobile.data.models.RegionsDataModel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -56,8 +58,8 @@ public class SelectUniversityActivity extends FragmentActivity {
 		for (Region region : mRegions.getRegions()) {
 			list.add(region.getLabel());
 		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.view_spinner_item, list);
+		dataAdapter.setDropDownViewResource(R.layout.view_spinner_item);
 		mSpinner.setAdapter(dataAdapter);
 	}
 
@@ -67,8 +69,8 @@ public class SelectUniversityActivity extends FragmentActivity {
 		for (University university : region.getUniversities()) {
 			list.add(university.getTitle());
 		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.view_spinner_item, list);
+		dataAdapter.setDropDownViewResource(R.layout.view_spinner_item);
 		mSpinner.setAdapter(dataAdapter);
 	}
 
@@ -76,13 +78,19 @@ public class SelectUniversityActivity extends FragmentActivity {
 	private View.OnClickListener mAcceptButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if(mSelectedRegionPosition == -1) { //region is not selected
+			if (mSelectedRegionPosition == -1) { //region is not selected
 				mSelectedRegionPosition = mSpinner.getSelectedItemPosition();
 				initSpinnerUniversities(mRegions.getRegions().get(mSelectedRegionPosition));
 			} else { //select university
+				int selectedUniversityPosition = mSpinner.getSelectedItemPosition();
+				Region selectedRegion = mRegions.getRegions().get(mSelectedRegionPosition);
+				University selectedUniversity = selectedRegion.getUniversities().get(selectedUniversityPosition);
+				RegionsDataModel model = new RegionsDataModel(SelectUniversityActivity.this);
+				model.saveUniversity(selectedUniversity.getId());
 
+				Intent i = new Intent(SelectUniversityActivity.this, HomeActivity.class);
+				startActivity(i);
 			}
-
 		}
 	};
 }
