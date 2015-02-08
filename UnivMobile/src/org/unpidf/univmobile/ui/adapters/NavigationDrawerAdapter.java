@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.unpidf.univmobile.R;
+import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.NavigationMenu;
+import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
 
 import java.util.List;
@@ -66,9 +68,13 @@ public class NavigationDrawerAdapter extends AnimatedExpandableListView.Animated
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.view_menu_group, null);
+
+			TextView item = (TextView) convertView.findViewById(R.id.menu_title);
+			((UnivMobileApp) mContext.getApplicationContext()).getFontHelper().loadFont(item, FontHelper.FONT.EXO_SEMI_BOLD);
 		}
 		TextView item = (TextView) convertView.findViewById(R.id.menu_title);
 		item.setText(getGroup(groupPosition).getName());
+
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.menu_icon);
 		image.setBackgroundResource(getGroup(groupPosition).getImageId());
@@ -104,9 +110,13 @@ public class NavigationDrawerAdapter extends AnimatedExpandableListView.Animated
 		if (convertView == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.view_menu_child, null);
+
+			TextView item = (TextView) convertView.findViewById(R.id.menu_child_name);
+			((UnivMobileApp) mContext.getApplicationContext()).getFontHelper().loadFont(item, FontHelper.FONT.EXO2_REGULAR);
 		}
 		TextView item = (TextView) convertView.findViewById(R.id.menu_child_name);
 		item.setText(getChild(groupPosition, childPosition).getName());
+
 
 //
 //		View separator = convertView.findViewById(R.id.separator);

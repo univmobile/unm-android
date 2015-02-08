@@ -26,14 +26,14 @@
             android:layout_toStartOf="@+id/menu_icon"
             android:layout_marginTop="20dp"
             android:gravity="end"
-            android:textSize="14sp"
+            android:textSize="@dimen/title_size"
             android:paddingRight="10dp"
             android:textColor="@android:color/white"/>
 
         <View
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
-            android:layout_height="5px"
+            android:layout_height="@dimen/separator_size"
             android:layout_toLeftOf="@+id/menu_icon"
             android:layout_toStartOf="@+id/menu_icon"
             android:layout_alignBottom="@+id/menu_icon"/>

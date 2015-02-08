@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@android:color/white">
+
+	<TextView
+		android:id="@+id/library_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/orange"
+		android:textSize="@dimen/title_size"
+		android:textColor="@android:color/white"
+		android:text="@string/my_library"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingTop="@dimen/horizontal"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:id="@+id/items_container"
+		android:layout_below="@id/library_name"/>
+
+	<TextView
+		android:layout_marginTop="5dp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/go_to_library_fragment"
+		android:text="@string/go_to_library_main"
+		android:layout_marginRight="40dp"
+		android:textColor="@color/purple"
+		android:textSize="@dimen/content_size"
+		android:layout_below="@id/items_container"
+		android:layout_alignParentRight="true"
+		android:drawableRight="@drawable/ic_arrow_purple"
+		android:drawablePadding="5dp"/>
+
+</RelativeLayout>

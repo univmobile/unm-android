@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:adjustViewBounds="true"
+		android:src="@drawable/ic_actuality"
+		android:id="@+id/icon_act"
+		android:layout_marginRight="10dp"/>
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/ic_arrow"
+		android:layout_alignBottom="@id/icon_act"
+		android:layout_alignTop="@id/icon_act"
+		android:src="@drawable/ic_arrow_normal"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="20dp"
+		android:layout_marginLeft="20dp"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_toLeftOf="@id/ic_arrow"
+		android:layout_toRightOf="@id/icon_act"
+		android:layout_alignBottom="@id/icon_act"
+		android:layout_alignTop="@id/icon_act"
+		android:gravity="center_vertical">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/time_act"
+			android:textSize="@dimen/date_size"
+			android:text="Nom du flux - 04/01/2015"
+			android:textColor="@android:color/black"
+			android:paddingBottom="2dp"/>
+
+		<!-- bold -->
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/title_act"
+			android:textSize="@dimen/content_size"
+			android:text="Vivre avec une personne âgée : une coloc’ originale pour les étudiants"
+			android:textColor="@android:color/black"
+			android:lines="2"/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:id="@+id/content_container"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp"
+		android:layout_below="@id/ic_arrow"
+		android:visibility="gone">
+
+		<TextView
+			android:id="@+id/content_act"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="ère étape - L'inscription par internet : vous vous enregistrez sur la plateforme afin de constituer votre dossier numérique Vous saisissez l'ensemble de vos demandes de poursuite d'études : candidatures \n \n Ajout et retrait de candidatures : Du 20 Janvier au 20 Mars 18H pour toutes vos candidatures."
+			android:textSize="@dimen/content_size"
+			android:textColor="@android:color/black"
+			android:paddingBottom="5dp"/>
+
+		<TextView
+			android:clickable="true"
+			android:id="@+id/action_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="@dimen/button_size"
+			android:background="@drawable/selector_button_yellow"
+			android:textColor="@android:color/white"
+			android:text="Aller plus loin "
+			android:layout_gravity="right"
+			android:padding="5dp"/>
+	</LinearLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/separator_size"
+		android:background="@color/yellow"
+		android:layout_below="@id/content_container"/>
+</RelativeLayout>

@@ -1,0 +1,36 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@drawable/main_background">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:adjustViewBounds="true"
+			android:scaleType="centerCrop"
+			android:id="@+id/header_image"
+			android:src="@drawable/library_header"/>
+
+		<org.unpidf.univmobile.ui.views.BookmarksListView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/bookmarks_list"
+			android:layout_below="@id/header_image"/>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_action_bar_arrow"
+			android:layout_marginLeft="@dimen/article_arrow_padding"
+			android:layout_marginTop="-1px"
+			android:layout_below="@id/header_image"/>
+
+	</RelativeLayout>
+
+</ScrollView>
+

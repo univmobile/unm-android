@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/action_bar_background">
+
+	<ImageView
+		android:id="@+id/ic_menu"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:src="@drawable/selector_ic_menu"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp"/>
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_notifications"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		android:layout_marginRight="20dp"
+		android:layout_marginLeft="20dp"
+		android:layout_centerVertical="true"
+		android:id="@+id/ic_notifications"/>
+
+	<TextView
+		android:layout_width="14dp"
+		android:layout_height="14dp"
+		android:text="3"
+		android:textSize="10dp"
+		android:textStyle="bold"
+		android:textColor="@android:color/white"
+		android:layout_alignRight="@id/ic_notifications"
+		android:layout_alignBottom="@id/ic_notifications"
+		android:background="@drawable/circle"
+		android:gravity="center"
+		android:id="@+id/notifications_count"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:layout_toRightOf="@id/ic_menu"
+		android:layout_toEndOf="@id/ic_menu"
+		android:layout_toStartOf="@id/ic_notifications"
+		android:layout_toLeftOf="@id/ic_notifications"
+		android:orientation="horizontal"
+		android:gravity="center_vertical">
+
+		<TextView
+			android:id="@+id/general_user"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="7"
+			android:gravity="center_vertical|right"
+			android:text="Connectez-vous"
+			android:lines="1"
+			android:textColor="@android:color/white"
+			android:textSize="18sp"
+			android:visibility="gone"/>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="7"
+			android:orientation="vertical"
+			android:gravity="center_vertical|right"
+			android:visibility="visible">
+
+			<TextView
+				android:id="@+id/greetings"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="7sp"
+				android:lines="1"
+				android:textColor="@android:color/white"
+				android:text="Bonjour"/>
+
+			<TextView
+				android:id="@+id/user_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="16sp"
+				android:lines="1"
+				android:textColor="@android:color/white"
+				android:text="Margis"/>
+		</LinearLayout>
+
+		<View
+			android:layout_width="2px"
+			android:layout_height="match_parent"
+			android:background="@android:color/white"
+			android:layout_marginLeft="5dp"
+			android:layout_marginRight="5dp"/>
+
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="4"
+			android:orientation="vertical"
+			android:gravity="center_vertical">
+
+			<TextView
+				android:id="@+id/university_name_1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="7sp"
+				android:lines="1"
+				android:textColor="@android:color/white"
+				android:text="Université Paris I"/>
+
+			<TextView
+				android:id="@+id/university_name_2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="7sp"
+				android:lines="1"
+				android:textColor="@android:color/white"
+				android:text="Panthéon"/>
+
+			<TextView
+				android:id="@+id/university_name_3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="7sp"
+				android:lines="1"
+				android:textColor="@android:color/white"
+				android:text="La Sorbonne"/>
+		</LinearLayout>
+	</LinearLayout>
+
+</RelativeLayout>

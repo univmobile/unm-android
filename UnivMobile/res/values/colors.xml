@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="tab_text_color_unselected">#000000</color>
-    <color name="tab_text_color_selected">#000000</color>
-    <color name="tab_back_color">#EEEEEE</color>
-    <color name="tab_sep_color">#CCCCCC</color>
-    <color name="tab_indicator_color">#333333</color>
-    <color name="container_background">#FFE6E6E6</color>
+	<color name="list_item_selected">#14ffffff</color>
 
+	<color name="group_1_color">#df6138</color>
+	<color name="group_2_color">#ffb103</color>
+	<color name="group_3_color">#34c978</color>
+	<color name="group_4_color">#45b2c9</color>
 
-    <color name="green">#6bac34</color>
-    <color name="selected_green">#446728</color>
-    <color name="list_item_green">#eaffd9</color>
+	<color name="red">#f9032c</color>
 
-    <color name="list_item_selected">#14ffffff</color>
+	<color name="yellow">#ffb103</color>
+	<color name="selected_yellow">#a77300</color>
 
-    <color name="group_1_color">#df6138</color>
-    <color name="group_2_color">#ffb103</color>
-    <color name="group_3_color">#34c978</color>
-    <color name="group_4_color">#45b2c9</color>
+	<color name="orange">#df6138</color>
 
+	<color name="green">#6bac34</color>
+	<color name="selected_green">#446728</color>
+	<color name="list_item_green">#eaffd9</color>
+
+	<color name="purple">#4c303e</color>
+
+	<!-- geo campus collors -->
+	<color name="geo_green_light">#34c978</color>
+	<color name="geo_green_dark">#21a25c</color>
+
+	<color name="geo_gray_light">#9e9e9e</color>
+	<color name="geo_gray_dark">#858585</color>
+
+	<color name="geo_orange_light">#ffb103</color>
+	<color name="geo_orange_dark">#d39202</color>
+
+	<color name="geo_purple_light">#a54078</color>
+	<color name="geo_purple_dark">#7f2456</color>
 </resources>

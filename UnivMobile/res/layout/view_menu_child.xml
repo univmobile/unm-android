@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/selector_list_background">
+              android:background="@color/list_item_selected">
 
     <View
         android:layout_width="match_parent"
@@ -14,12 +14,14 @@
         android:id="@+id/separator"/>
 
     <TextView
-        android:background="@color/list_item_selected"
+        android:background="@drawable/selector_list_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/menu_child_name"
         android:textColor="@android:color/white"
         android:padding="10dp"
-        android:textSize="12sp"
+		android:layout_marginRight="15dp"
+		android:layout_marginLeft="15dp"
+        android:textSize="@dimen/content_size"
         android:gravity="end"/>
 </LinearLayout>

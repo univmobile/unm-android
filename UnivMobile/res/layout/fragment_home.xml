@@ -1,0 +1,92 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@android:color/white">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:adjustViewBounds="true"
+			android:scaleType="centerCrop"
+			android:id="@+id/main_article_image"
+			android:src="@drawable/ic_home_header"/>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_main_article_arrow"
+			android:layout_marginLeft="@dimen/article_arrow_padding"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/black"
+			android:text="Nom du flux - 08/01/2015"
+			android:textSize="@dimen/date_size"
+			android:id="@+id/main_article_time"
+			android:layout_marginRight="@dimen/horizontal"
+			android:layout_marginLeft="@dimen/horizontal"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/main_article_title"
+			android:textColor="@color/yellow"
+			android:textSize="@dimen/title_size"
+			android:text="Hommage à Charlie Hebo"
+			android:layout_marginRight="@dimen/horizontal"
+			android:layout_marginLeft="@dimen/horizontal"
+			android:paddingBottom="3dp"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/main_article_content"
+			android:textColor="@android:color/black"
+			android:textSize="@dimen/content_size"
+			android:text="Rassemblement dans le hall du bâtiment A, ce jeudi 8 janvier, à 12h pour y observer 1 minute de silence. Hommage à Charlie Hebdo."
+			android:layout_marginRight="@dimen/horizontal"
+			android:layout_marginLeft="@dimen/horizontal"/>
+
+		<!-- exo bold -->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/latest_news_title"
+			android:layout_marginTop="7dp"
+			android:paddingTop="5dp"
+			android:paddingBottom="3dp"
+			android:paddingLeft="@dimen/horizontal"
+			android:paddingRight="@dimen/horizontal"
+			android:textColor="@android:color/white"
+			android:background="@color/yellow"
+			android:text="@string/latest_news"
+			android:textSize="@dimen/title_size"/>
+
+		<org.unpidf.univmobile.ui.views.NewsItemView
+			android:id="@+id/news1"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+		<org.unpidf.univmobile.ui.views.NewsItemView
+			android:id="@+id/news2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+		<org.unpidf.univmobile.ui.views.NewsItemView
+			android:id="@+id/news3"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+		<org.unpidf.univmobile.ui.views.NewsItemView
+			android:id="@+id/news4"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+</ScrollView>
