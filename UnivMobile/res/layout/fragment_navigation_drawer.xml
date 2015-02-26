@@ -60,6 +60,14 @@
             android:listSelector="#0fff"
             android:scrollbars="none"/>
 
+		<ProgressBar
+			android:id="@+id/navigation_progress"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:visibility="visible"/>
+
     </RelativeLayout>
 
 

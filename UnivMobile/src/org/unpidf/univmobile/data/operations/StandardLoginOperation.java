@@ -1,53 +1,54 @@
 package org.unpidf.univmobile.data.operations;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.unpidf.univmobile.data.ApiManager;
-import org.unpidf.univmobile.data.models.LoginDataModel;
-import org.unpidf.univmobile.data.models.LoginDataModel.*;
+import org.unpidf.univmobile.data.entities.Category;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Login;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rokas on 2015-01-19.
+ * Created by rviewniverse on 2015-01-19.
  */
-public class StandardLoginOperation extends AsyncTask<String, Void, Boolean> {
+public class StandardLoginOperation extends AbsOperation<Login> {
 
-	private Context mContext;
-	private StandardLoginObserver mLoginObserver;
+	private static final String LOGIN_URL = "json/login?username=%s&password=%s";
+	private String mName;
+	private String mPass;
 
-	public StandardLoginOperation(Context c, StandardLoginObserver observer) {
-		mContext = c;
-		mLoginObserver = observer;
+	public StandardLoginOperation(Context c, OperationListener listener, String name, String pass) {
+		super(c, listener);
+		mName = name;
+		mPass = pass;
 	}
 
 
-	public void standartLogin(String user, String password) {
-		executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, user, password);
-	}
+	@Override
+	protected Login parse(JSONObject json) throws JSONException {
 
-	protected Boolean doInBackground(String... params) {
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		nameValuePairs.add(new BasicNameValuePair("apiKey", LoginDataModel.API_KEY));
-		nameValuePairs.add(new BasicNameValuePair("login", params[0]));
-		nameValuePairs.add(new BasicNameValuePair("password", params[1]));
+		if (json.has("error")) {
+			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.UNAUTHORIZED);
+			return null;
+		} else {
+			String name = json.getString("username");
+			String token = json.getString("Authentication-Token");
+			String id = json.getString("id");
 
-		JSONObject json = ApiManager.callAPIPost(LoginDataModel.TEST_URL_SESSION, nameValuePairs);
-
-		return false;
-	}
-
-	protected void onPostExecute(Boolean result) {
-		if(mLoginObserver != null) {
-
+			Login l = new Login(name, token, id);
+			return l;
 		}
+
 	}
 
-
+	@Override
+	protected String getOperationUrl(int page) {
+		return BASE_URL + String.format(LOGIN_URL, mName, mPass);
+	}
 }

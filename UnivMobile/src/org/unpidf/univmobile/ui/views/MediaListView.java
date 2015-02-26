@@ -1,6 +1,8 @@
 package org.unpidf.univmobile.ui.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +12,13 @@ import android.widget.RelativeLayout;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
+import java.util.List;
+
 /**
- * Created by Rokas on 2015-02-05.
+ * Created by rviewniverse on 2015-02-05.
  */
 public class MediaListView extends RelativeLayout {
 
@@ -30,7 +35,7 @@ public class MediaListView extends RelativeLayout {
 		super(context, attrs, defStyle);
 	}
 
-	public void init(int count, OnClickListener listener) {
+	public void init(List<Link> links, int maxCount, OnClickListener listener) {
 		LayoutInflater.from(getContext()).inflate(R.layout.view_media_list, this, true);
 
 		//init fonts
@@ -39,11 +44,21 @@ public class MediaListView extends RelativeLayout {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.go_to_media_fragment), FontHelper.FONT.EXO_BOLD);
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
-		for (int i = 0; i < count; i++) {
-			MediaItemView item = new MediaItemView(getContext(), "Lien personnalisé # " + i);
+
+		for(int i = 0; i < maxCount && i<links.size(); i++) {
+			MediaItemView item = new MediaItemView(getContext(), links.get(i).getLabel());
+			final String url = links.get(i).getUrl();
+			item.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					getContext().startActivity(i);
+				}
+			});
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			l.addView(item, params);
 		}
+
 
 		View v = findViewById(R.id.go_to_media_fragment);
 		if(listener == null) {

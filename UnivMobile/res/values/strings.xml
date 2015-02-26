@@ -4,6 +4,8 @@
     <!-- global -->
     <string name="app_name">UnivMobile</string>
     <string name="ok">OK</string>
+	<string name="no_results">Pas de résultat</string>
+	<string name="need_to_login">besoin de vous connecter avant de poster un commentaire</string>
 
     <!-- Select region and university -->
     <string name="select_region">Choisir sa région</string>
@@ -11,9 +13,19 @@
 
     <!-- home fragment -->
     <string name="latest_news">Dernières actualités</string>
+	<string name="geo_campus_title">Géo’Campus</string>
+	<string name="view_all_news">Voir toutes les Actualités</string>
+
+	<!-- action bar -->
+	<string name="login">Connectez-vous</string>
+	<string name="hello">Bonjour</string>
+	<string name="university">Université</string>
 
     <!-- notifications fragment -->
     <string name="notifications">NOTIFICATIONS</string>
+	<string name="before">Il y a </string>
+	<string name="minutes">minutes</string>
+	<string name="hours">heures</string>
 
     <!-- menu -->
     <string name="menu_services">Mes services</string>
@@ -41,8 +53,34 @@
     <!-- bookmarks -->
     <string name="bookmarks">Bookmarks</string>
     <string name="go_to_bookmarks_main">VOIR TOUT MES BOOKMARKS</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 	<!-- geo campus -->
 	<string name="sort_by_categories">TRIER PAR CATEGORIES</string>
+	<string name="bookmarks_upper">BOOKMARK</string>
+	<string name="menu">MENU</string>
+	<string name="research">RECHERCHER</string>
+	<string name="post">VALIDER</string>
+
+	<!-- search -->
+	<string name="search_hint">Tappez votre recherche</string>
+	<string name="search_results">Résultats</string>
+
+	<!-- Login -->
+	<string name="connection">Connexion</string>
+	<string name="name">nom d\'utilisateur</string>
+	<string name="password">Mot de passe</string>
+
+	<!-- change university -->
+	<string name="current_univ">Université actuelle</string>
+	<string name="choose_univ">Choisir une autre université</string>
+
+	<!-- add poi -->
+	<string name="new_poi_tilte">Soumettre un nouveau Bon Plan</string>
+	<string name="select_poi_category">Séléctionnez une catégorie*</string>
+	<string name="poi_name_hint">Nom du bon plan *</string>
+	<string name="address_hint">Adresse *</string>
+	<string name="phone_hint">Numéro de téléphone</string>
+	<string name="email_hint">Adresse email</string>
+	<string name="poi_description_hint">Entrez une déscription du lieux, des services proposés et des infos pratiques pouvant être utiles à la communauté*</string>
+	<string name="missing_info">Informations manquantes</string>
 </resources>

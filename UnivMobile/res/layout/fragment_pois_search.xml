@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="match_parent"
+			  android:orientation="vertical"
+			  android:layout_height="match_parent"
+			  tools:context="org.unpidf.univmobile.ui.fragments.PoisSearchFragment"
+			  android:background="@color/geo_purple_dark"
+			  android:padding="@dimen/horizontal">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/geo_purple_light"
+		android:layout_marginBottom="@dimen/horizontal">
+
+		<ImageView
+			android:id="@+id/back"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="10dp"
+			android:src="@drawable/ic_arrow_back"
+			android:layout_centerVertical="true"/>
+
+		<ImageView
+			android:id="@+id/clear"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:padding="10dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:src="@drawable/ic_clear"/>
+
+		<EditText
+			android:layout_toRightOf="@id/back"
+			android:layout_toLeftOf="@id/clear"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:background="@null"
+			android:textSize="@dimen/title_size"
+			android:id="@+id/search_value"
+			android:hint="@string/search_hint"
+			android:textColorHint="#4affffff"
+			android:textColor="@android:color/white"
+			android:lines="1"/>
+	</RelativeLayout>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/geo_purple_light"
+		android:textColor="@android:color/white"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"
+		android:paddingTop="5dp"
+		android:id="@+id/title"
+		android:paddingBottom="5dp"
+		android:layout_marginBottom="2dp"
+		android:textSize="@dimen/content_size"
+		android:text="@string/search_results"/>
+
+
+	<ListView
+		android:id="@+id/list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/geo_purple_light"
+		android:dividerHeight="2dp"
+		android:divider="@color/geo_purple_dark"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"></ListView>
+</LinearLayout>

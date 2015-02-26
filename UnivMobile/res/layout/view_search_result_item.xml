@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:layout_width="match_parent"
+		  android:layout_height="match_parent"
+		  android:textSize="@dimen/content_size"
+		  android:textColor="@android:color/white"
+		  android:drawableLeft="@drawable/ic_search_left"
+		  android:background="@color/geo_purple_light"
+		  android:paddingTop="@dimen/horizontal"
+		  android:paddingBottom="@dimen/horizontal"
+		  android:drawablePadding="@dimen/horizontal">
+
+</TextView>

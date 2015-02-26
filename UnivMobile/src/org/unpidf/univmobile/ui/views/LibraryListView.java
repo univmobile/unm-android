@@ -4,15 +4,19 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
+import java.util.List;
+
 /**
- * Created by Rokas on 2015-02-05.
+ * Created by rviewniverse on 2015-02-05.
  */
 public class LibraryListView extends RelativeLayout {
 
@@ -29,7 +33,7 @@ public class LibraryListView extends RelativeLayout {
 		super(context, attrs, defStyle);
 	}
 
-	public void init(int count, OnClickListener listener) {
+	public void init(List<Poi> pois, int maxCount, OnClickListener listener, final OnLibraryClickListener myListener) {
 		LayoutInflater.from(getContext()).inflate(R.layout.view_library_list, this, true);
 
 		//init fonts
@@ -38,8 +42,17 @@ public class LibraryListView extends RelativeLayout {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.go_to_library_fragment), FontHelper.FONT.EXO_BOLD);
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
-		for (int i = 0; i < count; i++) {
-			LibraryItemView item = new LibraryItemView(getContext(), "Conservatoire national des arts et métiers - Bibliothèque centrale");
+		for (int i = 0; i < pois.size() && i < maxCount; i++) {
+			LibraryItemView item = new LibraryItemView(getContext(), pois.get(i).getName());
+			final Poi p = pois.get(i);
+			item.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(myListener != null) {
+						myListener.onLibraryClicked(p);
+					}
+				}
+			});
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 			l.addView(item, params);
 		}
@@ -50,6 +63,9 @@ public class LibraryListView extends RelativeLayout {
 		} else {
 			v.setOnClickListener(listener);
 		}
+	}
 
+	public interface OnLibraryClickListener {
+		public void onLibraryClicked(Poi poi);
 	}
 }

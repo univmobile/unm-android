@@ -8,6 +8,8 @@
 	<color name="group_3_color">#34c978</color>
 	<color name="group_4_color">#45b2c9</color>
 
+	<color name="gray">#8e8e8e</color>
+
 	<color name="red">#f9032c</color>
 
 	<color name="yellow">#ffb103</color>
@@ -20,6 +22,7 @@
 	<color name="list_item_green">#eaffd9</color>
 
 	<color name="purple">#4c303e</color>
+	<color name="text_gray">#7a7a7a</color>
 
 	<!-- geo campus collors -->
 	<color name="geo_green_light">#34c978</color>
@@ -33,4 +36,7 @@
 
 	<color name="geo_purple_light">#a54078</color>
 	<color name="geo_purple_dark">#7f2456</color>
+
+	<color name="geo_red_light">#df6138</color>
+	<color name="geo_red_dark">#a03b1a</color>
 </resources>

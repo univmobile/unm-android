@@ -8,11 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rokas on 2015-01-06.
+ * Created by rviewniverse on 2015-01-06.
  */
 public class Region {
+	private int id;
 	private String name;
 	private String universityUrl;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

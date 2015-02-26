@@ -4,6 +4,8 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent">
 
+
+
 	<RelativeLayout
 		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="53dp"
@@ -27,22 +29,25 @@
 			android:paddingTop="7dp"
 			android:paddingBottom="7dp"
 			android:paddingLeft="20dp"
-			android:paddingRight="20dp"/>
+			android:paddingRight="20dp"
+			android:background="@color/geo_gray_dark"
+			android:layout_alignParentRight="true"/>
 
 		<TextView
 			android:id="@+id/title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_toRightOf="@id/search"
+			android:layout_toLeftOf="@id/search"
 			android:layout_alignTop="@id/search"
 			android:layout_alignBottom="@id/search"
 			android:text="@string/sort_by_categories"
 			android:textColor="@android:color/white"
 			android:textSize="@dimen/title_size"
-			android:gravity="center_vertical|right"
-			android:paddingRight="@dimen/horizontal"
-			android:drawableRight="@drawable/ic_arrow_up"
-			android:drawablePadding="5dp"/>
+			android:gravity="center_vertical|left"
+			android:paddingLeft="@dimen/horizontal"
+			android:drawableLeft="@drawable/ic_arrow_up"
+			android:drawablePadding="5dp"
+			android:background="@color/geo_gray_light"/>
 
 		<View
 			android:layout_width="match_parent"
@@ -51,22 +56,27 @@
 			android:layout_below="@id/search"
 			android:background="@android:color/white"/>
 
-		<ScrollView
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_below="@id/separator_bottom"
-			android:id="@+id/categories_scroll"
 			android:visibility="gone"
-			android:scrollbarThumbVertical="@drawable/scrollbar">
+			android:id="@+id/categories_scroll">
 
-			<LinearLayout
+			<ScrollView
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:id="@+id/categories_container"
-				android:orientation="vertical">
+				android:scrollbarThumbVertical="@drawable/scrollbar">
 
-			</LinearLayout>
-		</ScrollView>
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/categories_container"
+					android:orientation="vertical">
+
+				</LinearLayout>
+			</ScrollView>
+		</RelativeLayout>
 	</RelativeLayout>
 
 	<LinearLayout
@@ -93,6 +103,7 @@
 		</RelativeLayout>
 
 		<View
+			android:id="@+id/separator1"
 			android:layout_width="2dp"
 			android:layout_height="match_parent"
 			android:background="@color/geo_gray_dark"/>
@@ -114,6 +125,7 @@
 		</RelativeLayout>
 
 		<View
+			android:id="@+id/separator2"
 			android:layout_width="2dp"
 			android:layout_height="match_parent"
 			android:background="@color/geo_gray_dark"/>
@@ -134,5 +146,19 @@
 				android:scaleType="fitCenter"/>
 		</RelativeLayout>
 	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/loading"
+		android:background="#a000">
+
+		<ProgressBar
+			android:id="@+id/progressBar1"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"/>
+	</RelativeLayout>
 
 </RelativeLayout>

@@ -3,12 +3,12 @@ package org.unpidf.univmobile.data.operations;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 
 /**
- * Created by Rokas on 2015-02-05.
+ * Created by rviewniverse on 2015-02-05.
  */
 public interface OperationListener<T> {
 	public void onOperationStarted();
 
-	public void onOperationFailed(ErrorEntity error);
+	public void onOperationFinished(ErrorEntity error, T result);
 
-	public void onOperationFinished(T result);
+	public void onPageDownloaded(T result);
 }

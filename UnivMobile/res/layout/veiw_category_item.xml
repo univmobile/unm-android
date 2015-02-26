@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:id="@+id/container">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:id="@+id/container"
+			  android:orientation="vertical"
+			  android:gravity="center">
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/category_image"
+		android:adjustViewBounds="true"
+		android:layout_marginLeft="40dp"
+		android:layout_marginRight="40dp"
+		android:layout_marginTop="5dp"/>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textColor="@android:color/white"
 		android:textSize="@dimen/content_size"
-		android:text="Bibliothèque Universitaire"
-		android:drawableTop="@drawable/ic_geo_category_1"
 		android:gravity="center"
-		android:layout_centerInParent="true"
 		android:padding="5dp"
 		android:id="@+id/title"
-		android:drawablePadding="5dp"/>
+		android:lines="3"/>
 
-</RelativeLayout>
+</LinearLayout>

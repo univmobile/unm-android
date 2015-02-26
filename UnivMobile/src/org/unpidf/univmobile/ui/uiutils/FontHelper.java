@@ -2,15 +2,16 @@ package org.unpidf.univmobile.ui.uiutils;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by Rokas on 2015-01-31.
+ * Created by rviewniverse on 2015-01-31.
  */
 public class FontHelper {
 
 	public enum FONT {
-		EXO_BOLD, EXO_REGULAR, EXO_SEMI_BOLD, EXO_ITALIC, EXO_MEDIUM, EXO2_REGULAR, EXO2_LIGHT
+		EXO_BOLD, EXO_REGULAR, EXO_SEMI_BOLD, EXO_ITALIC, EXO_MEDIUM, EXO_BOLD_ITALIC, EXO2_REGULAR, EXO2_LIGHT
 	}
 
 	private Context mContext;
@@ -19,6 +20,7 @@ public class FontHelper {
 	private Typeface mExoRegular;
 	private Typeface mExoSemiBold;
 	private Typeface mExoItalic;
+	private Typeface mExoBoldItalic;
 	private Typeface mExoMedium;
 	private Typeface mExo2Regular;
 	private Typeface mExo2Light;
@@ -33,6 +35,14 @@ public class FontHelper {
 			textView.setTypeface(typeface);
 		}
 	}
+
+	public void loadFont(EditText editText, FONT font) {
+		Typeface typeface = getTypeFace(font);
+		if (typeface != null) {
+			editText.setTypeface(typeface);
+		}
+	}
+
 
 	public Typeface getTypeFace(FONT font) {
 		Typeface typeface = null;
@@ -66,6 +76,12 @@ public class FontHelper {
 					mExoMedium = Typeface.createFromAsset(mContext.getAssets(), "fonts/Exo-Medium.otf");
 				}
 				typeface = mExoMedium;
+				break;
+			case EXO_BOLD_ITALIC:
+				if (mExoBoldItalic == null) {
+					mExoBoldItalic = Typeface.createFromAsset(mContext.getAssets(), "fonts/Exo-BoldItalic.otf");
+				}
+				typeface = mExoBoldItalic;
 				break;
 			case EXO2_REGULAR:
 				if (mExo2Regular == null) {

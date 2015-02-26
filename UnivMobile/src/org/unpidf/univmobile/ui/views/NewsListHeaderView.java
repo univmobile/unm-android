@@ -10,7 +10,7 @@ import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
 /**
- * Created by Rokas on 2015-02-02.
+ * Created by rviewniverse on 2015-02-02.
  */
 public class NewsListHeaderView extends RelativeLayout {
 	public NewsListHeaderView(Context context) {

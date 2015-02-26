@@ -6,16 +6,30 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 /**
- * Created by Rokas on 2015-01-06.
+ * Created by rviewniverse on 2015-01-06.
  */
 public class University implements Parcelable {
 
 	private int id;
 	private String title;
+	private String self;
+	private String regionName;
+
+	public University() {
+
+	}
+
+	public University(int id, String title, String self, String regionName) {
+		this.id = id;
+		this.title = title;
+		this.self = self;
+		this.regionName = regionName;
+	}
 
 	public University(Parcel in) {
 		id = in.readInt();
 		title = in.readString();
+		self = in.readString();
 	}
 
 	@Override
@@ -27,6 +41,7 @@ public class University implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(id);
 		dest.writeString(title);
+		dest.writeString(self);
 	}
 
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -53,5 +68,21 @@ public class University implements Parcelable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getSelf() {
+		return self;
+	}
+
+	public void setSelf(String self) {
+		this.self = self;
+	}
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
 	}
 }

@@ -1,12 +1,12 @@
 package org.unpidf.univmobile.data.entities;
 
 /**
- * Created by Rokas on 2015-01-31.
+ * Created by rviewniverse on 2015-01-31.
  */
 public class ErrorEntity {
 
 	public static enum ERROR_TYPE {
-		NETWORK_ERROR, JSON_ERROR, UNKNOWN_ERROR
+		NETWORK_ERROR, JSON_ERROR, UNAUTHORIZED, UNKNOWN_ERROR
 	}
 
 	private ERROR_TYPE mErrorType;

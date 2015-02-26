@@ -1,50 +1,66 @@
 package org.unpidf.univmobile.data.operations;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.unpidf.univmobile.data.ApiManager;
+import org.unpidf.univmobile.data.entities.Login;
+import org.unpidf.univmobile.data.entities.ShibbolethPrepare;
 import org.unpidf.univmobile.data.models.LoginDataModel;
-import org.unpidf.univmobile.data.models.LoginDataModel.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rokas on 2015-01-14.
+ * Created by rviewniverse on 2015-01-14.
  */
-public class ShibbolethRetrieveOperation extends AsyncTask<String, Void, Boolean> {
+public class ShibbolethRetrieveOperation extends AbsOperation<Login> {
 
-	private Context mContext;
-	private LoginDataModel.ShibbolethLoginObserver mShibbolethLoginObserver;
 
-	public ShibbolethRetrieveOperation(Context c, ShibbolethLoginObserver observer) {
-		mContext = c;
-		mShibbolethLoginObserver = observer;
+	private ShibbolethPrepare mPrepare;
+
+	public ShibbolethRetrieveOperation(Context c, OperationListener<Login> listener, ShibbolethPrepare prepare) {
+		super(c, listener);
+		mPrepare = prepare;
 	}
 
-	public void retrieveShibboleth(String loginToken, String key) {
-		executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, loginToken, key);
-	}
-
-	protected Boolean doInBackground(String... params) {
+	@Override
+	protected InputStream doRequest(int page) throws IOException {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("apiKey", LoginDataModel.API_KEY));
-		nameValuePairs.add(new BasicNameValuePair("loginToken", params[0]));
-		nameValuePairs.add(new BasicNameValuePair("key", params[1]));
+		nameValuePairs.add(new BasicNameValuePair("loginToken", mPrepare.getToken()));
+		nameValuePairs.add(new BasicNameValuePair("key", mPrepare.getKey()));
 
-		JSONObject json = ApiManager.callAPIPost(LoginDataModel.TEST_URL_SESSION, nameValuePairs);
+		HttpPost request = new HttpPost(getOperationUrl(page));
+		request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-		Log.d("test", "json " + json.toString());
-		return true;
+		HttpClient mHttpClient = new DefaultHttpClient();
+		HttpResponse response = mHttpClient.execute(request);
+		return response.getEntity().getContent();
 	}
 
-	protected void onPostExecute(Boolean result) {
-		mShibbolethLoginObserver = null;
+	@Override
+	protected Login parse(JSONObject json) throws JSONException {
+		HttpPost request = new HttpPost();
+
+		HttpPost requests = new HttpPost();
+
+		return null;
 	}
+
+	@Override
+	protected String getOperationUrl(int page) {
+		return "https://univmobile-dev.univ-paris1.fr/json/session";
+	}
+
 
 }

@@ -9,29 +9,43 @@ import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Login;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 
 /**
- * Created by Rokas on 2015-01-31.
+ * Created by rviewniverse on 2015-01-31.
  */
-public abstract class AbsOperation<T> extends AsyncTask<Void, Void, T> {
+public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 
 	public static final String TAG = "UnivMobile";
 
-	public static final String BASE_URL = "http://vps111534.ovh.net:8082/";
+	protected static final String BASE_URL = "http://vps111534.ovh.net/unm-backend/";
+	protected static final String BASE_URL_API = BASE_URL + "api/";
+
+	protected enum REQUEST {POST, GET}
+
 
 	protected Context mContext;
 	private OperationListener mListener;
 
-	private ErrorEntity mError;
+	protected ErrorEntity mError;
+
+	private int mCurrentPage = 0;
+	private int mTotalPages = 0;
 
 	public AbsOperation(Context c, OperationListener listener) {
 		mContext = c;
@@ -58,10 +72,40 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, Void, T> {
 
 	@Override
 	protected T doInBackground(Void... params) {
+		return getOnePage(0, null);
+	}
+
+	protected void onPostExecute(T result) {
+		if (mError == null) {
+			Log.d(TAG, "Operation " + this.getClass().getSimpleName() + " finished");
+		} else {
+			Log.d(TAG, "Operation " + this.getClass().getSimpleName() + " failed. Error " + mError.getmErrorType().toString());
+		}
+
+		if (mListener != null) {
+			mListener.onOperationFinished(mError, result);
+		}
+		if (mListener == null) {
+			clear();
+		}
+		super.onPostExecute(result);
+	}
+
+	@Override
+	protected void onProgressUpdate(T... values) {
+		if (mListener != null) {
+			mListener.onPageDownloaded(values[0]);
+		}
+
+		super.onProgressUpdate(values);
+	}
+
+	private T getOnePage(int page, T oldData) {
+
 		InputStream in = null;
 		T result = null;
 		try {
-			in = doRequest();
+			in = doRequest(page);
 		} catch (IOException e) {
 			e.printStackTrace();
 			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.NETWORK_ERROR);
@@ -74,56 +118,119 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, Void, T> {
 		}
 
 		try {
-			result = parse(in);
+			result = parse(getJsonObject(in));
+
+			if (mCurrentPage + 1 < mTotalPages) {
+				publishProgress(result);
+			}
+
+			if (oldData != null) {
+				result = combine(result, oldData);
+			}
+
+			if (mCurrentPage + 1 < mTotalPages && shouldBePaged()) {
+				result = getOnePage(mCurrentPage + 1, result);
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.JSON_ERROR);
+			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
 			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.JSON_ERROR);
-			return null;
+			return result;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.JSON_ERROR);
-			return null;
-		}
-
-		if (result == null && mError == null) {
-			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.UNKNOWN_ERROR);
-			return null;
+			return result;
 		}
 
 		return result;
 	}
 
-	protected void onPostExecute(T result) {
-		if (mError == null) {
-			Log.d(TAG, "Operation " + this.getClass().getSimpleName() + " finished");
-		} else {
-			Log.d(TAG, "Operation " + this.getClass().getSimpleName() + " failed. Error " + mError.getmErrorType().toString());
-		}
-
-		if (mListener != null) {
-			if (mError == null) {
-				mListener.onOperationFinished(result);
-			} else {
-				mListener.onOperationFailed(mError);
-			}
-		}
-		if (mListener == null) {
-			clear();
-		}
-		super.onPostExecute(result);
-	}
-
-	private InputStream doRequest() throws IOException {
-		String url = getOperationUrl();
+	protected InputStream doRequest(int page) throws IOException {
+		String url = getOperationUrl(page);
+		url = url.replaceAll("\\s", "");
 		Log.d(TAG, "Operations " + this.getClass().getSimpleName() + " request url: " + url);
-		HttpUriRequest request = new HttpGet(url);
+		HttpUriRequest request = null;
+		switch (getRequestType()) {
+			case GET:
+				request = new HttpGet(url);
+				break;
+			case POST:
+				request = new HttpPost(url);
+				String body = getBody();
+				if (body != null) {
+					((HttpPost) request).setEntity(new StringEntity(body));
+					((HttpPost) request).setHeader("Content-type", "application/json");
+					Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+					if (login != null) {
+						((HttpPost) request).setHeader("Authentication-Token", login.getToken());
+					}
+				}
+		}
 		HttpClient mHttpClient = new DefaultHttpClient();
 		HttpResponse response = mHttpClient.execute(request);
+		handleStatusLine(response);
 		return response.getEntity().getContent();
 	}
 
-	abstract T parse(InputStream in) throws IOException, JSONException;
+	private JSONObject getJsonObject(InputStream in) throws IOException, JSONException, IllegalArgumentException {
+		try {
+			BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+			StringBuilder responseStrBuilder = new StringBuilder();
 
-	protected abstract String getOperationUrl();
+			String inputStr;
+			while ((inputStr = streamReader.readLine()) != null) {
+				responseStrBuilder.append(inputStr);
+			}
+			if (responseStrBuilder != null && responseStrBuilder.length() > 0) {
+				JSONObject json = new JSONObject(responseStrBuilder.toString());
+				parsePage(json);
+
+				return json;
+			} else {
+				return new JSONObject("{}");
+			}
+
+		} finally {
+			in.close();
+		}
+	}
+
+	private void parsePage(JSONObject json) {
+		try {
+			JSONObject page = json.getJSONObject("page");
+			mTotalPages = page.getInt("totalPages");
+			mCurrentPage = page.getInt("number");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected void handleStatusLine(HttpResponse response) {
+
+	}
+
+	protected T combine(T newData, T oldData) {
+		return oldData;
+	}
+
+	protected boolean shouldBePaged() {
+		return false;
+	}
+
+	protected REQUEST getRequestType() {
+		return REQUEST.GET;
+	}
+
+	protected String getBody() {
+		return null;
+	}
+
+	protected abstract T parse(JSONObject json) throws JSONException;
+
+	protected abstract String getOperationUrl(int page);
+
 
 }

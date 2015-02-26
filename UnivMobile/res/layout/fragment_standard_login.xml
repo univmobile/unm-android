@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/splash_screen_header"
+		android:src="@drawable/splash_screen_bg"
+		android:adjustViewBounds="true"
+		android:scaleType="centerCrop"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/content"
+		android:orientation="vertical"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/login_bg"
+		android:paddingRight="30dp"
+		android:paddingLeft="30dp">
+
+		<!--Exo DemiBold -->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/title"
+			android:gravity="center_horizontal"
+			android:text="@string/connection"
+			android:textColor="@android:color/white"
+			android:textSize="@dimen/title_size"
+			android:paddingTop="10dp"
+			android:paddingBottom="5dp"/>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:background="#24ffffff"/>
+
+		<!--Exo DemiBold -->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/email_title"
+			android:text="@string/name"
+			android:textColor="@android:color/white"
+			android:textSize="@dimen/content_size"
+			android:paddingTop="10dp"
+			android:paddingBottom="5dp"/>
+
+		<!--Exo DemiBold -->
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/edit_text_background"
+			android:textColor="@android:color/black"
+			android:textSize="@dimen/content_size"
+			android:id="@+id/email_value"
+			android:imeOptions="actionNext"
+			android:lines="1"
+			android:singleLine="true"/>
+
+		<!--Exo DemiBold -->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/password_title"
+			android:text="@string/password"
+			android:textColor="@android:color/white"
+			android:textSize="@dimen/content_size"
+			android:paddingTop="10dp"
+			android:paddingBottom="5dp"/>
+
+		<!--Exo DemiBold -->
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/edit_text_background"
+			android:textColor="@android:color/black"
+			android:textSize="@dimen/content_size"
+			android:id="@+id/password_value"
+			android:imeOptions="actionSend"
+			android:imeActionLabel="@string/post"
+			android:lines="1"
+			android:inputType="textPassword"
+			android:singleLine="true"/>
+
+		<TextView
+			android:clickable="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/post"
+			android:id="@+id/accept_button"
+			android:background="@drawable/selector_button_purple"
+			android:gravity="center"
+			android:layout_gravity="center_horizontal"
+			android:textColor="#fffffd"
+			android:paddingRight="10dp"
+			android:paddingLeft="10dp"
+			android:paddingTop="4dp"
+			android:paddingBottom="4dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:textSize="@dimen/button_size"/>
+
+	</LinearLayout>
+
+	<ProgressBar
+		android:id="@+id/progressBar1"
+		style="?android:attr/progressBarStyleLarge"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:visibility="gone"/>
+
+</RelativeLayout>

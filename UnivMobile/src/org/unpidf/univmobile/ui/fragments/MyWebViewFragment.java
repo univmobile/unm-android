@@ -15,14 +15,17 @@ import org.unpidf.univmobile.R;
 public class MyWebViewFragment extends WebViewFragment {
 
 	private static final String ARG_URL = "arg_url";
+	private static final String ARG_DATA = "arg_data";
 
 	private String mUrl;
+	private String mData;
 
 
-	public static MyWebViewFragment newInstance(String url) {
+	public static MyWebViewFragment newInstance(String url, String data) {
 		MyWebViewFragment fragment = new MyWebViewFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_URL, url);
+		args.putString(ARG_DATA, data);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -36,6 +39,7 @@ public class MyWebViewFragment extends WebViewFragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			mUrl = getArguments().getString(ARG_URL);
+			mData = getArguments().getString(ARG_DATA);
 		}
 	}
 
@@ -45,8 +49,14 @@ public class MyWebViewFragment extends WebViewFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		WebView webView = getWebView();
-		webView.loadUrl(mUrl);
 		webView.setWebViewClient(mWebViewClient);
+
+		if (mUrl != null && mUrl.length() > 0) {
+			webView.loadUrl(mUrl);
+		} else if (mData != null) {
+			webView.loadDataWithBaseURL(null, mData, "text/html", "UTF-8", null);
+
+		}
 	}
 
 	private WebViewClient mWebViewClient = new WebViewClient() {

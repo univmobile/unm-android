@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="vertical"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:paddingBottom="5dp"
+			  android:paddingTop="5dp"
+			  android:paddingLeft="@dimen/horizontal"
+			  android:paddingRight="@dimen/horizontal">
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/user_name"
+			android:textSize="@dimen/content_size"
+			android:text="Jeremy D."
+			android:paddingRight="5dp"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/post_date"
+			android:text="l y a 8 heures"
+			android:textSize="@dimen/date_size"
+			android:textColor="@color/text_gray"/>
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColor="@android:color/black"
+		android:id="@+id/message"
+		android:textSize="@dimen/content_size"
+		android:text="Très bon accueil, personnel serviable et très à l’écoute. Prise en charge très rapide !"/>
+</LinearLayout>

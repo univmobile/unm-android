@@ -5,21 +5,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.unpidf.univmobile.R;
+import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Region;
 import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
+import org.unpidf.univmobile.ui.adapters.UniversityListAdapter;
+import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SplashScreenActivity extends Activity implements UniversitiesDataModel.UniversitiesDataModelObserver {
+public class SplashScreenActivity extends Activity {
 
 
 	private UniversitiesDataModel mModel;
@@ -31,17 +37,22 @@ public class SplashScreenActivity extends Activity implements UniversitiesDataMo
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_splash_screen);
+
+		//init fonts
+		FontHelper helper = ((UnivMobileApp) getApplicationContext()).getFontHelper();
+		helper.loadFont((android.widget.TextView) findViewById(R.id.title), FontHelper.FONT.EXO_REGULAR);
+		helper.loadFont((android.widget.TextView) findViewById(R.id.accept_button), FontHelper.FONT.EXO_REGULAR);
+
 		mModel = new UniversitiesDataModel(this);
 
-		if (mModel.isUniversitySaved()) {
-			findViewById(R.id.splash_screen_content).setVisibility(View.GONE);
-			//findViewById(R.id.splash_screen_footer).setVisibility(View.GONE);
+		if (UniversitiesDataModel.isUniversitySaved(this)) {
 			startHomeActivityDelayed();
 		} else {
 			mSpinner = (Spinner) findViewById(R.id.spinner);
-			mModel.getRegions(this);
+			mModel.getRegions(mUniversitiesDataModelListener);
 		}
 	}
+
 
 	@Override
 	protected void onDestroy() {
@@ -79,52 +90,57 @@ public class SplashScreenActivity extends Activity implements UniversitiesDataMo
 		@Override
 		public void onClick(View v) {
 			v.setEnabled(false);
-			mModel.getUniversities(SplashScreenActivity.this, mModel.regions().get(mSpinner.getSelectedItemPosition()));
+			mModel.getUniversities(mUniversitiesDataModelListener, mModel.regions().get(mSpinner.getSelectedItemPosition()));
 		}
 	};
 
 
-	@Override
-	public void showLoadingIndicator() {
-		findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void showRegions(List<Region> regionsList) {
-		findViewById(R.id.progressBar1).setVisibility(View.GONE);
-		List<String> list = new ArrayList<String>();
-
-		for (Region university : regionsList) {
-			list.add(university.getName());
+	private UniversitiesDataModel.UniversitiesDataModelListener mUniversitiesDataModelListener = new UniversitiesDataModel.UniversitiesDataModelListener() {
+		@Override
+		public void showLoadingIndicator() {
+			findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
 		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.view_spinner_item, list);
-		dataAdapter.setDropDownViewResource(R.layout.view_spinner_item);
-		mSpinner.setAdapter(dataAdapter);
 
-		findViewById(R.id.accept_button).setOnClickListener(mSelectRegionListener);
-	}
+		@Override
+		public void showRegions(List<Region> regionsList) {
 
-	@Override
-	public void showUniversities(List<University> universityList) {
-		findViewById(R.id.progressBar1).setVisibility(View.GONE);
-		List<String> list = new ArrayList<String>();
+			expand();
 
-		for (University university : universityList) {
-			list.add(university.getTitle());
+			findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			List<String> list = new ArrayList<String>();
+
+			for (Region university : regionsList) {
+				list.add(university.getName());
+			}
+			UniversityListAdapter dataAdapter = new UniversityListAdapter(SplashScreenActivity.this, list);
+			mSpinner.setAdapter(dataAdapter);
+
+			findViewById(R.id.accept_button).setOnClickListener(mSelectRegionListener);
 		}
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.view_spinner_item, list);
-		dataAdapter.setDropDownViewResource(R.layout.view_spinner_item);
-		mSpinner.setAdapter(dataAdapter);
 
-		((TextView) findViewById(R.id.title)).setText(R.string.select_university);
-		findViewById(R.id.accept_button).setEnabled(true);
-		findViewById(R.id.accept_button).setOnClickListener(mSelectUniversityListener);
-	}
+		@Override
+		public void showUniversities(List<University> universityList) {
+			findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			List<String> list = new ArrayList<String>();
 
-	@Override
-	public void showErrorMessage(ErrorEntity error) {
-		findViewById(R.id.progressBar1).setVisibility(View.GONE);
-	}
+			for (University university : universityList) {
+				list.add(university.getTitle());
+			}
+			UniversityListAdapter dataAdapter = new UniversityListAdapter(SplashScreenActivity.this, list);
+
+			mSpinner.setAdapter(dataAdapter);
+
+			((TextView) findViewById(R.id.title)).setText(R.string.select_university);
+			findViewById(R.id.accept_button).setEnabled(true);
+			findViewById(R.id.accept_button).setOnClickListener(mSelectUniversityListener);
+		}
+
+		@Override
+		public void showErrorMessage(ErrorEntity error) {
+			findViewById(R.id.progressBar1).setVisibility(View.GONE);
+		}
+	};
+
 
 	@Override
 	public void onBackPressed() {
@@ -142,6 +158,35 @@ public class SplashScreenActivity extends Activity implements UniversitiesDataMo
 
 			findViewById(R.id.accept_button).setOnClickListener(mSelectRegionListener);
 
+		} else {
+			super.onBackPressed();
 		}
 	}
+
+
+	private void expand() {
+
+		final View footer = findViewById(R.id.footer);
+		final int height = footer.getHeight();
+
+		Animation a = new Animation() {
+			@Override
+			protected void applyTransformation(float interpolatedTime, Transformation t) {
+				((RelativeLayout.LayoutParams) footer.getLayoutParams()).bottomMargin = (int) (-(height - (height * interpolatedTime)));
+				footer.requestLayout();
+			}
+
+			@Override
+			public boolean willChangeBounds() {
+				return true;
+			}
+		};
+
+		// 0.25dp/ms
+		a.setDuration((int) (height * 4 / getResources().getDisplayMetrics().density));
+
+		footer.startAnimation(a);
+	}
+
+
 }

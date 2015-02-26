@@ -9,19 +9,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.unpidf.univmobile.data.entities.University;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rokas on 2015-01-31.
+ * Created by rviewniverse on 2015-01-31.
  */
 public class ReadUniversitiesOperation extends AbsOperation<List<University>> {
 
-
+private static final String UNIVERSITIES = "universities/";
 	private String mUrl;
 
 	public ReadUniversitiesOperation(Context c, OperationListener listener, String url) {
@@ -30,36 +26,40 @@ public class ReadUniversitiesOperation extends AbsOperation<List<University>> {
 	}
 
 	@Override
-	protected List<University> parse(InputStream in) throws IOException, JSONException {
-		try {
-			BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-			StringBuilder responseStrBuilder = new StringBuilder();
+	protected List<University> parse(JSONObject json) throws JSONException {
 
-			String inputStr;
-			while ((inputStr = streamReader.readLine()) != null)
-				responseStrBuilder.append(inputStr);
-			JSONObject json = new JSONObject(responseStrBuilder.toString());
+		JSONObject _embedded = json.getJSONObject("_embedded");
+		JSONArray universitiesJson = _embedded.getJSONArray("universities");
 
-			JSONObject _embedded = json.getJSONObject("_embedded");
-			JSONArray universitiesJson = _embedded.getJSONArray("universities");
-
-			List<University> universitiesList = new ArrayList<University>();
+		List<University> universitiesList = new ArrayList<University>();
 
 
-			for (int i = 0; i < universitiesJson.length(); i++) {
-				University u = new Gson().fromJson(universitiesJson.getJSONObject(i).toString(), University.class);
-				universitiesList.add(u);
-			}
+		for (int i = 0; i < universitiesJson.length(); i++) {
+			JSONObject universityJson = universitiesJson.getJSONObject(i);
+			University u = new Gson().fromJson(universityJson.toString(), University.class);
 
-			return universitiesList;
-		} finally {
-			in.close();
+			JSONObject links = universityJson.getJSONObject("_links");
+			JSONObject self = links.getJSONObject("self");
+			u.setSelf(self.getString("href"));
+
+			universitiesList.add(u);
 		}
+
+		return universitiesList;
 
 	}
 
 	@Override
-	protected String getOperationUrl() {
+	protected List<University> combine(List<University> newData, List<University> oldData) {
+		return null;
+	}
+
+	@Override
+	protected String getOperationUrl(int page) {
+		if(mUrl == null) {
+			return BASE_URL_API + UNIVERSITIES;
+		}
+
 		return mUrl;
 	}
 

@@ -16,7 +16,7 @@ import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
 import java.util.List;
 
 /**
- * Created by Rokas on 2015-01-20.
+ * Created by rviewniverse on 2015-01-20.
  */
 public class NavigationDrawerAdapter extends AnimatedExpandableListView.AnimatedExpandableListAdapter {
 
@@ -50,12 +50,20 @@ public class NavigationDrawerAdapter extends AnimatedExpandableListView.Animated
 
 	@Override
 	public long getGroupId(int groupPosition) {
-		return mContent.get(groupPosition).getId();
+		if(mContent.size() > groupPosition) {
+			return mContent.get(groupPosition).getId();
+		} else {
+			return -1;
+		}
 	}
 
 	@Override
 	public long getChildId(int groupPosition, int childPosition) {
-		return mContent.get(groupPosition).getChilds().get(childPosition).getId();
+		if(mContent.size() > groupPosition && mContent.get(groupPosition).getChilds().size() > childPosition) {
+			return mContent.get(groupPosition).getChilds().get(childPosition).getId();
+		} else {
+			return -1;
+		}
 	}
 
 	@Override

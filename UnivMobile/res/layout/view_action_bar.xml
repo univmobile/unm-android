@@ -7,11 +7,11 @@
 	<ImageView
 		android:id="@+id/ic_menu"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:layout_centerVertical="true"
 		android:src="@drawable/selector_ic_menu"
 		android:paddingLeft="20dp"
-		android:paddingRight="20dp"/>
+		android:paddingRight="5dp"/>
 
 	<ImageView
 		android:layout_width="wrap_content"
@@ -20,14 +20,13 @@
 		android:layout_alignParentRight="true"
 		android:layout_alignParentEnd="true"
 		android:layout_marginRight="20dp"
-		android:layout_marginLeft="20dp"
+		android:layout_marginLeft="5dp"
 		android:layout_centerVertical="true"
 		android:id="@+id/ic_notifications"/>
 
 	<TextView
 		android:layout_width="14dp"
 		android:layout_height="14dp"
-		android:text="3"
 		android:textSize="10dp"
 		android:textStyle="bold"
 		android:textColor="@android:color/white"
@@ -35,7 +34,8 @@
 		android:layout_alignBottom="@id/ic_notifications"
 		android:background="@drawable/circle"
 		android:gravity="center"
-		android:id="@+id/notifications_count"/>
+		android:id="@+id/notifications_count"
+		android:visibility="gone"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"
@@ -49,33 +49,33 @@
 		android:gravity="center_vertical">
 
 		<TextView
-			android:id="@+id/general_user"
+			android:id="@+id/login_button"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="7"
+			android:layout_weight="10"
 			android:gravity="center_vertical|right"
-			android:text="Connectez-vous"
+			android:text="@string/login"
 			android:lines="1"
 			android:textColor="@android:color/white"
-			android:textSize="18sp"
-			android:visibility="gone"/>
+			android:textSize="16sp"/>
 
 		<LinearLayout
+			android:id="@+id/login_container"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:layout_weight="7"
+			android:layout_weight="10"
 			android:orientation="vertical"
 			android:gravity="center_vertical|right"
-			android:visibility="visible">
+			android:visibility="gone">
 
 			<TextView
 				android:id="@+id/greetings"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="7sp"
+				android:text="@string/hello"
 				android:lines="1"
-				android:textColor="@android:color/white"
-				android:text="Bonjour"/>
+				android:textColor="@android:color/white"/>
 
 			<TextView
 				android:id="@+id/user_name"
@@ -83,8 +83,7 @@
 				android:layout_height="wrap_content"
 				android:textSize="16sp"
 				android:lines="1"
-				android:textColor="@android:color/white"
-				android:text="Margis"/>
+				android:textColor="@android:color/white"/>
 		</LinearLayout>
 
 		<View
@@ -102,31 +101,15 @@
 			android:gravity="center_vertical">
 
 			<TextView
-				android:id="@+id/university_name_1"
+				android:id="@+id/university_name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="7sp"
-				android:lines="1"
+				android:maxLines="3"
 				android:textColor="@android:color/white"
-				android:text="Université Paris I"/>
+				android:text=""
+				android:paddingRight="15dp"/>
 
-			<TextView
-				android:id="@+id/university_name_2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textSize="7sp"
-				android:lines="1"
-				android:textColor="@android:color/white"
-				android:text="Panthéon"/>
-
-			<TextView
-				android:id="@+id/university_name_3"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textSize="7sp"
-				android:lines="1"
-				android:textColor="@android:color/white"
-				android:text="La Sorbonne"/>
 		</LinearLayout>
 	</LinearLayout>
 

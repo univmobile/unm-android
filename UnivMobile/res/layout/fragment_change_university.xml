@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="match_parent"
+			  android:orientation="vertical"
+			  android:layout_height="match_parent"
+			  tools:context="org.unpidf.univmobile.ui.fragments.PoisSearchFragment"
+			  android:background="@color/geo_purple_dark"
+			  android:padding="@dimen/horizontal">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="5dp">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/current_univ"
+			android:textSize="@dimen/title_size"
+			android:textColor="#4affffff"
+			android:drawableLeft="@drawable/ic_university_edit"
+			android:gravity="center_vertical"
+			android:drawablePadding="5dp"
+			android:id="@+id/current_univ_title"
+			android:paddingLeft="@dimen/horizontal"
+			android:paddingRight="@dimen/horizontal"/>
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:src="@drawable/ic_clear"
+			android:id="@+id/exit"/>
+		</RelativeLayout>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:padding="10dp"
+		android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:background="@color/geo_purple_light"
+		android:textSize="@dimen/title_size"
+		android:id="@+id/current_univ_value"
+		android:textColor="@android:color/white"
+		android:lines="1"
+		android:layout_marginBottom="@dimen/horizontal"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/geo_purple_light"
+		android:textColor="#4affffff"
+		android:paddingTop="5dp"
+		android:id="@+id/choose_univ"
+		android:paddingBottom="5dp"
+		android:layout_marginBottom="2dp"
+		android:textSize="@dimen/title_size"
+		android:text="@string/choose_univ"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"/>
+
+	<ListView
+		android:id="@+id/list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/geo_purple_light"
+		android:dividerHeight="2dp"
+		android:divider="@color/geo_purple_dark"
+		android:paddingLeft="@dimen/horizontal"
+		android:paddingRight="@dimen/horizontal"
+		android:visibility="gone"></ListView>
+
+	<ProgressBar
+		android:id="@+id/progressBar1"
+		style="?android:attr/progressBarStyleLarge"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:visibility="visible"/>
+</LinearLayout>

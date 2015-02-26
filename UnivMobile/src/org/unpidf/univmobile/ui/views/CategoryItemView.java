@@ -2,8 +2,12 @@ package org.unpidf.univmobile.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,9 +16,13 @@ import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
 /**
- * Created by Rokas on 2015-02-08.
+ * Created by rviewniverse on 2015-02-08.
  */
-public class CategoryItemView extends RelativeLayout {
+public class CategoryItemView extends LinearLayout {
+
+	private String mText;
+	private boolean mMeasured = false;
+
 	public CategoryItemView(Context context) {
 		super(context);
 		init();
@@ -39,18 +47,33 @@ public class CategoryItemView extends RelativeLayout {
 	}
 
 	public void setCategoryText(String text) {
+		mText = text;
 		((TextView) findViewById(R.id.title)).setText(text);
 	}
 
-	public void setCategoryIcon(int drawable) {
-		((TextView) findViewById(R.id.title)).setCompoundDrawablesWithIntrinsicBounds(0, drawable, 0, 0);
+	public ImageView getImageView() {
+		return ((ImageView) findViewById(R.id.category_image));
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
-		int height = (int) (width * 0.84);
+		int height = (int) (width * 1.2);
 		super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+		//super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+//		if( !mMeasured) {
+//			int totalHeight = MeasureSpec.getSize(widthMeasureSpec);
+//			int textHeight = ((TextView) findViewById(R.id.title)).getMeasuredHeight();
+//			if (mText != null && totalHeight > 0 && textHeight > 0) {
+//				mMeasured = true;
+//				Log.d("test", mText + " textHeight " + textHeight);
+//				Log.d("test", mText + " totalHeight " + totalHeight);
+//				Log.d("test", mText + " image " + (totalHeight - textHeight));
+//				View view = findViewById(R.id.category_image);
+//				view.getLayoutParams().height = 174;
+//				view.requestLayout();
+//			}
+//		}
 	}
 
 }
