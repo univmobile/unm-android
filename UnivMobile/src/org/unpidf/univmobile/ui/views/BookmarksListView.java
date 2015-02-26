@@ -68,6 +68,11 @@ public class BookmarksListView extends RelativeLayout {
 		}
 	}
 
+
+	public void clear() {
+		removeAllViews();
+	}
+
 	public interface OnBookmarkClickListener {
 		public void onBookmarkClicked(Poi poi);
 	}

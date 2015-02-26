@@ -1,26 +1,18 @@
 package org.unpidf.univmobile.ui.fragments;
 
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.unpidf.univmobile.R;
-import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
-import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.models.MyProfileDataModel;
-import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
-import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.BookmarksListView;
-import org.unpidf.univmobile.ui.views.LibraryListView;
-import org.unpidf.univmobile.ui.views.MediaListView;
 
 import java.util.List;
 
@@ -78,12 +70,19 @@ public class BookmarksFragment extends AbsFragment {
 
 		@Override
 		public void populateBookmarks(List<Bookmark> bookmarks) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			BookmarksListView bookmarksList = (BookmarksListView) getView().findViewById(R.id.bookmarks_list);
 			if (bookmarks == null) {
 				bookmarksList.setVisibility(View.GONE);
 			} else {
 				bookmarksList.init(bookmarks, Integer.MAX_VALUE, null, mOnBookmarkCLickListener);
 			}
+		}
+
+		@Override
+		public void hideLoadingIndicator() {
+
 		}
 	};
 

@@ -18,6 +18,7 @@ import org.unpidf.univmobile.data.operations.ReadPoisOperation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by rviewniverse on 2015-02-22.
@@ -28,7 +29,6 @@ public class MyProfileDataModel extends AbsDataModel {
 	private MyProfileDataModelInterface mListener;
 	private ReadLinksOperation mReadLinksOperation;
 
-	//private ReadPoisOperation mReadPoisOperation;
 	private ReadLibrariesOperation mReadLibrariesOperation;
 	private ReadPoiOperation mReadLibraryPoiOperation;
 	private List<String> mLibrariesPoisUrls;
@@ -40,6 +40,12 @@ public class MyProfileDataModel extends AbsDataModel {
 	private List<Bookmark> mBookmarks;
 	private int mCurrentBookmark = 0;
 
+	private boolean mLibrariesFinished = false;
+	private boolean mLinksFinished = false;
+	private boolean mBookmarksFinished = false;
+
+	private final Object lock = new Object();
+
 	public MyProfileDataModel(Context c, MyProfileDataModelInterface listener) {
 		mCotnext = c;
 		mListener = listener;
@@ -49,9 +55,6 @@ public class MyProfileDataModel extends AbsDataModel {
 	public void clear() {
 		clearOperation(mReadLinksOperation);
 		mReadLinksOperation = null;
-
-//		clearOperation(mReadPoisOperation);
-//		mReadPoisOperation = null;
 
 		clearOperation(mReadLibrariesOperation);
 		mReadLibrariesOperation = null;
@@ -67,6 +70,14 @@ public class MyProfileDataModel extends AbsDataModel {
 		mReadBookmarkPoiOperation = null;
 	}
 
+	private void notifyFinishedIfNeeded() {
+		if (mLibrariesFinished && mLinksFinished && mBookmarksFinished) {
+			if (mListener != null) {
+				mListener.hideLoadingIndicator();
+			}
+		}
+	}
+
 	public void getBookmarks() {
 		clearOperation(mReadBookmarksOperation);
 		mReadBookmarksOperation = null;
@@ -75,9 +86,12 @@ public class MyProfileDataModel extends AbsDataModel {
 		Login login = ((UnivMobileApp) mCotnext.getApplicationContext()).getmLogin();
 		if (login == null && mListener != null) {
 			mListener.populateBookmarks(null);
+			synchronized (lock) {
+				mBookmarksFinished = true;
+				notifyFinishedIfNeeded();
+			}
 		} else {
 			mReadBookmarksOperation = new ReadBookmarksOperation(mCotnext, mReadBookmarksOperationListener, login.getId());
-			//mReadBookmarksOperation = new ReadBookmarksOperation(mCotnext, mReadBookmarksOperationListener, "1");
 			mReadBookmarksOperation.startOperation();
 		}
 	}
@@ -92,22 +106,12 @@ public class MyProfileDataModel extends AbsDataModel {
 	}
 
 	public void getLibraries() {
-//		clearOperation(mReadPoisOperation);
-//		mReadPoisOperation = null;
-
 		clearOperation(mReadLibrariesOperation);
 		mReadLibrariesOperation = null;
 
 		int id = UniversitiesDataModel.getSavedUniversity(mCotnext).getId();
 		mReadLibrariesOperation = new ReadLibrariesOperation(mCotnext, mReadLibrariesOperationListener, id);
 		mReadLibrariesOperation.startOperation();
-//		int univID = UniversitiesDataModel.getSavedUniversity(mCotnext).getId();
-//		List<Category> cat = new ArrayList<Category>();
-//		Category c = new Category();
-//		c.setId(4);
-//		cat.add(c);
-//		mReadPoisOperation = new ReadPoisOperation(mCotnext, mReadPoisOperationListener, cat, -1, univID, null);
-//		mReadPoisOperation.startOperation();
 	}
 
 	private void getLibraryPoi(int pos) {
@@ -144,6 +148,10 @@ public class MyProfileDataModel extends AbsDataModel {
 				} else {
 					mListener.populateLibraries(mLibrariesPois);
 				}
+				synchronized (lock) {
+					mLibrariesFinished = true;
+					notifyFinishedIfNeeded();
+				}
 			}
 		}
 
@@ -168,6 +176,15 @@ public class MyProfileDataModel extends AbsDataModel {
 					getBookmakrPoi(mCurrentBookmark + 1);
 				} else {
 					mListener.populateBookmarks(mBookmarks);
+					synchronized (lock) {
+						mBookmarksFinished = true;
+						notifyFinishedIfNeeded();
+					}
+				}
+			} else {
+				synchronized (lock) {
+					mBookmarksFinished = true;
+					notifyFinishedIfNeeded();
 				}
 			}
 		}
@@ -189,6 +206,11 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (mListener != null && result != null) {
 				mBookmarks = result;
 				getBookmakrPoi(0);
+			} else {
+				synchronized (lock) {
+					mBookmarksFinished = true;
+					notifyFinishedIfNeeded();
+				}
 			}
 		}
 
@@ -209,6 +231,10 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (mListener != null && result != null) {
 				mListener.populateLinks(result);
 			}
+			synchronized (lock) {
+				mLinksFinished = true;
+				notifyFinishedIfNeeded();
+			}
 		}
 
 		@Override
@@ -228,6 +254,11 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (result != null) {
 				mLibrariesPoisUrls = result;
 				getLibraryPoi(0);
+			} else {
+				synchronized (lock) {
+					mLibrariesFinished = true;
+					notifyFinishedIfNeeded();
+				}
 			}
 		}
 
@@ -237,31 +268,14 @@ public class MyProfileDataModel extends AbsDataModel {
 		}
 	};
 
-//	private OperationListener<List<Poi>> mReadPoisOperationListener = new OperationListener<List<Poi>>() {
-//		@Override
-//		public void onOperationStarted() {
-//
-//		}
-//
-//		@Override
-//		public void onOperationFinished(ErrorEntity error, List<Poi> result) {
-//			if (mListener != null && result != null) {
-//				mListener.populateLibraries(result);
-//			}
-//		}
-//
-//		@Override
-//		public void onPageDownloaded(List<Poi> result) {
-//
-//		}
-//	};
-
 	public interface MyProfileDataModelInterface {
 		public void populateLinks(List<Link> links);
 
 		public void populateLibraries(List<Poi> pois);
 
 		public void populateBookmarks(List<Bookmark> bookmarks);
+
+		public void hideLoadingIndicator();
 	}
 
 }

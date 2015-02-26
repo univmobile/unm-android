@@ -68,6 +68,8 @@ public class MediaFragment extends AbsFragment {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Link> result) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			if (result != null) {
 				MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
 				mediaList.init(result, Integer.MAX_VALUE, null);

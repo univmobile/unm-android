@@ -65,6 +65,11 @@ public class LibraryListView extends RelativeLayout {
 		}
 	}
 
+
+	public void clear() {
+		removeAllViews();
+	}
+
 	public interface OnLibraryClickListener {
 		public void onLibraryClicked(Poi poi);
 	}

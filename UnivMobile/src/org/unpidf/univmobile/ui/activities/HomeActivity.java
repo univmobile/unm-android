@@ -92,6 +92,7 @@ public class HomeActivity extends Activity {
 		startActivity(i);
 		finish();
 	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -391,18 +392,24 @@ public class HomeActivity extends Activity {
 		((UnivMobileApp) getApplicationContext()).setmLogin(login);
 		removeTopFragment();
 		initUser();
+
+		FragmentManager manager = getFragmentManager();
+		MyProfileFragment f = (MyProfileFragment) manager.findFragmentByTag(MyProfileFragment.class.getName());
+		if(f != null) {
+			f.reload();
+		}
+
 	}
 
 	public void showPoiByCategory(int categoryID) {
 		FragmentManager manager = getFragmentManager();
 
 
-
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
 		if (f == null) {
 			f = GeoCampusFragment.newInstance(0, -1, -1, categoryID);
 			showFragment(f, GeoCampusFragment.class.getName(), false);
-		}  else {
+		} else {
 			Category c = new Category();
 			c.setId(categoryID);
 
@@ -418,7 +425,7 @@ public class HomeActivity extends Activity {
 		onBackPressed();
 		FragmentManager manager = getFragmentManager();
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if(f != null) {
+		if (f != null) {
 			f.categorySelected(cat);
 		}
 	}
@@ -426,7 +433,7 @@ public class HomeActivity extends Activity {
 	public void showPoi(int id) {
 		FragmentManager manager = getFragmentManager();
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if(f != null) {
+		if (f != null) {
 			f.showPoi(id);
 		}
 	}
@@ -441,7 +448,7 @@ public class HomeActivity extends Activity {
 		if (f == null) {
 			f = GeoCampusFragment.newInstance(0, -1, poi.getId(), -1);
 			showFragment(f, GeoCampusFragment.class.getName(), false);
-		}  else {
+		} else {
 			f.showPoiDetails(poi);
 		}
 	}

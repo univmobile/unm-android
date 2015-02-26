@@ -50,19 +50,30 @@
 			android:layout_height="wrap_content"
 			android:id="@+id/media_list"
 			android:paddingBottom="10dp"
-			android:background="@android:color/white"/>
+			android:background="@android:color/white"
+			android:visibility="gone"/>
 
 		<org.unpidf.univmobile.ui.views.LibraryListView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:id="@+id/library_list"
 			android:paddingBottom="10dp"
-			android:background="@android:color/white"/>
+			android:background="@android:color/white"
+			android:visibility="gone"/>
 
 		<org.unpidf.univmobile.ui.views.BookmarksListView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:id="@+id/bookmarks_list"/>
+			android:id="@+id/bookmarks_list"
+			android:visibility="gone"/>
+
+		<ProgressBar
+			android:id="@+id/progressBar1"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:visibility="visible"/>
 
 	</LinearLayout>
 </ScrollView>

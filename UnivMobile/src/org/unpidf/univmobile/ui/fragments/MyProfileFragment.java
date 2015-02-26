@@ -32,7 +32,6 @@ public class MyProfileFragment extends AbsFragment {
 
 	private MyProfileDataModel mModel;
 
-
 	public static MyProfileFragment newInstance() {
 		MyProfileFragment fragment = new MyProfileFragment();
 		Bundle args = new Bundle();
@@ -77,19 +76,7 @@ public class MyProfileFragment extends AbsFragment {
 		TextView unName = (TextView) view.findViewById(R.id.university_name);
 		unName.setText(u.getTitle());
 
-		UnivMobileApp ap = (UnivMobileApp) getActivity().getApplication();
-		TextView name = (TextView) view.findViewById(R.id.name);
-		if (ap.getmLogin() != null) {
-
-			name.setText(ap.getmLogin().getName());
-		} else {
-			name.setVisibility(View.GONE);
-		}
-
-		mModel = new MyProfileDataModel(getActivity(), mMyProfileDataModelInterface);
-		mModel.getLinks();
-		mModel.getLibraries();
-		mModel.getBookmarks();
+		laodData();
 
 		view.findViewById(R.id.edit).setOnClickListener(mChangeUnivListener);
 		//init fonts
@@ -99,6 +86,40 @@ public class MyProfileFragment extends AbsFragment {
 		helper.loadFont((android.widget.TextView) view.findViewById(R.id.edit), FontHelper.FONT.EXO_REGULAR);
 	}
 
+	private void laodData() {
+		UnivMobileApp ap = (UnivMobileApp) getActivity().getApplication();
+		TextView name = (TextView) getView().findViewById(R.id.name);
+		if (ap.getmLogin() != null) {
+			name.setVisibility(View.VISIBLE);
+			name.setText(ap.getmLogin().getName());
+		} else {
+			name.setVisibility(View.GONE);
+		}
+
+		mModel = new MyProfileDataModel(getActivity(), mMyProfileDataModelInterface);
+		mModel.getLinks();
+		mModel.getLibraries();
+		mModel.getBookmarks();
+	}
+	public void reload() {
+		MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
+		mediaList.setVisibility(View.GONE);
+		mediaList.clear();
+
+		LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
+		libraryList.setVisibility(View.GONE);
+		libraryList.clear();
+
+		BookmarksListView bookmarksList = (BookmarksListView) getView().findViewById(R.id.bookmarks_list);
+		bookmarksList.setVisibility(View.GONE);
+		bookmarksList.clear();
+
+		getView().findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
+
+		mModel.clear();
+		laodData();
+
+	}
 	private View.OnClickListener mChangeUnivListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -135,8 +156,11 @@ public class MyProfileFragment extends AbsFragment {
 	private MyProfileDataModel.MyProfileDataModelInterface mMyProfileDataModelInterface = new MyProfileDataModel.MyProfileDataModelInterface() {
 		@Override
 		public void populateLinks(List<Link> links) {
-			MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
-			mediaList.init(links, 5, mOnAllMediaClickListener);
+			if(links != null && links.size() > 0) {
+				MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
+				mediaList.setVisibility(View.VISIBLE);
+				mediaList.init(links, 5, mOnAllMediaClickListener);
+			}
 		}
 
 		@Override
@@ -144,6 +168,7 @@ public class MyProfileFragment extends AbsFragment {
 
 			if (pois != null && pois.size() > 0) {
 				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
+				libraryList.setVisibility(View.VISIBLE);
 				libraryList.init(pois, 5, mOnAllLibraryClickListener, mOnLibraryClickListener);
 			}
 
@@ -152,11 +177,15 @@ public class MyProfileFragment extends AbsFragment {
 		@Override
 		public void populateBookmarks(List<Bookmark> bookmarks) {
 			BookmarksListView bookmarksList = (BookmarksListView) getView().findViewById(R.id.bookmarks_list);
-			if (bookmarks == null) {
-				bookmarksList.setVisibility(View.GONE);
-			} else {
+			if (bookmarks != null&& bookmarks.size() > 0) {
+				bookmarksList.setVisibility(View.VISIBLE);
 				bookmarksList.init(bookmarks, 5, mOnAllBookmarksClickListener, mOnBookmarkCLickListener);
 			}
+		}
+
+		@Override
+		public void hideLoadingIndicator() {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
 	};
 

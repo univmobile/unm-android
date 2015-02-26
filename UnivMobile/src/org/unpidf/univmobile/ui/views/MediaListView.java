@@ -67,4 +67,8 @@ public class MediaListView extends RelativeLayout {
 			v.setOnClickListener(listener);
 		}
 	}
+
+	public void clear() {
+		removeAllViews();
+	}
 }

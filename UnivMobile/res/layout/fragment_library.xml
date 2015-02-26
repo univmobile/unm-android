@@ -58,7 +58,18 @@
 				android:layout_marginTop="-1px"
 				android:layout_below="@id/header_image"/>
 
+
+
 		</RelativeLayout>
 	</ScrollView>
+
+
+	<ProgressBar
+		android:id="@+id/progressBar1"
+		style="?android:attr/progressBarStyleLarge"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:visibility="visible"/>
 
 </RelativeLayout>

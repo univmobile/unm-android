@@ -1,26 +1,22 @@
 package org.unpidf.univmobile.ui.fragments;
 
 
-import android.content.Context;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
-import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
-import org.unpidf.univmobile.data.models.LibrariesDataModel;
+import org.unpidf.univmobile.data.models.MyProfileDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
-import org.unpidf.univmobile.data.operations.OperationListener;
-import org.unpidf.univmobile.data.operations.ReadPoisOperation;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
-import org.unpidf.univmobile.ui.views.BookmarksListView;
-import org.unpidf.univmobile.ui.views.LibraryItemView;
 import org.unpidf.univmobile.ui.views.LibraryListView;
 
 import java.util.ArrayList;
@@ -32,7 +28,7 @@ import java.util.List;
 public class LibraryFragment extends AbsFragment {
 
 
-	private LibrariesDataModel mLibrariesDataModel;
+	private MyProfileDataModel mMyProfileDataModel;
 
 	public static LibraryFragment newInstance() {
 		LibraryFragment fragment = new LibraryFragment();
@@ -49,8 +45,8 @@ public class LibraryFragment extends AbsFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		mLibrariesDataModel.clear();
-		mLibrariesDataModel = null;
+		mMyProfileDataModel.clear();
+		mMyProfileDataModel = null;
 	}
 
 	@Override
@@ -67,8 +63,8 @@ public class LibraryFragment extends AbsFragment {
 		Category c = new Category();
 		c.setId(4);
 		cat.add(c);
-		mLibrariesDataModel = new LibrariesDataModel(getActivity(), mLibrariesDataModelInterface);
-		mLibrariesDataModel.getLibraries();
+		mMyProfileDataModel = new MyProfileDataModel(getActivity(), mMyProfileDataModelInterface);
+		mMyProfileDataModel.getLibraries();
 
 		//init fonts
 		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
@@ -87,13 +83,29 @@ public class LibraryFragment extends AbsFragment {
 	};
 
 
-	private LibrariesDataModel.LibrariesModelInterface mLibrariesDataModelInterface = new LibrariesDataModel.LibrariesModelInterface() {
+	private MyProfileDataModel.MyProfileDataModelInterface mMyProfileDataModelInterface = new MyProfileDataModel.MyProfileDataModelInterface() {
+		@Override
+		public void populateLinks(List<Link> links) {
+
+		}
+
 		@Override
 		public void populateLibraries(List<Poi> pois) {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			if (pois != null && pois.size() > 0) {
 				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
 				libraryList.init(pois, Integer.MAX_VALUE, null, mOnLibraryClickListener);
 			}
+		}
+
+		@Override
+		public void populateBookmarks(List<Bookmark> bookmarks) {
+
+		}
+
+		@Override
+		public void hideLoadingIndicator() {
+
 		}
 	};
 
