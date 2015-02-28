@@ -9,19 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebViewFragment;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -40,6 +34,7 @@ import org.unpidf.univmobile.data.models.MenusDataModel;
 import org.unpidf.univmobile.data.models.NotificationsDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.ui.adapters.NavigationDrawerAdapter;
+import org.unpidf.univmobile.ui.fragments.AbsFragment;
 import org.unpidf.univmobile.ui.fragments.GeoCampusFragment;
 import org.unpidf.univmobile.ui.fragments.HomeFragment;
 import org.unpidf.univmobile.ui.fragments.LibraryFragment;
@@ -47,16 +42,11 @@ import org.unpidf.univmobile.ui.fragments.MediaFragment;
 import org.unpidf.univmobile.ui.fragments.MyProfileFragment;
 import org.unpidf.univmobile.ui.fragments.MyWebViewFragment;
 import org.unpidf.univmobile.ui.fragments.NotificationsFragment;
-import org.unpidf.univmobile.ui.fragments.PoisSearchFragment;
-import org.unpidf.univmobile.ui.fragments.ShibbolethLoginFragment;
 import org.unpidf.univmobile.ui.fragments.StandartLoginFragment;
 import org.unpidf.univmobile.ui.fragments.UniversityNewsFragment;
-import org.unpidf.univmobile.ui.fragments.AbsFragment;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
-import org.w3c.dom.Text;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,6 +188,15 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
+				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
+			}
+		});
+
+		actionBarView.findViewById(R.id.login_container).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				((UnivMobileApp) getApplicationContext()).logout();
+				restart();
 				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
 			}
 		});
@@ -389,16 +388,17 @@ public class HomeActivity extends Activity {
 	}
 
 	public void logedIn(Login login) {
-
 		((UnivMobileApp) getApplicationContext()).setmLogin(login);
-		removeTopFragment();
-		initUser();
-
-		FragmentManager manager = getFragmentManager();
-		MyProfileFragment f = (MyProfileFragment) manager.findFragmentByTag(MyProfileFragment.class.getName());
-		if(f != null) {
-			f.reload();
-		}
+		restart();
+//		;
+//		removeTopFragment();
+//		initUser();
+//
+//		FragmentManager manager = getFragmentManager();
+//		MyProfileFragment f = (MyProfileFragment) manager.findFragmentByTag(MyProfileFragment.class.getName());
+//		if (f != null) {
+//			f.reload();
+//		}
 
 	}
 
@@ -434,9 +434,9 @@ public class HomeActivity extends Activity {
 	public void showPoi(int id, int categoryRoot) {
 
 		int tabPosition = 0;
-		if(categoryRoot == GeoDataModel.ROOT_CAT_2) {
+		if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
 			tabPosition = 1;
-		} else if(categoryRoot == GeoDataModel.ROOT_CAT_3) {
+		} else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
 			tabPosition = 2;
 		}
 
@@ -455,9 +455,9 @@ public class HomeActivity extends Activity {
 			onBackPressed();
 		}
 		int tabPosition = 0;
-		if(categoryRoot == GeoDataModel.ROOT_CAT_2) {
+		if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
 			tabPosition = 1;
-		} else if(categoryRoot == GeoDataModel.ROOT_CAT_3) {
+		} else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
 			tabPosition = 2;
 		}
 		FragmentManager manager = getFragmentManager();

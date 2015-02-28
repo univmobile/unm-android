@@ -104,7 +104,7 @@ public class PoiDetailsView extends LinearLayout {
 		mPoiDetailsInterface = null;
 	}
 
-	public void populate(PoiDetailsInterface listener, Poi poi, Category cat, int categoryTab) {
+	public void populate(PoiDetailsInterface listener, Poi poi, Category cat, int categoryTab, boolean isBookmarked) {
 		mPoiDetailsInterface = listener;
 		mPoi = poi;
 		mOnTabClickListener.onClick(findViewById(R.id.tab_info));
@@ -117,12 +117,30 @@ public class PoiDetailsView extends LinearLayout {
 		initCategoryIcon(cat);
 		show();
 
-		findViewById(R.id.bookmarks_name).setOnClickListener(mOnBookmarkClickListener);
+		initBookmark(isBookmarked);
+
 
 	}
 
-	public void loadFinished() {
+	public Poi getPoi() {
+		return mPoi;
+	}
+
+	public void loadFinished(boolean isBookmarked) {
+		initBookmark(isBookmarked);
 		findViewById(R.id.loading).setVisibility(View.GONE);
+	}
+
+	private void initBookmark(boolean isBookmarked) {
+		TextView bookarkText = (TextView) findViewById(R.id.bookmarks_name);
+		if (isBookmarked) {
+			bookarkText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_clear_small);
+			bookarkText.setOnClickListener(mOnBookmarkRemoveClickListener);
+		} else {
+
+			bookarkText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_bookmark);
+			bookarkText.setOnClickListener(mOnBookmarkClickListener);
+		}
 	}
 
 	public void populateComments(List<Comment> comments) {
@@ -416,6 +434,15 @@ public class PoiDetailsView extends LinearLayout {
 		}
 	};
 
+	private OnClickListener mOnBookmarkRemoveClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (mPoiDetailsInterface != null) {
+				findViewById(R.id.loading).setVisibility(View.VISIBLE);
+				mPoiDetailsInterface.removeBookmark(mPoi);
+			}
+		}
+	};
 	private OnClickListener mOnBookmarkClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -443,5 +470,7 @@ public class PoiDetailsView extends LinearLayout {
 		void postComment(String comment, Poi poi);
 
 		void postBookmark(Poi poi);
+
+		void removeBookmark(Poi poi);
 	}
 }

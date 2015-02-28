@@ -6,11 +6,12 @@ import org.apache.http.HttpResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Poi;
 
 /**
  * Created by rviewniverse on 2015-02-09.
  */
-public class PostBookmarkOperation extends AbsOperation<Boolean> {
+public class PostBookmarkOperation extends AbsOperation<Poi> {
 
 
 	private static final String BOOKARKS = "bookmarks/";
@@ -19,18 +20,18 @@ public class PostBookmarkOperation extends AbsOperation<Boolean> {
 
 
 	private String mUserId;
-	private int mPoiID;
+	private Poi mPoi;
 
-	public PostBookmarkOperation(Context c, OperationListener listener, String userID, int poiID) {
+	public PostBookmarkOperation(Context c, OperationListener listener, String userID, Poi poi) {
 		super(c, listener);
 
 		this.mUserId = userID;
-		this.mPoiID = poiID;
+		this.mPoi = poi;
 	}
 
 	@Override
-	protected Boolean parse(JSONObject json) throws JSONException {
-		return true;
+	protected Poi parse(JSONObject json) throws JSONException {
+		return mPoi;
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class PostBookmarkOperation extends AbsOperation<Boolean> {
 	@Override
 	protected String getBody() {
 
-		return String.format(CONTENT, mUserId, mPoiID);
+		return String.format(CONTENT, mUserId, mPoi.getId());
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
 import org.unpidf.univmobile.data.entities.Comment;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
@@ -17,12 +18,14 @@ import org.unpidf.univmobile.data.operations.OperationListener;
 import org.unpidf.univmobile.data.operations.PostBookmarkOperation;
 import org.unpidf.univmobile.data.operations.PostCommentOperation;
 import org.unpidf.univmobile.data.operations.PostPoiOperation;
+import org.unpidf.univmobile.data.operations.ReadBookmarksOperation;
 import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
 import org.unpidf.univmobile.data.operations.ReadCommentsOperation;
 import org.unpidf.univmobile.data.operations.ReadImageMapOperation;
 import org.unpidf.univmobile.data.operations.ReadPoiOperation;
 import org.unpidf.univmobile.data.operations.ReadPoisOperation;
 import org.unpidf.univmobile.data.operations.ReadRestMenuOperation;
+import org.unpidf.univmobile.data.operations.RemoveBookamrkOperation;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -62,6 +65,12 @@ public class GeoDataModel extends AbsDataModel {
 	private List<Category> mCategories3;
 	private boolean mFinishedCat3 = false;
 
+	//bookamrs
+	private ReadBookmarksOperation mReadBookmarksOperation;
+	private List<Bookmark> mBookmakrs;
+	private boolean mBookmarksFinished;
+	private boolean mAfterPost = false;
+
 
 	//pois downloading
 	private ReadPoisOperation mPoisOperation;
@@ -94,6 +103,8 @@ public class GeoDataModel extends AbsDataModel {
 	//Post bookmark
 	private PostBookmarkOperation mPostBookmarkOperation;
 
+	//Remove bookmark
+	private RemoveBookamrkOperation mRemoveBookmarkOperation;
 
 	private int mPoiToBeShownId = -1;
 	private int mImageMapToBeShownId = -1;
@@ -119,6 +130,9 @@ public class GeoDataModel extends AbsDataModel {
 		mReadCategoriesOperation1 = null;
 		mReadCategoriesOperation2 = null;
 		mReadCategoriesOperation3 = null;
+
+		clearOperation(mReadBookmarksOperation);
+		mReadBookmarksOperation = null;
 
 		clearOperation(mPoisOperation);
 		mPoisOperation = null;
@@ -147,6 +161,9 @@ public class GeoDataModel extends AbsDataModel {
 		clearOperation(mPostBookmarkOperation);
 		mPostBookmarkOperation = null;
 
+		clearOperation(mRemoveBookmarkOperation);
+		mRemoveBookmarkOperation = null;
+
 	}
 
 	public void setPoiToBeShownId(int id) {
@@ -156,6 +173,7 @@ public class GeoDataModel extends AbsDataModel {
 	public void setImageMapToBeShownId(int id) {
 		mImageMapToBeShownId = id;
 	}
+
 	public Category getCategoryById(int id) {
 		for (Category c : mCategoriesAll) {
 			if (c.getId() == id) {
@@ -165,7 +183,66 @@ public class GeoDataModel extends AbsDataModel {
 		return null;
 	}
 
+	public boolean isBookmarked(Poi poi) {
+		if (mBookmakrs != null && mBookmakrs.size() > 0) {
+			for (Bookmark b : mBookmakrs) {
+				if (b.getPoiId() == poi.getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void removeBookmark(Poi poi) {
+		clearOperation(mRemoveBookmarkOperation);
+		mRemoveBookmarkOperation = null;
+
+		Bookmark bookamrk = null;
+		if (mBookmakrs != null && mBookmakrs.size() > 0) {
+			for (Bookmark b : mBookmakrs) {
+				if (b.getPoiId() == poi.getId()) {
+					bookamrk = b;
+					break;
+				}
+			}
+		}
+		if (bookamrk != null) {
+			mRemoveBookmarkOperation = new RemoveBookamrkOperation(mContext, mRemoveBookmarkOperationListener, poi, bookamrk.getId());
+			mRemoveBookmarkOperation.startOperation();
+		} else {
+			if (mListener != null) {
+				mListener.bookmarkPosted();
+			}
+		}
+	}
+
+	private void getBookmarks(boolean afterPost) {
+		clearOperation(mReadBookmarksOperation);
+		mReadBookmarksOperation = null;
+		mAfterPost = afterPost;
+
+		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+		if (login == null) {
+			synchronized (lock) {
+				mBookmarksFinished = true;
+				notifyListenerIfNeeded();
+			}
+		} else {
+			mReadBookmarksOperation = new ReadBookmarksOperation(mContext, mReadBookmarksOperationListener, login.getId());
+			mReadBookmarksOperation.startOperation();
+		}
+	}
+
 	public void postBookmark(Poi poi) {
+		if (mBookmakrs != null && mBookmakrs.size() > 0) {
+			for (Bookmark b : mBookmakrs) {
+				if (b.getId() == poi.getId()) {
+					mPostBookmarkOperationListener.onOperationFinished(null, poi);
+					return;
+				}
+			}
+		}
 		clearOperation(mPostBookmarkOperation);
 		mPostBookmarkOperation = null;
 
@@ -173,7 +250,7 @@ public class GeoDataModel extends AbsDataModel {
 		if (login == null) {
 			mListener.showAuthorizationError();
 		} else {
-			mPostBookmarkOperation = new PostBookmarkOperation(mContext, mPostBookmarkOperationListener, login.getId(), poi.getId());
+			mPostBookmarkOperation = new PostBookmarkOperation(mContext, mPostBookmarkOperationListener, login.getId(), poi);
 			mPostBookmarkOperation.startOperation();
 		}
 	}
@@ -253,6 +330,8 @@ public class GeoDataModel extends AbsDataModel {
 		mReadCategoriesOperation1.startOperation();
 		mReadCategoriesOperation2.startOperation();
 		mReadCategoriesOperation3.startOperation();
+
+		getBookmarks(false);
 	}
 
 	public void getPois(List<Category> selectedCategories, int root) {
@@ -298,17 +377,17 @@ public class GeoDataModel extends AbsDataModel {
 		mReadRestMenuOperation.startOperation();
 	}
 
-	private OperationListener<Boolean> mPostBookmarkOperationListener = new OperationListener<Boolean>() {
+	private OperationListener<Poi> mPostBookmarkOperationListener = new OperationListener<Poi>() {
 		@Override
 		public void onOperationStarted() {
 
 		}
 
 		@Override
-		public void onOperationFinished(ErrorEntity error, Boolean result) {
+		public void onOperationFinished(ErrorEntity error, Poi result) {
 			if (mListener != null) {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
-					mListener.bookmarkPosted();
+					getBookmarks(true);
 				} else if (error != null && error.getmErrorType() == ErrorEntity.ERROR_TYPE.UNAUTHORIZED) {
 					mListener.showAuthorizationError();
 				}
@@ -316,7 +395,54 @@ public class GeoDataModel extends AbsDataModel {
 		}
 
 		@Override
-		public void onPageDownloaded(Boolean result) {
+		public void onPageDownloaded(Poi result) {
+
+		}
+	};
+
+
+	private OperationListener<Poi> mRemoveBookmarkOperationListener = new OperationListener<Poi>() {
+		@Override
+		public void onOperationStarted() {
+
+		}
+
+		@Override
+		public void onOperationFinished(ErrorEntity error, Poi result) {
+			getBookmarks(true);
+		}
+
+		@Override
+		public void onPageDownloaded(Poi result) {
+
+		}
+	};
+	private OperationListener<List<Bookmark>> mReadBookmarksOperationListener = new OperationListener<List<Bookmark>>() {
+		@Override
+		public void onOperationStarted() {
+		}
+
+
+		@Override
+		public void onOperationFinished(ErrorEntity error, List<Bookmark> result) {
+			mBookmakrs = result;
+			if(mAfterPost ) {
+				if(mListener != null) {
+					mListener.bookmarkPosted();
+				}
+			} else {
+				synchronized (lock) {
+					clearOperation(mReadBookmarksOperation);
+					mReadBookmarksOperation = null;
+					mBookmarksFinished = true;
+
+					notifyListenerIfNeeded();
+				}
+			}
+		}
+
+		@Override
+		public void onPageDownloaded(List<Bookmark> result) {
 
 		}
 	};
@@ -494,9 +620,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onPageDownloaded(List<Poi> result) {
-			if (mListener != null) {
-				mListener.populatePois(result);
-			}
+//			if (mListener != null) {
+//				mListener.populatePois(result);
+//			}
 		}
 	};
 
@@ -514,10 +640,10 @@ public class GeoDataModel extends AbsDataModel {
 				mFinishedCatAll = true;
 				mCategoriesAll = result;
 				notifyListenerIfNeeded();
-				if(mImageMapToBeShownId != -1) {
+				if (mImageMapToBeShownId != -1) {
 					getImageMap(mImageMapToBeShownId);
 				}
-				if(mPoiToBeShownId != -1) {
+				if (mPoiToBeShownId != -1) {
 					getPoi(mPoiToBeShownId);
 				}
 			}
@@ -625,7 +751,7 @@ public class GeoDataModel extends AbsDataModel {
 	}
 
 	private void notifyListenerIfNeeded() {
-		if (mFinishedCat1 && mFinishedCat2 && mFinishedCat3 && mFinishedCatAll) {
+		if (mFinishedCat1 && mFinishedCat2 && mFinishedCat3 && mFinishedCatAll && mBookmarksFinished) {
 			if (mListener != null) {
 				mListener.populateCategories();
 			}

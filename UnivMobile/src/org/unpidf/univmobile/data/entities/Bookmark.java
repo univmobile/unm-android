@@ -7,7 +7,6 @@ public class Bookmark {
 
 	private int id;
 	private int poiId;
-	private String poiUrl;
 	private String poiName;
 	private int poiCategoryId;
 	private int poiUniversityId;
@@ -29,13 +28,6 @@ public class Bookmark {
 		this.id = id;
 	}
 
-	public String getPoiUrl() {
-		return poiUrl;
-	}
-
-	public void setPoiUrl(String poiUrl) {
-		this.poiUrl = poiUrl;
-	}
 
 	public String getPoiName() {
 		return poiName;

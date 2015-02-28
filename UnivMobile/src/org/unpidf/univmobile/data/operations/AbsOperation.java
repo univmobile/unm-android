@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -36,7 +37,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 	protected static final String BASE_URL = "http://vps111534.ovh.net/unm-backend/";
 	protected static final String BASE_URL_API = BASE_URL + "api/";
 
-	protected enum REQUEST {POST, GET}
+	protected enum REQUEST {POST, GET, DELETE}
 
 
 	protected Context mContext;
@@ -113,7 +114,6 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 		}
 
 		if (in == null) {
-			mError = new ErrorEntity(ErrorEntity.ERROR_TYPE.NETWORK_ERROR);
 			return null;
 		}
 
@@ -168,14 +168,28 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 						((HttpPost) request).setHeader("Authentication-Token", login.getToken());
 					}
 				}
+				break;
+			case DELETE:
+				request = new HttpDelete(url);
+				((HttpDelete) request).setHeader("Content-type", "application/json");
+				Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+				if (login != null) {
+					((HttpDelete) request).setHeader("Authentication-Token", login.getToken());
+				}
+
+				break;
 		}
 		HttpClient mHttpClient = new DefaultHttpClient();
 		HttpResponse response = mHttpClient.execute(request);
 		handleStatusLine(response);
-		return response.getEntity().getContent();
+		if (response != null && response.getEntity() != null) {
+
+			return response.getEntity().getContent();
+		}
+		return null;
 	}
 
-	private JSONObject getJsonObject(InputStream in) throws IOException, JSONException, IllegalArgumentException {
+	protected JSONObject getJsonObject(InputStream in) throws IOException, JSONException, IllegalArgumentException {
 		try {
 			BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 			StringBuilder responseStrBuilder = new StringBuilder();

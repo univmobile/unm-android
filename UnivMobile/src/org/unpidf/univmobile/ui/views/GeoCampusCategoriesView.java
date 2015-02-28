@@ -129,6 +129,7 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 		mSelectedTab = selectedTab;
 		initTabs();
 		initColors();
+		//notifyUpdatedCategories();
 	}
 
 	public void setSelectedCategories(List<Category> categories, int tabId) {

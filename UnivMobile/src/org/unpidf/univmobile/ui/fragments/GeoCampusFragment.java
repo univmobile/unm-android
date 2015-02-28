@@ -241,7 +241,7 @@ public class GeoCampusFragment extends AbsFragment {
 		PoiDetailsView view = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
 		GeoCampusCategoriesView catView = (GeoCampusCategoriesView) getView().findViewById(R.id.categories);
 
-		view.populate(mPoiDetailsInterface, poi, mModel.getCategoryById(poi.getCategoryId()), catView.getSelectedTab());
+		view.populate(mPoiDetailsInterface, poi, mModel.getCategoryById(poi.getCategoryId()), catView.getSelectedTab(), mModel.isBookmarked(poi));
 		mModel.getRestoMenu(poi);
 		mModel.getComments(poi, false);
 
@@ -259,8 +259,9 @@ public class GeoCampusFragment extends AbsFragment {
 
 	private void addMarkersWithUri(String uri) {
 
-		Log.d("test", "adding markers by uri: " + uri);
+
 		List<Poi> pois = mPoisToBoLoaded.get(uri);
+		Log.d("test", "adding " + pois.size() + "markers by uri: " + uri);
 		if (pois != null) {
 			for (Poi p : pois) {
 				addMarker(p, mLoadedBitmaps.get(uri));
@@ -270,6 +271,7 @@ public class GeoCampusFragment extends AbsFragment {
 	}
 
 	private void addMarker(Poi p, BitmapDescriptor des) {
+		Log.d("test", "adding markers: ");
 		MarkerOptions options = new MarkerOptions();
 		options.icon(des);
 		options.anchor(0.5f, 0.5f);
@@ -371,6 +373,11 @@ public class GeoCampusFragment extends AbsFragment {
 			mModel.postBookmark(poi);
 		}
 
+		@Override
+		public void removeBookmark(Poi poi) {
+			mModel.removeBookmark(poi);
+		}
+
 	};
 
 	private GeoDataModel.GeoModelListener mDataModelListener = new GeoDataModel.GeoModelListener() {
@@ -419,6 +426,7 @@ public class GeoCampusFragment extends AbsFragment {
 
 		@Override
 		public void populatePois(List<Poi> pois) {
+			Log.d("test", "populatePoist");
 			if (mMap != null && pois != null) {
 				for (Poi p : pois) {
 					if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0) {
@@ -427,17 +435,23 @@ public class GeoCampusFragment extends AbsFragment {
 						Category cat = mModel.getCategoryById(p.getCategoryId());
 						if (cat != null && cat.getActiveIconUrl() != null && cat.getActiveIconUrl().length() > 0) {
 							url += cat.getActiveIconUrl();
+							Log.d("test", "cat has url");
 						} else {
 							url += "cat_active_5__marker-cross.png";
+
+							Log.d("test", "cat no url");
 						}
 
 
 						synchronized (lock) {
 							if (!mBitmapsDownloadingUrls.contains(url)) {
+
+								Log.d("test", "bit map empty");
 								mBitmapsDownloadingUrls.add(url);
 								List<Poi> poi = mPoisToBoLoaded.get(url);
 								if (poi == null) {
 									poi = new ArrayList<Poi>();
+									mPoisToBoLoaded.put(url,poi);
 								}
 								poi.add(p);
 								ImageLoader.getInstance().loadImage(url, new ImageSize(60, 60, 0), mOptions, new ImageLoadingListener() {
@@ -465,6 +479,8 @@ public class GeoCampusFragment extends AbsFragment {
 									}
 								});
 							} else {
+
+								Log.d("test", "bit map downloaded");
 								if (mLoadedBitmaps.get(url) != null) {
 									addMarker(p, mLoadedBitmaps.get(url));
 								} else {
@@ -533,7 +549,7 @@ public class GeoCampusFragment extends AbsFragment {
 		@Override
 		public void commentPosted(Poi poi) {
 			PoiDetailsView view = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
-			view.loadFinished();
+			view.loadFinished(mModel.isBookmarked(poi));
 			mModel.getComments(poi, true);
 		}
 
@@ -550,7 +566,7 @@ public class GeoCampusFragment extends AbsFragment {
 		@Override
 		public void bookmarkPosted() {
 			PoiDetailsView view = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
-			view.loadFinished();
+			view.loadFinished(mModel.isBookmarked(view.getPoi()));
 		}
 
 		@Override
@@ -570,7 +586,7 @@ public class GeoCampusFragment extends AbsFragment {
 			newFragment.show(ft, "dialog");
 
 			PoiDetailsView poiView = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
-			poiView.loadFinished();
+			poiView.loadFinished(false);
 
 			AddNewPoiView newPoiView = (AddNewPoiView) getView().findViewById(R.id.new_poi_view);
 			newPoiView.loadFinished();

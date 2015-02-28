@@ -8,6 +8,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.unpidf.univmobile.data.entities.Login;
+import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
 /**
@@ -21,6 +22,8 @@ public class UnivMobileApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		initImageLoader();
+
+		initLogin();
 	}
 
 
@@ -39,11 +42,32 @@ public class UnivMobileApp extends Application {
 		return mFontHelper;
 	}
 
+	public void logout() {
+		mLogin = null;
+		SharedPreferencesRepo.saveString(this, "login_name", null);
+		SharedPreferencesRepo.saveString(this, "login_token", null);
+		SharedPreferencesRepo.saveString(this, "login_id", null);
+	}
+	public void initLogin() {
+		String token = SharedPreferencesRepo.getString(this, "login_token");
+		if(token != null) {
+			String name = SharedPreferencesRepo.getString(this, "login_name");
+			String id = SharedPreferencesRepo.getString(this, "login_id");
+			mLogin = new Login();
+			mLogin.setToken(token);
+			mLogin.setName(name);
+			mLogin.setId(id);
+		}
+	}
+
 	public Login getmLogin() {
 		return mLogin;
 	}
 
 	public void setmLogin(Login mLogin) {
+		SharedPreferencesRepo.saveString(this, "login_name", mLogin.getName());
+		SharedPreferencesRepo.saveString(this, "login_token", mLogin.getToken());
+		SharedPreferencesRepo.saveString(this, "login_id", mLogin.getId());
 		this.mLogin = mLogin;
 	}
 }

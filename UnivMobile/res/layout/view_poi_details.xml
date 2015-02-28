@@ -71,6 +71,7 @@
 				android:layout_weight="9"
 				android:id="@+id/bookmarks">
 
+
 				<TextView
 					android:id="@+id/bookmarks_name"
 					android:layout_width="wrap_content"
