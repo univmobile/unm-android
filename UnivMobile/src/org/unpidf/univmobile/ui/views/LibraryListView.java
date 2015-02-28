@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
@@ -33,7 +34,7 @@ public class LibraryListView extends RelativeLayout {
 		super(context, attrs, defStyle);
 	}
 
-	public void init(List<Poi> pois, int maxCount, OnClickListener listener, final OnLibraryClickListener myListener) {
+	public void init(List<Library> libraries, int maxCount, OnClickListener listener, final OnLibraryClickListener myListener) {
 		LayoutInflater.from(getContext()).inflate(R.layout.view_library_list, this, true);
 
 		//init fonts
@@ -42,14 +43,14 @@ public class LibraryListView extends RelativeLayout {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.go_to_library_fragment), FontHelper.FONT.EXO_BOLD);
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
-		for (int i = 0; i < pois.size() && i < maxCount; i++) {
-			LibraryItemView item = new LibraryItemView(getContext(), pois.get(i).getName());
-			final Poi p = pois.get(i);
+		for (int i = 0; i < libraries.size() && i < maxCount; i++) {
+			LibraryItemView item = new LibraryItemView(getContext(), libraries.get(i));
+			final int poiID = libraries.get(i).getPoiId();
 			item.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					if(myListener != null) {
-						myListener.onLibraryClicked(p);
+						myListener.onLibraryClicked(poiID);
 					}
 				}
 			});
@@ -71,6 +72,6 @@ public class LibraryListView extends RelativeLayout {
 	}
 
 	public interface OnLibraryClickListener {
-		public void onLibraryClicked(Poi poi);
+		public void onLibraryClicked(int poiId);
 	}
 }

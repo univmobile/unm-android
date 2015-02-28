@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.data.entities.Bookmark;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.models.MyProfileDataModel;
@@ -63,7 +64,7 @@ public class BookmarksFragment extends AbsFragment {
 		}
 
 		@Override
-		public void populateLibraries(List<Poi> pois) {
+		public void populateLibraries(List<Library> libraries) {
 
 
 		}
@@ -88,9 +89,9 @@ public class BookmarksFragment extends AbsFragment {
 
 	private BookmarksListView.OnBookmarkClickListener mOnBookmarkCLickListener = new BookmarksListView.OnBookmarkClickListener() {
 		@Override
-		public void onBookmarkClicked(Poi poi) {
+		public void onBookmarkClicked(int root, int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poi, false);
+			a.showPoi( poiID, root);
 		}
 	};
 }

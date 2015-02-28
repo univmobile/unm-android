@@ -7,7 +7,9 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
+import org.unpidf.univmobile.data.entities.News;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.List;
 /**
  * Created by rviewniverse on 2015-02-22.
  */
-public class ReadLibrariesOperation extends AbsOperation<List<String>> {
+public class ReadLibrariesOperation extends AbsOperation<List<Library>> {
 
 	private static final String LINKS = "universityLibraries/search/findByUniversity?universityId=%d";
 
@@ -27,22 +29,18 @@ public class ReadLibrariesOperation extends AbsOperation<List<String>> {
 	}
 
 	@Override
-	protected List<String> parse(JSONObject json) throws JSONException {
+	protected List<Library> parse(JSONObject json) throws JSONException {
 
 		JSONObject _embedded = json.getJSONObject("_embedded");
 		JSONArray librariesJson = _embedded.getJSONArray("universityLibraries");
 
-		List<String> libraries = new ArrayList<String>();
+		List<Library> libraries = new ArrayList<Library>();
 
 
 		for (int i = 0; i < librariesJson.length(); i++) {
 			JSONObject libraryJson = librariesJson.getJSONObject(i);
-
-			JSONObject links = libraryJson.getJSONObject("_links");
-			JSONObject poi = links.getJSONObject("poi");
-			libraries.add(poi.getString("href"));
-
-
+			Library library = new Gson().fromJson(libraryJson.toString(), Library.class);
+			libraries.add(library);
 		}
 		return libraries;
 	}
@@ -57,7 +55,7 @@ public class ReadLibrariesOperation extends AbsOperation<List<String>> {
 	}
 
 	@Override
-	protected List<String> combine(List<String> newData, List<String> oldData) {
+	protected List<Library> combine(List<Library> newData, List<Library> oldData) {
 		oldData.addAll(newData);
 		return oldData;
 	}

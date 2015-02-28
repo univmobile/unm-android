@@ -82,6 +82,7 @@ public class AddNewPoiView extends RelativeLayout {
 		findViewById(R.id.categories_select_text).setOnClickListener(mSelectCategoryClickListener);
 		findViewById(R.id.categories_select_icon).setOnClickListener(mSelectCategoryClickListener);
 		findViewById(R.id.post_container).setOnClickListener(mPostListner);
+		findViewById(R.id.main_container).setOnClickListener(mOnHideKeyboardClickListener);
 	}
 
 	public void clear() {
@@ -99,6 +100,16 @@ public class AddNewPoiView extends RelativeLayout {
 		}
 
 	}
+
+	private View.OnClickListener mOnHideKeyboardClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			EditText myEditText = (EditText) findViewById(R.id.description_edit);
+			InputMethodManager imm = (InputMethodManager)  getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+		}
+	};
+
 
 	private OnClickListener mCloseClickListener = new OnClickListener() {
 		@Override

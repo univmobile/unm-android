@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.entities.University;
@@ -164,14 +165,12 @@ public class MyProfileFragment extends AbsFragment {
 		}
 
 		@Override
-		public void populateLibraries(List<Poi> pois) {
-
-			if (pois != null && pois.size() > 0) {
+		public void populateLibraries(List<Library> libraries) {
+			if (libraries != null && libraries.size() > 0) {
 				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
 				libraryList.setVisibility(View.VISIBLE);
-				libraryList.init(pois, 5, mOnAllLibraryClickListener, mOnLibraryClickListener);
+				libraryList.init(libraries, 5, mOnAllLibraryClickListener, mOnLibraryClickListener);
 			}
-
 		}
 
 		@Override
@@ -191,17 +190,17 @@ public class MyProfileFragment extends AbsFragment {
 
 	private LibraryListView.OnLibraryClickListener mOnLibraryClickListener = new LibraryListView.OnLibraryClickListener() {
 		@Override
-		public void onLibraryClicked(Poi poi) {
+		public void onLibraryClicked(int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poi, false);
+			a.showPoi(poiID,0);
 		}
 	};
 
 	private BookmarksListView.OnBookmarkClickListener mOnBookmarkCLickListener = new BookmarksListView.OnBookmarkClickListener() {
 		@Override
-		public void onBookmarkClicked(Poi poi) {
+		public void onBookmarkClicked(int root, int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poi, false);
+			a.showPoi(poiID,0);
 		}
 	};
 

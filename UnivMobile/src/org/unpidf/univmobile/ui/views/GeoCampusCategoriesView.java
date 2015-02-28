@@ -307,7 +307,7 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 			if (selected.size() == 0) {
 				mCategoriesInterface.onCategoriesChanged(mRootCategories.get(mSelectedTab));
 			} else {
-				mCategoriesInterface.onCategoriesChanged(selected);
+				mCategoriesInterface.onCategoriesChanged(selected, mRootCategories.get(mSelectedTab));
 			}
 			mCategoriesInterface.onTabChanged(mSelectedTab);
 
@@ -463,7 +463,7 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 
 		void onTabChanged(int tabID);
 
-		void onCategoriesChanged(List<Category> selectedCategories);
+		void onCategoriesChanged(List<Category> selectedCategories, int root);
 
 		void onCategoriesChanged(int root);
 

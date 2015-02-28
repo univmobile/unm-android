@@ -35,6 +35,7 @@ import org.unpidf.univmobile.data.entities.NavigationMenu;
 import org.unpidf.univmobile.data.entities.NotificationEntity;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.entities.University;
+import org.unpidf.univmobile.data.models.GeoDataModel;
 import org.unpidf.univmobile.data.models.MenusDataModel;
 import org.unpidf.univmobile.data.models.NotificationsDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
@@ -401,7 +402,7 @@ public class HomeActivity extends Activity {
 
 	}
 
-	public void showPoiByCategory(int categoryID) {
+	public void showPoiByCategory(int categoryID, int root) {
 		FragmentManager manager = getFragmentManager();
 
 
@@ -415,7 +416,7 @@ public class HomeActivity extends Activity {
 
 			List<Category> categories = new ArrayList<Category>();
 			categories.add(c);
-			f.refreshPois(categories, -1);
+			f.refreshPois(categories, root);
 		}
 
 
@@ -430,26 +431,43 @@ public class HomeActivity extends Activity {
 		}
 	}
 
-	public void showPoi(int id) {
+	public void showPoi(int id, int categoryRoot) {
+
+		int tabPosition = 0;
+		if(categoryRoot == GeoDataModel.ROOT_CAT_2) {
+			tabPosition = 1;
+		} else if(categoryRoot == GeoDataModel.ROOT_CAT_3) {
+			tabPosition = 2;
+		}
+
 		FragmentManager manager = getFragmentManager();
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if (f != null) {
-			f.showPoi(id);
+		if (f == null) {
+			f = GeoCampusFragment.newInstance(tabPosition, -1, id, -1);
+			showFragment(f, GeoCampusFragment.class.getName(), false);
+		} else {
+			f.showPoi(tabPosition, id);
 		}
 	}
 
-	public void showPoi(Poi poi, boolean goBack) {
+	public void showPoi(Poi poi, int categoryRoot, boolean goBack) {
 		if (goBack) {
 			onBackPressed();
+		}
+		int tabPosition = 0;
+		if(categoryRoot == GeoDataModel.ROOT_CAT_2) {
+			tabPosition = 1;
+		} else if(categoryRoot == GeoDataModel.ROOT_CAT_3) {
+			tabPosition = 2;
 		}
 		FragmentManager manager = getFragmentManager();
 
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
 		if (f == null) {
-			f = GeoCampusFragment.newInstance(0, -1, poi.getId(), -1);
+			f = GeoCampusFragment.newInstance(tabPosition, -1, poi.getId(), -1);
 			showFragment(f, GeoCampusFragment.class.getName(), false);
 		} else {
-			f.showPoiDetails(poi);
+			f.showPoiDetails(tabPosition, poi);
 		}
 	}
 

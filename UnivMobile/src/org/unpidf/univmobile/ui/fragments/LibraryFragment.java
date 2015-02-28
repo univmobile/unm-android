@@ -11,6 +11,7 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.models.MyProfileDataModel;
@@ -78,7 +79,7 @@ public class LibraryFragment extends AbsFragment {
 		@Override
 		public void onClick(View v) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoiByCategory(7);
+			a.showPoiByCategory(7, 0);
 		}
 	};
 
@@ -90,11 +91,11 @@ public class LibraryFragment extends AbsFragment {
 		}
 
 		@Override
-		public void populateLibraries(List<Poi> pois) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			if (pois != null && pois.size() > 0) {
+		public void populateLibraries(List<Library> libraries) {
+			if (libraries != null && libraries.size() > 0) {
 				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
-				libraryList.init(pois, Integer.MAX_VALUE, null, mOnLibraryClickListener);
+				libraryList.setVisibility(View.VISIBLE);
+				libraryList.init(libraries, 5, null, mOnLibraryClickListener);
 			}
 		}
 
@@ -112,9 +113,9 @@ public class LibraryFragment extends AbsFragment {
 
 	private LibraryListView.OnLibraryClickListener mOnLibraryClickListener = new LibraryListView.OnLibraryClickListener() {
 		@Override
-		public void onLibraryClicked(Poi poi) {
+		public void onLibraryClicked(int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poi, false);
+			a.showPoi(poiID,0);
 		}
 	};
 }

@@ -74,10 +74,11 @@ public class StandartLoginFragment extends AbsFragment {
 		view.findViewById(R.id.accept_button).setOnClickListener(mOnLoginButtonClickListener);
 		((EditText) getView().findViewById(R.id.email_value)).setOnEditorActionListener(mOnEditorActionListener);
 		((EditText) getView().findViewById(R.id.password_value)).setOnEditorActionListener(mOnEditorActionListener);
+		view.findViewById(R.id.main_container).setOnClickListener(mOnHideKeyboardClickListener);
 	}
 
 	private void login() {
-		InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(((EditText) getView().findViewById(R.id.password_value)).getWindowToken(), 0);
 
 		String name = ((EditText) getView().findViewById(R.id.email_value)).getText().toString();
@@ -88,6 +89,7 @@ public class StandartLoginFragment extends AbsFragment {
 			mLoginDataModel.standardLogin(mLoginDataModelListener, name, password);
 		}
 	}
+
 
 	private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
 		@Override
@@ -111,6 +113,14 @@ public class StandartLoginFragment extends AbsFragment {
 		}
 	};
 
+	private View.OnClickListener mOnHideKeyboardClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			EditText myEditText = (EditText) getView().findViewById(R.id.email_value);
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+		}
+	};
 
 	private LoginDataModel.StandardLoginDataModelListener mLoginDataModelListener = new LoginDataModel.StandardLoginDataModelListener() {
 		@Override
@@ -130,7 +140,6 @@ public class StandartLoginFragment extends AbsFragment {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
 	};
-
 
 
 }

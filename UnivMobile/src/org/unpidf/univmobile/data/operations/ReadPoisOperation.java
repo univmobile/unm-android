@@ -23,6 +23,9 @@ public class ReadPoisOperation extends AbsOperation<List<Poi>> {
 	private static final String POIS_SEARCH_CAT_ROOT = "pois/search/findByCategoryRoot?categoryId=%d";
 	private static final String POIS_SEARCH_UNIV_AND_CAT_LIST = "pois/search/findByUniversityAndCategoryIn?universityId=%d&categories=";
 	private static final String POIS_SEARCH_UNIV = "pois/search/findByUniversity?universityId=%d";
+	private static final String POIS_SEARCH_CAT_LIST = "pois/search/findByCategoryIn?categories=";
+
+
 
 	private List<Integer> mSelectedCategories;
 	private int mRootCat;
@@ -70,7 +73,11 @@ public class ReadPoisOperation extends AbsOperation<List<Poi>> {
 		String url = null;
 		if (mUrl == null) {
 			if (mSelectedCategories != null) {
-				url = BASE_URL_API + String.format(POIS_SEARCH_UNIV_AND_CAT_LIST, mUniversityID);
+				if(mUniversityID != -1) {
+					url = BASE_URL_API + String.format(POIS_SEARCH_UNIV_AND_CAT_LIST, mUniversityID);
+				} else {
+					url = BASE_URL_API + POIS_SEARCH_CAT_LIST;
+				}
 				for (int i = 0; i < mSelectedCategories.size(); i++) {
 					url += mSelectedCategories.get(i);
 					if (i < mSelectedCategories.size() - 1) {

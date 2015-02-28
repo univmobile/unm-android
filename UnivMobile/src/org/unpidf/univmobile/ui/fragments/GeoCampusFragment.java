@@ -217,7 +217,7 @@ public class GeoCampusFragment extends AbsFragment {
 		public boolean onMarkerClick(Marker marker) {
 
 			Poi poi = mMarkers.get(marker);
-			showPoiDetails(poi);
+			showPoiDetails(mTabPosition,poi);
 			return true;
 		}
 	};
@@ -229,11 +229,15 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 	}
 
-	public void showPoi(int id) {
+	public void showPoi(int tab, int id) {
+		mTabPosition = tab;
+		mCategoriesInterface.onTabChanged(mTabPosition);
 		mModel.getPoi(id);
 	}
 
-	public void showPoiDetails(Poi poi) {
+	public void showPoiDetails(int tab, Poi poi) {
+		mTabPosition = tab;
+		mCategoriesInterface.onTabChanged(mTabPosition);
 		PoiDetailsView view = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
 		GeoCampusCategoriesView catView = (GeoCampusCategoriesView) getView().findViewById(R.id.categories);
 
@@ -322,8 +326,8 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 
 		@Override
-		public void onCategoriesChanged(List<Category> selectedCategories) {
-			refreshPois(selectedCategories, -1);
+		public void onCategoriesChanged(List<Category> selectedCategories, int root) {
+			refreshPois(selectedCategories, root);
 		}
 
 		@Override
@@ -334,7 +338,7 @@ public class GeoCampusFragment extends AbsFragment {
 		@Override
 		public void onSearchClicked() {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showFragment(PoisSearchFragment.newInstance(), PoisSearchFragment.class.getName(), true);
+			a.showFragment(PoisSearchFragment.newInstance(mTabPosition), PoisSearchFragment.class.getName(), true);
 		}
 
 	};
@@ -405,7 +409,7 @@ public class GeoCampusFragment extends AbsFragment {
 
 				List<Category> categories = new ArrayList<Category>();
 				categories.add(c);
-				refreshPois(categories, -1);
+				refreshPois(categories, root);
 				//v.setSelectedCategories(categories, mTabPosition);
 			} else {
 				refreshPois(null, root);
@@ -523,7 +527,7 @@ public class GeoCampusFragment extends AbsFragment {
 
 		@Override
 		public void showPoi(Poi poi) {
-			showPoiDetails(poi);
+			showPoiDetails(mTabPosition, poi);
 		}
 
 		@Override

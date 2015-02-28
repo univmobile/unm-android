@@ -43,14 +43,14 @@ public class BookmarksListView extends RelativeLayout {
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
 		for (int i = 0; i < bookmarks.size() && i < maxCount; i++) {
-			BookmarkItemView item = new BookmarkItemView(getContext(), bookmarks.get(i).getPoi().getName());
+			BookmarkItemView item = new BookmarkItemView(getContext(), bookmarks.get(i).getPoiName());
 
 			final Bookmark b = bookmarks.get(i);
 			item.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					if (onBookmarkClickListener != null) {
-						onBookmarkClickListener.onBookmarkClicked(b.getPoi());
+						onBookmarkClickListener.onBookmarkClicked(b.getRootCategoryId(), b.getPoiId());
 					}
 				}
 			});
@@ -74,7 +74,7 @@ public class BookmarksListView extends RelativeLayout {
 	}
 
 	public interface OnBookmarkClickListener {
-		public void onBookmarkClicked(Poi poi);
+		public void onBookmarkClicked(int root, int poiID);
 	}
 
 }

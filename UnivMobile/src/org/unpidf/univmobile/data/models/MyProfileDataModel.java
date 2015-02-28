@@ -6,6 +6,7 @@ import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.entities.Poi;
@@ -30,15 +31,8 @@ public class MyProfileDataModel extends AbsDataModel {
 	private ReadLinksOperation mReadLinksOperation;
 
 	private ReadLibrariesOperation mReadLibrariesOperation;
-	private ReadPoiOperation mReadLibraryPoiOperation;
-	private List<String> mLibrariesPoisUrls;
-	private List<Poi> mLibrariesPois = new ArrayList<Poi>();
-	private int mCurrentLibrary = 0;
 
 	private ReadBookmarksOperation mReadBookmarksOperation;
-	private ReadPoiOperation mReadBookmarkPoiOperation;
-	private List<Bookmark> mBookmarks;
-	private int mCurrentBookmark = 0;
 
 	private boolean mLibrariesFinished = false;
 	private boolean mLinksFinished = false;
@@ -59,15 +53,9 @@ public class MyProfileDataModel extends AbsDataModel {
 		clearOperation(mReadLibrariesOperation);
 		mReadLibrariesOperation = null;
 
-		clearOperation(mReadLibraryPoiOperation);
-		mReadLibraryPoiOperation = null;
-
 
 		clearOperation(mReadBookmarksOperation);
 		mReadBookmarksOperation = null;
-
-		clearOperation(mReadBookmarkPoiOperation);
-		mReadBookmarkPoiOperation = null;
 	}
 
 	private void notifyFinishedIfNeeded() {
@@ -81,7 +69,6 @@ public class MyProfileDataModel extends AbsDataModel {
 	public void getBookmarks() {
 		clearOperation(mReadBookmarksOperation);
 		mReadBookmarksOperation = null;
-		mCurrentBookmark = 0;
 
 		Login login = ((UnivMobileApp) mCotnext.getApplicationContext()).getmLogin();
 		if (login == null && mListener != null) {
@@ -114,86 +101,6 @@ public class MyProfileDataModel extends AbsDataModel {
 		mReadLibrariesOperation.startOperation();
 	}
 
-	private void getLibraryPoi(int pos) {
-		clearOperation(mReadLibraryPoiOperation);
-		mReadLibraryPoiOperation = null;
-
-		mCurrentLibrary = pos;
-		mReadLibraryPoiOperation = new ReadPoiOperation(mCotnext, mReadLibraryPoiOperationListener, -1, mLibrariesPoisUrls.get(pos));
-		mReadLibraryPoiOperation.startOperation();
-	}
-
-	public void getBookmakrPoi(int position) {
-		clearOperation(mReadBookmarkPoiOperation);
-		mReadBookmarkPoiOperation = null;
-
-		mCurrentBookmark = position;
-		mReadBookmarkPoiOperation = new ReadPoiOperation(mCotnext, mReadBookmarkPoiOperationListener, -1, mBookmarks.get(position).getPoiUrl());
-		mReadBookmarkPoiOperation.startOperation();
-	}
-
-	private OperationListener<Poi> mReadLibraryPoiOperationListener = new OperationListener<Poi>() {
-		@Override
-		public void onOperationStarted() {
-
-		}
-
-		@Override
-		public void onOperationFinished(ErrorEntity error, Poi result) {
-			if (mListener != null && result != null) {
-				mLibrariesPois.add(result);
-				if (mLibrariesPoisUrls.size() > mCurrentLibrary + 1) {
-
-					getLibraryPoi(mCurrentLibrary + 1);
-				} else {
-					mListener.populateLibraries(mLibrariesPois);
-				}
-				synchronized (lock) {
-					mLibrariesFinished = true;
-					notifyFinishedIfNeeded();
-				}
-			}
-		}
-
-		@Override
-		public void onPageDownloaded(Poi result) {
-
-		}
-	};
-
-	private OperationListener<Poi> mReadBookmarkPoiOperationListener = new OperationListener<Poi>() {
-		@Override
-		public void onOperationStarted() {
-
-		}
-
-		@Override
-		public void onOperationFinished(ErrorEntity error, Poi result) {
-			if (mListener != null && result != null) {
-				mBookmarks.get(mCurrentBookmark).setPoi(result);
-				if (mBookmarks.size() > mCurrentBookmark + 1) {
-
-					getBookmakrPoi(mCurrentBookmark + 1);
-				} else {
-					mListener.populateBookmarks(mBookmarks);
-					synchronized (lock) {
-						mBookmarksFinished = true;
-						notifyFinishedIfNeeded();
-					}
-				}
-			} else {
-				synchronized (lock) {
-					mBookmarksFinished = true;
-					notifyFinishedIfNeeded();
-				}
-			}
-		}
-
-		@Override
-		public void onPageDownloaded(Poi result) {
-
-		}
-	};
 
 	private OperationListener<List<Bookmark>> mReadBookmarksOperationListener = new OperationListener<List<Bookmark>>() {
 		@Override
@@ -204,13 +111,11 @@ public class MyProfileDataModel extends AbsDataModel {
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Bookmark> result) {
 			if (mListener != null && result != null) {
-				mBookmarks = result;
-				getBookmakrPoi(0);
-			} else {
-				synchronized (lock) {
-					mBookmarksFinished = true;
-					notifyFinishedIfNeeded();
-				}
+				mListener.populateBookmarks(result);
+			}
+			synchronized (lock) {
+				mBookmarksFinished = true;
+				notifyFinishedIfNeeded();
 			}
 		}
 
@@ -243,18 +148,17 @@ public class MyProfileDataModel extends AbsDataModel {
 		}
 	};
 
-	private OperationListener<List<String>> mReadLibrariesOperationListener = new OperationListener<List<String>>() {
+	private OperationListener<List<Library>> mReadLibrariesOperationListener = new OperationListener<List<Library>>() {
 		@Override
 		public void onOperationStarted() {
 
 		}
 
 		@Override
-		public void onOperationFinished(ErrorEntity error, List<String> result) {
-			if (result != null) {
-				mLibrariesPoisUrls = result;
-				getLibraryPoi(0);
-			} else {
+		public void onOperationFinished(ErrorEntity error, List<Library> result) {
+			if (mListener != null && result != null) {
+
+				mListener.populateLibraries(result);
 				synchronized (lock) {
 					mLibrariesFinished = true;
 					notifyFinishedIfNeeded();
@@ -263,7 +167,7 @@ public class MyProfileDataModel extends AbsDataModel {
 		}
 
 		@Override
-		public void onPageDownloaded(List<String> result) {
+		public void onPageDownloaded(List<Library> result) {
 
 		}
 	};
@@ -271,7 +175,7 @@ public class MyProfileDataModel extends AbsDataModel {
 	public interface MyProfileDataModelInterface {
 		public void populateLinks(List<Link> links);
 
-		public void populateLibraries(List<Poi> pois);
+		public void populateLibraries(List<Library> libraries);
 
 		public void populateBookmarks(List<Bookmark> bookmarks);
 

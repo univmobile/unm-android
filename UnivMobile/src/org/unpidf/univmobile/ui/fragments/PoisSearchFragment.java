@@ -17,6 +17,7 @@ import android.widget.ListView;
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Poi;
+import org.unpidf.univmobile.data.models.GeoDataModel;
 import org.unpidf.univmobile.data.models.SearchPoisDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
@@ -34,7 +35,13 @@ public class PoisSearchFragment extends AbsFragment {
 	private SearchPoisDataModel mModel;
 	private SearchResultsAdapter mAdapter;
 
-	public static PoisSearchFragment newInstance() {
+	private int mSelectedTab;
+	public static PoisSearchFragment newInstance(int selectedTab) {
+
+		MediaFragment fragment = new MediaFragment();
+		Bundle args = new Bundle();
+		args.putInt("Root", selectedTab);
+		fragment.setArguments(args);
 		return new PoisSearchFragment();
 	}
 
@@ -45,6 +52,11 @@ public class PoisSearchFragment extends AbsFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			mSelectedTab = getArguments().getInt("Root");
+		}
+
 		mModel = new SearchPoisDataModel(getActivity(), mDataModelListener);
 	}
 
@@ -96,7 +108,19 @@ public class PoisSearchFragment extends AbsFragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(mAdapter.getItem(position), true);
+			int cat = 1;
+			switch (mSelectedTab) {
+				case 0:
+					cat = GeoDataModel.ROOT_CAT_1;
+					break;
+				case 1:
+					cat = GeoDataModel.ROOT_CAT_2;
+					break;
+				case 2:
+					cat = GeoDataModel.ROOT_CAT_3;
+					break;
+			}
+			a.showPoi( mAdapter.getItem(position),cat, true);
 		}
 	};
 	private View.OnClickListener mClearClickListener = new View.OnClickListener() {
