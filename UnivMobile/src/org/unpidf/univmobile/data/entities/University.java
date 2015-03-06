@@ -14,16 +14,18 @@ public class University implements Parcelable {
 	private String title;
 	private String self;
 	private String regionName;
+	private String mobileShibbolethUrl;
 
 	public University() {
 
 	}
 
-	public University(int id, String title, String self, String regionName) {
+	public University(int id, String title, String self, String regionName, String shibboleth) {
 		this.id = id;
 		this.title = title;
 		this.self = self;
 		this.regionName = regionName;
+		mobileShibbolethUrl = shibboleth;
 	}
 
 	public University(Parcel in) {
@@ -84,5 +86,13 @@ public class University implements Parcelable {
 
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
+	}
+
+	public String getMobileShibbolethUrl() {
+		return mobileShibbolethUrl;
+	}
+
+	public void setMobileShibbolethUrl(String mobileShibbolethUrl) {
+		this.mobileShibbolethUrl = mobileShibbolethUrl;
 	}
 }

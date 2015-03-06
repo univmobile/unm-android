@@ -28,6 +28,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 	private static final String PREF_UNIVERSITY_ID = "pref_university_id";
 	private static final String PREF_UNIVERSITY_SELF = "pref_university_self";
 	private static final String PREF_REGION_NAME = "pref_region_name";
+	private static final String PREF_SHIBBOLETH = "pref_shibboleth";
 
 	private Context mContext;
 	private UniversitiesDataModelListener mListener;
@@ -154,7 +155,8 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		int id = SharedPreferencesRepo.getInt(c, PREF_UNIVERSITY_ID);
 		String self = SharedPreferencesRepo.getString(c, PREF_UNIVERSITY_SELF);
 		String regionName = SharedPreferencesRepo.getString(c, PREF_REGION_NAME);
-		University univ = new University(id, name, self, regionName);
+		String shibboleth = SharedPreferencesRepo.getString(c, PREF_SHIBBOLETH);
+		University univ = new University(id, name, self, regionName, shibboleth);
 		return univ;
 	}
 
@@ -165,6 +167,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		SharedPreferencesRepo.saveString(mContext, PREF_UNIVERSITY_NAME, university.getTitle());
 		SharedPreferencesRepo.saveString(mContext, PREF_UNIVERSITY_SELF, university.getSelf());
 		SharedPreferencesRepo.saveString(mContext, PREF_REGION_NAME, university.getRegionName());
+		SharedPreferencesRepo.saveString(mContext, PREF_SHIBBOLETH, university.getMobileShibbolethUrl());
 	}
 
 

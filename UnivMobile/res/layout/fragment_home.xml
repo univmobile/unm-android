@@ -73,22 +73,26 @@
 			<org.unpidf.univmobile.ui.views.NewsItemView
 				android:id="@+id/news1"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
 			<org.unpidf.univmobile.ui.views.NewsItemView
 				android:id="@+id/news2"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
 			<org.unpidf.univmobile.ui.views.NewsItemView
 				android:id="@+id/news3"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
 			<org.unpidf.univmobile.ui.views.NewsItemView
 				android:id="@+id/news4"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"/>
 
 			<TextView
 				android:layout_width="match_parent"

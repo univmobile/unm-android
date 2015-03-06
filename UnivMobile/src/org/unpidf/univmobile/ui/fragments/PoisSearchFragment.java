@@ -36,6 +36,7 @@ public class PoisSearchFragment extends AbsFragment {
 	private SearchResultsAdapter mAdapter;
 
 	private int mSelectedTab;
+
 	public static PoisSearchFragment newInstance(int selectedTab) {
 
 		MediaFragment fragment = new MediaFragment();
@@ -57,7 +58,9 @@ public class PoisSearchFragment extends AbsFragment {
 			mSelectedTab = getArguments().getInt("Root");
 		}
 
-		mModel = new SearchPoisDataModel(getActivity(), mDataModelListener);
+		int cat = getCatByTab(mSelectedTab);
+		boolean needUniv = mSelectedTab == 1 ? true : false;
+		mModel = new SearchPoisDataModel(getActivity(), mDataModelListener, needUniv, cat);
 	}
 
 	@Override
@@ -108,21 +111,27 @@ public class PoisSearchFragment extends AbsFragment {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 			HomeActivity a = (HomeActivity) getActivity();
-			int cat = 1;
-			switch (mSelectedTab) {
-				case 0:
-					cat = GeoDataModel.ROOT_CAT_1;
-					break;
-				case 1:
-					cat = GeoDataModel.ROOT_CAT_2;
-					break;
-				case 2:
-					cat = GeoDataModel.ROOT_CAT_3;
-					break;
-			}
-			a.showPoi( mAdapter.getItem(position),cat, true);
+			int cat = getCatByTab(mSelectedTab);
+			a.showPoi(mAdapter.getItem(position), cat, true);
 		}
 	};
+
+	private int getCatByTab(int tab) {
+		int cat = 1;
+		switch (mSelectedTab) {
+			case 0:
+				cat = GeoDataModel.ROOT_CAT_1;
+				break;
+			case 1:
+				cat = GeoDataModel.ROOT_CAT_2;
+				break;
+			case 2:
+				cat = GeoDataModel.ROOT_CAT_3;
+				break;
+		}
+		return cat;
+	}
+
 	private View.OnClickListener mClearClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {

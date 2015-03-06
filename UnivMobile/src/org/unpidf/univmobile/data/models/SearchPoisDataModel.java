@@ -21,12 +21,17 @@ public class SearchPoisDataModel extends AbsDataModel {
 	private Context mContext;
 	private SearchPoisModelListener mListener;
 	private List<Poi> mPois = new ArrayList<Poi>();
+
 	//pois serach
 	private SearchPoisOperation mSearchPoisOperation;
+	private boolean mIncludeUniv;
+	private int mRootCat;
 
-	public SearchPoisDataModel(Context c, SearchPoisModelListener listener) {
+	public SearchPoisDataModel(Context c, SearchPoisModelListener listener, boolean includeUniv, int rootCat) {
 		mContext = c;
 		mListener = listener;
+		mIncludeUniv = includeUniv;
+		mRootCat = rootCat;
 	}
 
 	@Override
@@ -44,7 +49,7 @@ public class SearchPoisDataModel extends AbsDataModel {
 		clearOperation(mSearchPoisOperation);
 		mSearchPoisOperation = null;
 
-		mSearchPoisOperation = new SearchPoisOperation(mContext, mSearchPoisOperationListener, UniversitiesDataModel.getSavedUniversity(mContext).getId(), key);
+		mSearchPoisOperation = new SearchPoisOperation(mContext, mSearchPoisOperationListener, UniversitiesDataModel.getSavedUniversity(mContext).getId(), key, mIncludeUniv, mRootCat);
 		mSearchPoisOperation.startOperation();
 	}
 

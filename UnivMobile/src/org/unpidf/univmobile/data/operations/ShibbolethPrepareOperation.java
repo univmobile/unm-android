@@ -30,25 +30,26 @@ import java.util.List;
  */
 public class ShibbolethPrepareOperation extends AbsOperation<ShibbolethPrepare> {
 
+	private static final String URL = "json/session?apiKey=%s&prepare=";
 
 	public ShibbolethPrepareOperation(Context c, OperationListener<ShibbolethPrepare> listener) {
 		super(c, listener);
 	}
 
 
-	@Override
-	protected InputStream doRequest(int page) throws IOException {
-		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		nameValuePairs.add(new BasicNameValuePair("apiKey", LoginDataModel.API_KEY));
-		nameValuePairs.add(new BasicNameValuePair("prepare", null));
-
-		HttpPost request = new HttpPost(getOperationUrl(page));
-		request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-		HttpClient mHttpClient = new DefaultHttpClient();
-		HttpResponse response = mHttpClient.execute(request);
-		return response.getEntity().getContent();
-	}
+//	@Override
+//	protected InputStream doRequest(int page) throws IOException {
+//		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+//		nameValuePairs.add(new BasicNameValuePair("apiKey", LoginDataModel.API_KEY));
+//		nameValuePairs.add(new BasicNameValuePair("prepare", null));
+//
+//		HttpPost request = new HttpPost(getOperationUrl(page));
+//		request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//
+//		HttpClient mHttpClient = new DefaultHttpClient();
+//		HttpResponse response = mHttpClient.execute(request);
+//		return response.getEntity().getContent();
+//	}
 
 	@Override
 	protected ShibbolethPrepare parse(JSONObject json) throws JSONException {
@@ -59,7 +60,12 @@ public class ShibbolethPrepareOperation extends AbsOperation<ShibbolethPrepare> 
 
 	@Override
 	protected String getOperationUrl(int page) {
-		return "https://univmobile-dev.univ-paris1.fr/json/session";
+		return BASE_URL + String.format(URL, LoginDataModel.API_KEY);
+	}
+
+	@Override
+	protected REQUEST getRequestType() {
+		return REQUEST.POST;
 	}
 }
 

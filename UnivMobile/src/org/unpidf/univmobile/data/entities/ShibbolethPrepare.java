@@ -8,7 +8,7 @@ public class ShibbolethPrepare {
 	private String key;
 	private String token;
 
-	public ShibbolethPrepare(String key, String token) {
+	public ShibbolethPrepare( String token,String key) {
 		this.key = key;
 		this.token = token;
 	}

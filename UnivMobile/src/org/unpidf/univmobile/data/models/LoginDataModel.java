@@ -6,6 +6,7 @@ import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.entities.ShibbolethPrepare;
+import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.operations.OperationListener;
 import org.unpidf.univmobile.data.operations.ShibbolethPrepareOperation;
 import org.unpidf.univmobile.data.operations.ShibbolethRetrieveOperation;
@@ -22,9 +23,7 @@ public class LoginDataModel extends AbsDataModel {
 	public static final String API_KEY = "toto";
 
 	public static final String TEST_URL_SHIBBOLETH = "https://univmobile-dev.univ-paris1.fr/";
-	public static final String TEST_URL_SESSION = TEST_URL_SHIBBOLETH + "json/session";
-	public static final String TEST_URL_SUCCESS = TEST_URL_SHIBBOLETH + "testSP/success";
-
+	public static String TEST_URL_SHIBBOLETH_SUCCESS = TEST_URL_SHIBBOLETH  + "testSP/success";
 	private Context mContext;
 
 	private StandardLoginDataModelListener mLoginDataModelListener;
@@ -86,11 +85,13 @@ public class LoginDataModel extends AbsDataModel {
 
 	public String getShibbolethLoginUrl(String token) {
 		try {
-			String success = TEST_URL_SHIBBOLETH + "testSP/success";
+			University u = UniversitiesDataModel.getSavedUniversity(mContext);
 
-			String target = TEST_URL_SHIBBOLETH + "testSP/?loginToken=" + token + "&callback=" + URLEncoder.encode(success, "UTF-8") + ".sso";
 
-			return TEST_URL_SHIBBOLETH + "Shibboleth.sso/Login?target=" + URLEncoder.encode(target, "UTF-8") + "&entityID=" + URLEncoder.encode("https://idp-test.univ-paris1.fr", "UTF-8");
+			String target = TEST_URL_SHIBBOLETH + "testSP/?loginToken=" + token + "&callback=" + URLEncoder.encode(TEST_URL_SHIBBOLETH_SUCCESS, "UTF-8") + ".sso";
+
+			//String provider = "https://idp-test.univ-paris1.fr";
+			return TEST_URL_SHIBBOLETH + "Shibboleth.sso/Login?target=" + URLEncoder.encode(target, "UTF-8") + "&entityID=" + URLEncoder.encode(u.getMobileShibbolethUrl(), "UTF-8");
 
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -106,7 +107,18 @@ public class LoginDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Login result) {
+			clearOperation(mShibbolethRetrieveOperation);
+			mShibbolethRetrieveOperation = null;
 
+			if (mShibbolethLoginDadaModelListener != null) {
+				if (result != null) {
+
+					((UnivMobileApp) mContext.getApplicationContext()).setmLogin(result);
+					mShibbolethLoginDadaModelListener.shibbolethLoginSuccessfully(result);
+				} else {
+					mShibbolethLoginDadaModelListener.shibbolethLoginFailed();
+				}
+			}
 		}
 
 		@Override
@@ -183,6 +195,10 @@ public class LoginDataModel extends AbsDataModel {
 		public void shibbolethPreparedSuccessfully(ShibbolethPrepare prepare);
 
 		public void shibbolethPrepareFailed();
+
+		public void shibbolethLoginSuccessfully(Login login);
+
+		public void shibbolethLoginFailed();
 	}
 
 }

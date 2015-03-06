@@ -42,6 +42,7 @@ import org.unpidf.univmobile.ui.fragments.MediaFragment;
 import org.unpidf.univmobile.ui.fragments.MyProfileFragment;
 import org.unpidf.univmobile.ui.fragments.MyWebViewFragment;
 import org.unpidf.univmobile.ui.fragments.NotificationsFragment;
+import org.unpidf.univmobile.ui.fragments.ShibbolethLoginFragment;
 import org.unpidf.univmobile.ui.fragments.StandartLoginFragment;
 import org.unpidf.univmobile.ui.fragments.UniversityNewsFragment;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
@@ -187,8 +188,12 @@ public class HomeActivity extends Activity {
 		actionBarView.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
-				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
+				University univ = UniversitiesDataModel.getSavedUniversity(HomeActivity.this);
+				if (univ.getMobileShibbolethUrl() == null) {
+					showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
+				} else {
+					showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
+				}
 			}
 		});
 

@@ -8,14 +8,16 @@ public class Login {
 	private String name;
 	private String token;
 	private String id;
+	private String mail;
 
 	public Login() {
 	}
 
-	public Login(String name, String token, String id) {
+	public Login(String name, String token, String id, String mail) {
 		this.name = name;
 		this.token = token;
 		this.id = id;
+		this.mail = mail;
 	}
 
 	public String getName() {
@@ -40,5 +42,13 @@ public class Login {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 }

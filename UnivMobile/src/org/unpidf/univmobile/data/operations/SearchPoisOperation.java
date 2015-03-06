@@ -17,15 +17,21 @@ import java.util.List;
  */
 public class SearchPoisOperation extends AbsOperation<List<Poi>> {
 
-	private static final String POIS_SEARCH_KEY = "pois/search/searchValue?val=%s&universityId=%d";
+	private static final String POIS_SEARCH_KEY_UNIV = "pois/search/searchValueInUniversityAndCategoryRoot?val=%s&%d=1&universityId=%d";
+	private static final String POIS_SEARCH_KEY = "pois/search/searchValueInCategoryRoot?val=%s&categoryId=%d";
+
 
 	private String mSearchValue;
 	private int mUniversityID;
+	private boolean mIncludeUniv;
+	private int mRootCat;
 
-	public SearchPoisOperation(Context c, OperationListener listener, int universityId, String searchValue) {
+	public SearchPoisOperation(Context c, OperationListener listener, int universityId, String searchValue, boolean includeUniv, int rootCat) {
 		super(c, listener);
 		mUniversityID = universityId;
 		mSearchValue = searchValue;
+		mIncludeUniv = includeUniv;
+		mRootCat = rootCat;
 	}
 
 	@Override
@@ -50,9 +56,11 @@ public class SearchPoisOperation extends AbsOperation<List<Poi>> {
 
 	@Override
 	protected String getOperationUrl(int page) {
-		String url = BASE_URL_API + String.format(POIS_SEARCH_KEY, mSearchValue, mUniversityID);
-
-		return url;
+		if(mIncludeUniv) {
+			return BASE_URL_API + String.format(POIS_SEARCH_KEY_UNIV, mSearchValue, mRootCat, mUniversityID);
+		} else {
+			return BASE_URL_API + String.format(POIS_SEARCH_KEY, mSearchValue, mRootCat);
+		}
 	}
 
 }
