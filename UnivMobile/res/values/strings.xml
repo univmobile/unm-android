@@ -19,7 +19,6 @@
 	<!-- action bar -->
 	<string name="login">Connectez-vous</string>
 	<string name="hello">Bonjour</string>
-	<string name="university">Université</string>
 
     <!-- notifications fragment -->
     <string name="notifications">NOTIFICATIONS</string>
@@ -83,4 +82,14 @@
 	<string name="email_hint">Adresse email</string>
 	<string name="poi_description_hint">Entrez une déscription du lieux, des services proposés et des infos pratiques pouvant être utiles à la communauté*</string>
 	<string name="missing_info">Informations manquantes</string>
+
+    <!--poi details -->
+    <string name="poi_site">Site web</string>
+    <string name="poi_welcome">Publics accueillis</string>
+    <string name="poi_disciplines">Disciplines</string>
+    <string name="poi_work_hours">Horaires et jours d\'ouverture</string>
+    <string name="poi_close_hours">Horaires et jours de fermeture</string>
+    <string name="poi_floor">Emplacement</string>
+    <string name="poi_acces">Accès</string>
+
 </resources>

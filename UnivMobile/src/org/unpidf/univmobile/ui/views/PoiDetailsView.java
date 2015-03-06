@@ -86,6 +86,29 @@ public class PoiDetailsView extends LinearLayout {
 			helper.loadFont((TextView) findViewById(R.id.research_text), FontHelper.FONT.EXO_MEDIUM);
 			helper.loadFont((TextView) findViewById(R.id.post_text), FontHelper.FONT.EXO_MEDIUM);
 
+            helper.loadFont((TextView) findViewById(R.id.poi_description_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_site_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_site_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_welcome_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_welcome_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_disciplines_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_disciplines_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_work_hours_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_work_hours_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_close_hours_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_close_hours_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_floor_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_floor_value), FontHelper.FONT.EXO_MEDIUM);
+
+            helper.loadFont((TextView) findViewById(R.id.poi_acces_title), FontHelper.FONT.EXO_BOLD);
+            helper.loadFont((TextView) findViewById(R.id.poi_acces_value), FontHelper.FONT.EXO_MEDIUM);
+
 		}
 
 	}
@@ -237,12 +260,78 @@ public class PoiDetailsView extends LinearLayout {
 		TextView mail = (TextView) findViewById(R.id.phone);
 		mail.setText(poi.getEmail());
 
-		TextView description = (TextView) findViewById(R.id.poi_description);
-		if (poi.getDescription() != null) {
+
+        //init description
+		TextView description = (TextView) findViewById(R.id.poi_description_value);
+		if (poi.getDescription() != null && poi.getDescription().length() > 0) {
 			description.setText(Html.fromHtml(poi.getDescription()));
 		} else {
-			description.setText("");
+			description.setVisibility(View.GONE);
 		}
+
+        TextView siteTitle = (TextView) findViewById(R.id.poi_site_title);
+        TextView siteValue = (TextView) findViewById(R.id.poi_site_value);
+        if (poi.getUrl() != null && poi.getUrl().length() > 0) {
+            siteValue.setText(Html.fromHtml(poi.getUrl()));
+        } else {
+            siteTitle.setVisibility(View.GONE);
+            siteValue.setVisibility(View.GONE);
+        }
+
+        TextView welcomeTitle = (TextView) findViewById(R.id.poi_welcome_title);
+        TextView welcomeValue = (TextView) findViewById(R.id.poi_welcome_value);
+        if (poi.getPublicWelcome() != null && poi.getPublicWelcome().length() > 0) {
+            welcomeValue.setText(Html.fromHtml(poi.getPublicWelcome()));
+        } else {
+            welcomeTitle.setVisibility(View.GONE);
+            welcomeValue.setVisibility(View.GONE);
+        }
+
+        TextView disciplinesTitle = (TextView) findViewById(R.id.poi_disciplines_title);
+        TextView disciplinesValue = (TextView) findViewById(R.id.poi_disciplines_value);
+        if (poi.getDisciplines() != null && poi.getDisciplines().length() > 0) {
+            disciplinesValue.setText(Html.fromHtml(poi.getDisciplines()));
+        } else {
+            disciplinesTitle.setVisibility(View.GONE);
+            disciplinesValue.setVisibility(View.GONE);
+        }
+
+        TextView workHoursTitle = (TextView) findViewById(R.id.poi_work_hours_title);
+        TextView workHoursValue = (TextView) findViewById(R.id.poi_work_hours_value);
+        if (poi.getOpeningHours() != null && poi.getOpeningHours().length() > 0) {
+            workHoursValue.setText(Html.fromHtml(poi.getOpeningHours()));
+        } else {
+            workHoursTitle.setVisibility(View.GONE);
+            workHoursValue.setVisibility(View.GONE);
+        }
+
+        TextView closeHoursTitle = (TextView) findViewById(R.id.poi_close_hours_title);
+        TextView closeHoursValue = (TextView) findViewById(R.id.poi_close_hours_value);
+        if (poi.getClosingHours() != null && poi.getClosingHours().length() > 0) {
+            closeHoursValue.setText(Html.fromHtml(poi.getClosingHours()));
+        } else {
+            closeHoursTitle.setVisibility(View.GONE);
+            closeHoursValue.setVisibility(View.GONE);
+        }
+
+        TextView floorTitle = (TextView) findViewById(R.id.poi_floor_title);
+        TextView floorValue = (TextView) findViewById(R.id.poi_floor_value);
+        if (poi.getFloor() != null && poi.getFloor().length() > 0) {
+            floorValue.setText(Html.fromHtml(poi.getFloor()));
+        } else {
+            floorTitle.setVisibility(View.GONE);
+            floorValue.setVisibility(View.GONE);
+        }
+
+        TextView accessTitle = (TextView) findViewById(R.id.poi_acces_title);
+        TextView accessValue = (TextView) findViewById(R.id.poi_acces_value);
+        if (poi.getItinerary() != null && poi.getItinerary().length() > 0) {
+            accessValue.setText(Html.fromHtml(poi.getItinerary()));
+        } else {
+            accessTitle.setVisibility(View.GONE);
+            accessValue.setVisibility(View.GONE);
+        }
+
 	}
 
 	private void initColors(int tab) {
@@ -250,7 +339,29 @@ public class PoiDetailsView extends LinearLayout {
 		findViewById(R.id.info_container).setBackgroundColor(ColorsHelper.getColorByTab(getContext(), false, tab));
 		findViewById(R.id.seperator_line).setBackgroundColor(ColorsHelper.getColorByTab(getContext(), false, tab));
 
-		((TextView) findViewById(R.id.poi_description)).setTextColor(ColorsHelper.getColorByTab(getContext(), false, tab));
+        int color = ColorsHelper.getColorByTab(getContext(), false, tab);
+        ((TextView) findViewById(R.id.poi_description_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_site_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_site_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_welcome_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_welcome_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_disciplines_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_disciplines_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_work_hours_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_work_hours_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_close_hours_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_close_hours_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_floor_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_floor_value)).setTextColor(color);
+
+        ((TextView) findViewById(R.id.poi_acces_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.poi_acces_value)).setTextColor(color);
 
 		findViewById(R.id.bookmarks_name).setBackgroundResource(ColorsHelper.getBookmarksBackgroundResource(tab));
 	}
@@ -312,7 +423,7 @@ public class PoiDetailsView extends LinearLayout {
 	private void initTabsContent() {
 
 
-		View info = findViewById(R.id.poi_description);
+		View info = findViewById(R.id.poi_description_container);
 		View comments = findViewById(R.id.comments_container);
 		View webview = findViewById(R.id.resto_menu_container);
 

@@ -35,8 +35,11 @@ public class Poi {
 	private int universityId;
 	private String commentsUrl;
 	private int categoryId;
+    private String publicWelcome;
+    private String disciplines;
+    private String closingHours;
 
-	public int getId() {
+    public int getId() {
 		return id;
 	}
 
@@ -275,4 +278,28 @@ public class Poi {
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
+
+    public String getPublicWelcome() {
+        return publicWelcome;
+    }
+
+    public void setPublicWelcome(String publicWelcome) {
+        this.publicWelcome = publicWelcome;
+    }
+
+    public String getDisciplines() {
+        return disciplines;
+    }
+
+    public void setDisciplines(String disciplines) {
+        this.disciplines = disciplines;
+    }
+
+    public String getClosingHours() {
+        return closingHours;
+    }
+
+    public void setClosingHours(String closingHours) {
+        this.closingHours = closingHours;
+    }
 }

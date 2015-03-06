@@ -1,335 +1,484 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:orientation="vertical"
-			  android:layout_width="match_parent"
-			  android:layout_height="wrap_content"
-			  android:clipChildren="false"
-			  android:clipToPadding="false">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-	<View
-		android:layout_width="match_parent"
-		android:layout_height="40dp"
-		android:id="@+id/top_view"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/top_view" />
 
-	<RelativeLayout
-		android:layout_below="@id/top_view"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/settings_container"
-		android:clipChildren="false"
-		android:clipToPadding="false"
-		android:gravity="bottom"
-		android:clickable="true">
+    <RelativeLayout
+        android:layout_below="@id/top_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_container"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="bottom"
+        android:clickable="true">
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/title_container"
-			android:orientation="horizontal"
-			android:background="@color/geo_orange_dark"
-			android:gravity="center_vertical"
-			android:clipChildren="false"
-			android:clipToPadding="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title_container"
+            android:orientation="horizontal"
+            android:background="@color/geo_orange_dark"
+            android:gravity="center_vertical"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-			<View
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="9"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="9" />
 
-			<TextView
-				android:id="@+id/poi_name"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="23"
-				android:text=""
-				android:textColor="@android:color/white"
-				android:lines="1"
-				android:textSize="@dimen/title_size_extra"
-				android:padding="@dimen/horizontal"/>
+            <TextView
+                android:id="@+id/poi_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="23"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:lines="1"
+                android:textSize="@dimen/title_size_extra"
+                android:padding="@dimen/horizontal" />
 
-			<ImageView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:src="@drawable/ic_clear"
-				android:layout_weight="4"
-				android:padding="10dp"
-				android:id="@+id/close"/>
-		</LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear"
+                android:layout_weight="4"
+                android:padding="10dp"
+                android:id="@+id/close" />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/info_container"
-			android:orientation="horizontal"
-			android:background="@color/geo_orange_light"
-			android:gravity="center_vertical"
-			android:layout_below="@id/title_container">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_container"
+            android:orientation="horizontal"
+            android:background="@color/geo_orange_light"
+            android:gravity="center_vertical"
+            android:layout_below="@id/title_container">
 
-			<RelativeLayout
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="9"
-				android:id="@+id/bookmarks">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="9"
+                android:id="@+id/bookmarks">
 
 
-				<TextView
-					android:id="@+id/bookmarks_name"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/bookmarks_upper"
-					android:textSize="7dp"
-					android:textColor="@android:color/white"
-					android:drawableBottom="@drawable/ic_bookmark"
-					android:layout_alignParentRight="true"
-					android:layout_marginRight="25dp"
-					android:background="@drawable/box_orange"
-					android:paddingBottom="4dp"
-					android:paddingLeft="4dp"
-					android:paddingRight="4dp"
-					android:paddingTop="9dp"/>
+                <TextView
+                    android:id="@+id/bookmarks_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookmarks_upper"
+                    android:textSize="7dp"
+                    android:textColor="@android:color/white"
+                    android:drawableBottom="@drawable/ic_bookmark"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/box_orange"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="9dp" />
 
-				<RelativeLayout
-					android:id="@+id/tabs_container"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_alignParentBottom="true">
+                <RelativeLayout
+                    android:id="@+id/tabs_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
 
-					<ImageView
-						android:clickable="true"
-						android:id="@+id/tab_comments"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:padding="2dp"
-						android:layout_marginLeft="-4dp"
-						android:src="@drawable/selector_ic_comments"
-						android:background="@drawable/selector_tab"/>
+                    <ImageView
+                        android:clickable="true"
+                        android:id="@+id/tab_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:layout_marginLeft="-4dp"
+                        android:src="@drawable/selector_ic_comments"
+                        android:background="@drawable/selector_tab" />
 
-					<ImageView
-						android:clickable="true"
-						android:id="@+id/tab_info"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:src="@drawable/selector_ic_info"
-						android:background="@drawable/selector_tab"
-						android:padding="2dp"/>
+                    <ImageView
+                        android:clickable="true"
+                        android:id="@+id/tab_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/selector_ic_info"
+                        android:background="@drawable/selector_tab"
+                        android:padding="2dp" />
 
-				</RelativeLayout>
-			</RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
 
-			<LinearLayout
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="23"
-				android:orientation="vertical"
-				android:paddingLeft="@dimen/horizontal"
-				android:paddingTop="3dp"
-				android:paddingBottom="3dp"
-				android:gravity="center_vertical"
-				android:layout_gravity="bottom">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="23"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/horizontal"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="bottom">
 
-				<TextView
-					android:id="@+id/pin"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@android:color/white"
-					android:textSize="@dimen/date_size"
-					android:text=""
-					android:drawableLeft="@drawable/ic_pin"
-					android:drawablePadding="5dp"
-					android:maxLines="2"
-					android:paddingTop="3dp"
-					android:paddingBottom="3dp"/>
+                <TextView
+                    android:id="@+id/pin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/date_size"
+                    android:text=""
+                    android:drawableLeft="@drawable/ic_pin"
+                    android:drawablePadding="5dp"
+                    android:maxLines="2"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp" />
 
-				<TextView
-					android:id="@+id/phone"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@android:color/white"
-					android:textSize="@dimen/date_size"
-					android:text=""
-					android:drawableLeft="@drawable/ic_phone"
-					android:drawablePadding="5dp"
-					android:maxLines="2"
-					android:paddingTop="3dp"
-					android:paddingBottom="3dp"/>
+                <TextView
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/date_size"
+                    android:text=""
+                    android:drawableLeft="@drawable/ic_phone"
+                    android:drawablePadding="5dp"
+                    android:maxLines="2"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp" />
 
-				<TextView
-					android:id="@+id/mail"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:textColor="@android:color/white"
-					android:textSize="@dimen/date_size"
-					android:text=""
-					android:drawableLeft="@drawable/ic_mail"
-					android:drawablePadding="5dp"
-					android:maxLines="2"
-					android:paddingTop="3dp"
-					android:paddingBottom="3dp"/>
-			</LinearLayout>
+                <TextView
+                    android:id="@+id/mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/date_size"
+                    android:text=""
+                    android:drawableLeft="@drawable/ic_mail"
+                    android:drawablePadding="5dp"
+                    android:maxLines="2"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp" />
+            </LinearLayout>
 
-			<TextView
-				android:clickable="true"
-				android:layout_gravity="bottom"
-				android:id="@+id/tab_menu"
-				android:layout_width="0dp"
-				android:textSize="@dimen/date_size"
-				android:layout_height="wrap_content"
-				android:layout_weight="4"
-				android:gravity="center"
-				android:text="@string/menu"
-				android:textColor="@color/selector_color_tab"
-				android:drawableLeft="@drawable/selector_ic_menu_tab"
-				android:drawablePadding="2dp"
-				android:background="@drawable/selector_tab_right"
-				android:padding="3dp"/>
-		</LinearLayout>
+            <TextView
+                android:clickable="true"
+                android:layout_gravity="bottom"
+                android:id="@+id/tab_menu"
+                android:layout_width="0dp"
+                android:textSize="@dimen/date_size"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/menu"
+                android:textColor="@color/selector_color_tab"
+                android:drawableLeft="@drawable/selector_ic_menu_tab"
+                android:drawablePadding="2dp"
+                android:background="@drawable/selector_tab_right"
+                android:padding="3dp" />
+        </LinearLayout>
 
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:layout_alignTop="@id/title_container"
-			android:layout_alignBottom="@id/title_container"
-			android:clipChildren="false"
-			android:clipToPadding="false">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@id/title_container"
+            android:layout_alignBottom="@id/title_container"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-			<RelativeLayout
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="9">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="9">
 
-				<org.unpidf.univmobile.ui.widgets.SqareImageView
-					android:layout_alignParentRight="true"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:adjustViewBounds="true"
-					android:id="@+id/category_image"
-					android:padding="10dp"
-					android:layout_marginBottom="-7dp"
-					android:layout_marginTop="-7dp"/>
-			</RelativeLayout>
+                <org.unpidf.univmobile.ui.widgets.SqareImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/category_image"
+                    android:padding="10dp"
+                    android:layout_marginBottom="-7dp"
+                    android:layout_marginTop="-7dp" />
+            </RelativeLayout>
 
-			<View
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="23"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="23" />
 
-			<View
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="4"/>
-		</LinearLayout>
-	</RelativeLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4" />
+        </LinearLayout>
+    </RelativeLayout>
 
-	<RelativeLayout
-		android:layout_below="@id/settings_container"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_weight="1"
-		android:id="@+id/content_container"
-		android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_below="@id/settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/content_container"
+        android:background="@android:color/white">
 
-		<RelativeLayout
-			android:clickable="true"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@drawable/selector_color_gray"
-			android:id="@+id/research_container"
-			android:padding="5dp"
-			android:layout_alignParentBottom="true"
-			android:animateLayoutChanges="true">
+        <RelativeLayout
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_color_gray"
+            android:id="@+id/research_container"
+            android:padding="5dp"
+            android:layout_alignParentBottom="true"
+            android:animateLayoutChanges="true">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/post"
-				android:id="@+id/post_text"
-				android:layout_centerInParent="true"
-				android:textColor="@android:color/white"
-				android:drawablePadding="5dp"
-				android:visibility="invisible"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post"
+                android:id="@+id/post_text"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/white"
+                android:drawablePadding="5dp"
+                android:visibility="invisible" />
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/research"
-				android:id="@+id/research_text"
-				android:layout_centerInParent="true"
-				android:textColor="@android:color/white"
-				android:drawableLeft="@drawable/ic_search_left"
-				android:drawablePadding="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/research"
+                android:id="@+id/research_text"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/white"
+                android:drawableLeft="@drawable/ic_search_left"
+                android:drawablePadding="5dp" />
 
-		</RelativeLayout>
+        </RelativeLayout>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="3dp"
-			android:id="@+id/seperator_line"
-			android:background="@color/geo_orange_light"
-			android:layout_above="@id/research_container"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:id="@+id/seperator_line"
+            android:background="@color/geo_orange_light"
+            android:layout_above="@id/research_container" />
 
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_above="@id/seperator_line"
-			android:fillViewport="true">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/seperator_line"
+            android:fillViewport="true">
 
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:animateLayoutChanges="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true">
 
-				<TextView
-					android:background="@android:color/white"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:id="@+id/poi_description"
-					android:paddingTop="10dp"
-					android:paddingLeft="@dimen/horizontal"
-					android:paddingRight="@dimen/horizontal"
-					android:paddingBottom="10dp"
-					android:textColor="@color/geo_orange_light"
-					android:textSize="@dimen/content_size"/>
+                <LinearLayout
+                    android:background="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/poi_description_container"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="@dimen/horizontal"
+                    android:paddingRight="@dimen/horizontal"
+                    android:paddingBottom="10dp"
+                    android:orientation="vertical">
 
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:id="@+id/comments_container"
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_description_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
 
-					android:visibility="gone">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_site_title"
+                        android:text="@string/poi_site"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
 
-					<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-							  android:layout_width="match_parent"
-							  android:layout_height="match_parent"
-							  android:id="@+id/comments_list"
-							  android:dividerHeight="0dp"
-							  android:divider="@null">
-					</ListView>
-				</RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_site_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
 
-				<WebView
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:id="@+id/resto_menu_container"
-					android:visibility="gone"></WebView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_welcome_title"
+                        android:text="@string/poi_welcome"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
 
-			</RelativeLayout>
-		</ScrollView>
-	</RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_welcome_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:id="@+id/loading"
-		android:background="#a000"
-		android:visibility="gone"
-		android:clickable="true">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_disciplines_title"
+                        android:text="@string/poi_disciplines"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
 
-		<ProgressBar
-			android:id="@+id/progressBar1"
-			style="?android:attr/progressBarStyleLarge"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"/>
-	</RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_disciplines_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_work_hours_title"
+                        android:text="@string/poi_work_hours"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_work_hours_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_close_hours_title"
+                        android:text="@string/poi_close_hours"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_close_hours_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_floor_title"
+                        android:text="@string/poi_floor"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_floor_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_acces_title"
+                        android:text="@string/poi_acces"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/poi_acces_value"
+                        android:paddingLeft="@dimen/horizontal"
+                        android:paddingRight="@dimen/horizontal"
+                        android:textColor="@color/geo_orange_light"
+                        android:textSize="@dimen/content_size"
+                        android:paddingBottom="5dp"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/comments_container"
+
+                    android:visibility="gone">
+
+                    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/comments_list"
+                        android:dividerHeight="0dp"
+                        android:divider="@null"></ListView>
+                </RelativeLayout>
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/resto_menu_container"
+                    android:visibility="gone"></WebView>
+
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading"
+        android:background="#a000"
+        android:visibility="gone"
+        android:clickable="true">
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 
 </RelativeLayout>

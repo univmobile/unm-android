@@ -31,7 +31,7 @@
 			android:value="https://univmobile-dev.univ-paris1.fr/"/>
 		<meta-data
 			android:name="com.google.android.maps.v2.API_KEY"
-			android:value="AIzaSyBxvbZg11hF0ISdvLCv-ZeuSvNYtFRQbw8"/>
+			android:value="AIzaSyBJXfb49-xHsF-coLqLO6gtgRLR4oTv0QQ"/>
 
 		<activity
 			android:name=".ui.activities.SplashScreenActivity"

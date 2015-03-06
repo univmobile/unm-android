@@ -208,7 +208,7 @@ public class HomeActivity extends Activity {
 
 		University u = UniversitiesDataModel.getSavedUniversity(this);
 		TextView universityText = (TextView) actionBarView.findViewById(R.id.university_name);
-		universityText.setText(getString(R.string.university) + " " + u.getTitle());
+		universityText.setText(u.getTitle());
 
 		initUser();
 
@@ -472,7 +472,7 @@ public class HomeActivity extends Activity {
 			f = GeoCampusFragment.newInstance(tabPosition, -1, poi.getId(), -1);
 			showFragment(f, GeoCampusFragment.class.getName(), false);
 		} else {
-			f.showPoiDetails(tabPosition, poi);
+			f.showPoiDetails(tabPosition, poi, true);
 		}
 	}
 
