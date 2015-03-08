@@ -197,14 +197,14 @@ public class HomeActivity extends Activity {
 			}
 		});
 
-		actionBarView.findViewById(R.id.login_container).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				((UnivMobileApp) getApplicationContext()).logout();
-				restart();
-				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
-			}
-		});
+//		actionBarView.findViewById(R.id.login_container).setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				((UnivMobileApp) getApplicationContext()).logout();
+//				restart();
+//				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
+//			}
+//		});
 
 		University u = UniversitiesDataModel.getSavedUniversity(this);
 		TextView universityText = (TextView) actionBarView.findViewById(R.id.university_name);
@@ -226,7 +226,7 @@ public class HomeActivity extends Activity {
 		View actionBarView = actionBar.getCustomView();
 		View loginContainer = actionBarView.findViewById(R.id.login_container);
 		View loginButton = actionBarView.findViewById(R.id.login_button);
-		Login login = ((UnivMobileApp) getApplicationContext()).getmLogin();
+		Login login = ((UnivMobileApp) getApplicationContext()).getLogin();
 		if (login == null) {
 			loginButton.setVisibility(View.VISIBLE);
 			loginContainer.setVisibility(View.GONE);
@@ -393,7 +393,7 @@ public class HomeActivity extends Activity {
 	}
 
 	public void logedIn(Login login) {
-		((UnivMobileApp) getApplicationContext()).setmLogin(login);
+		((UnivMobileApp) getApplicationContext()).setLogin(login);
 		restart();
 //		;
 //		removeTopFragment();

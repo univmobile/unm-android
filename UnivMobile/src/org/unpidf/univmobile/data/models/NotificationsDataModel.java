@@ -5,11 +5,9 @@ import android.content.Context;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
-import org.unpidf.univmobile.data.entities.News;
 import org.unpidf.univmobile.data.entities.NotificationEntity;
 import org.unpidf.univmobile.data.operations.OperationListener;
 import org.unpidf.univmobile.data.operations.PostLastReadNotificationOperation;
-import org.unpidf.univmobile.data.operations.ReadNewsOperation;
 import org.unpidf.univmobile.data.operations.ReadNotificationsOperation;
 import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
 
@@ -74,7 +72,7 @@ public class NotificationsDataModel extends AbsDataModel {
 
 
 	public void saveNotificationsReadDate() {
-		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		if (login != null && mNotifications != null && mNotifications.size() > 0) {
 
 			mPostLastReadNotificationOperation = new PostLastReadNotificationOperation(mContext, null, login.getId(), mNotifications.get(0).getId());

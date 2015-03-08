@@ -1,9 +1,6 @@
 package org.unpidf.univmobile.ui.fragments;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,6 @@ import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
-import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.models.MyProfileDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
@@ -22,9 +18,7 @@ import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.BookmarksListView;
 import org.unpidf.univmobile.ui.views.LibraryListView;
-import org.unpidf.univmobile.ui.views.MediaItemView;
 import org.unpidf.univmobile.ui.views.MediaListView;
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -90,9 +84,9 @@ public class MyProfileFragment extends AbsFragment {
 	private void laodData() {
 		UnivMobileApp ap = (UnivMobileApp) getActivity().getApplication();
 		TextView name = (TextView) getView().findViewById(R.id.name);
-		if (ap.getmLogin() != null) {
+		if (ap.getLogin() != null) {
 			name.setVisibility(View.VISIBLE);
-			name.setText(ap.getmLogin().getName());
+			name.setText(ap.getLogin().getName());
 		} else {
 			name.setVisibility(View.GONE);
 		}

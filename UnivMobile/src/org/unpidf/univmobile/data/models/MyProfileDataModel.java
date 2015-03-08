@@ -4,22 +4,16 @@ import android.content.Context;
 
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
-import org.unpidf.univmobile.data.entities.Category;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Login;
-import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.operations.OperationListener;
 import org.unpidf.univmobile.data.operations.ReadBookmarksOperation;
 import org.unpidf.univmobile.data.operations.ReadLibrariesOperation;
 import org.unpidf.univmobile.data.operations.ReadLinksOperation;
-import org.unpidf.univmobile.data.operations.ReadPoiOperation;
-import org.unpidf.univmobile.data.operations.ReadPoisOperation;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by rviewniverse on 2015-02-22.
@@ -70,7 +64,7 @@ public class MyProfileDataModel extends AbsDataModel {
 		clearOperation(mReadBookmarksOperation);
 		mReadBookmarksOperation = null;
 
-		Login login = ((UnivMobileApp) mCotnext.getApplicationContext()).getmLogin();
+		Login login = ((UnivMobileApp) mCotnext.getApplicationContext()).getLogin();
 		if (login == null && mListener != null) {
 			mListener.populateBookmarks(null);
 			synchronized (lock) {

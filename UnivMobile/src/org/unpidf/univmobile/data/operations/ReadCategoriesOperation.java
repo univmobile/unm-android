@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ReadCategoriesOperation extends AbsOperation<List<Category>> {
 
-    public static final String CATEGORIES_IMAGE_URL = BASE_URL + "files/categoriesicons/";
+    public static final String CATEGORIES_IMAGE_URL = BASE_URL_API + "files/categoriesicons/";
 	private static final String CATEGORIES = "categories/";
 	private static final String CATEGORIES_CHILDREN = "categories/%d/children/";
 	private int mCategoryID;

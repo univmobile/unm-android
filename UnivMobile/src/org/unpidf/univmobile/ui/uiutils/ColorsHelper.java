@@ -54,7 +54,6 @@ public class ColorsHelper {
 				return R.drawable.circle_orange;
 			case 1:
 				return R.drawable.circle_purple;
-
 			default:
 			case 2:
 				return R.drawable.circle_green;
@@ -63,13 +62,19 @@ public class ColorsHelper {
 	}
 
 
-	public static int getCategoryItemBackgroundResource(int tab) {
+	public static int getCategoryItemBackgroundResource(int tab, boolean selected) {
 		switch (tab) {
 			case 0:
+				if (selected)
+					return R.color.geo_orange_dark;
 				return R.drawable.selector_color_orange;
 			case 1:
+				if (selected)
+					return R.color.geo_purple_dark;
 				return R.drawable.selector_color_purple;
 			case 2:
+				if (selected)
+					return R.color.geo_green_dark;
 				return R.drawable.selector_color_green;
 		}
 		return R.drawable.selector_color_green;

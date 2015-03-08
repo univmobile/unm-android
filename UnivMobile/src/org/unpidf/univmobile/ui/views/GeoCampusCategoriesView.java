@@ -6,18 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Category;
-import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
+import org.unpidf.univmobile.ui.adapters.CategoryAdapter;
 import org.unpidf.univmobile.ui.uiutils.ColorsHelper;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
@@ -32,17 +29,16 @@ import java.util.Map;
 public class GeoCampusCategoriesView extends RelativeLayout {
 
 
-	private DisplayImageOptions mOptions;
-
 	private Map<Integer, List<Category>> mCategories = new HashMap<Integer, List<Category>>();
 	private Map<Integer, Integer> mRootCategories = new HashMap<Integer, Integer>();
 
-	private Map<Integer, List<LinearLayout>> mCategoriesLayout = new HashMap<Integer, List<LinearLayout>>();
+	//private Map<Integer, List<LinearLayout>> mCategoriesLayout = new HashMap<Integer, List<LinearLayout>>();
 
+//
+//	private Map<Integer, List<Category>> mOldCategoriesSelected = new HashMap<Integer, List<Category>>();
+//	private Map<Integer, List<Category>> mCategoriesSelected = new HashMap<Integer, List<Category>>();
 
-	private Map<Integer, List<Category>> mOldCategoriesSelected = new HashMap<Integer, List<Category>>();
-	private Map<Integer, List<Category>> mCategoriesSelected = new HashMap<Integer, List<Category>>();
-
+	private List<Category> mChangedCats = new ArrayList<Category>();
 	private CategoriesInterface mCategoriesInterface;
 
 	private int mSelectedTab = 0;
@@ -66,8 +62,6 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 
 
 	private void init() {
-
-		mOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).build();
 		LayoutInflater.from(getContext()).inflate(R.layout.view_geo_campus_categories, this, true);
 
 		//init fonts
@@ -81,8 +75,8 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 
 	public void clear() {
 		mCategoriesInterface = null;
-		mOptions = null;
 	}
+
 	public void setCategoriesInterface(CategoriesInterface listener) {
 		mCategoriesInterface = listener;
 	}
@@ -118,23 +112,11 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 		mRootCategories.put(2, root3);
 
 
-		mOldCategoriesSelected.put(0, new ArrayList<Category>());
-		mOldCategoriesSelected.put(1, new ArrayList<Category>());
-		mOldCategoriesSelected.put(2, new ArrayList<Category>());
-
-		mCategoriesSelected.put(0, new ArrayList<Category>());
-		mCategoriesSelected.put(1, new ArrayList<Category>());
-		mCategoriesSelected.put(2, new ArrayList<Category>());
-
 		mSelectedTab = selectedTab;
 		initTabs();
 		initColors();
-		//notifyUpdatedCategories();
 	}
 
-	public void setSelectedCategories(List<Category> categories, int tabId) {
-		mCategoriesSelected.put(tabId, categories);
-	}
 
 	public int getSelectedTab() {
 		return mSelectedTab;
@@ -181,65 +163,19 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 	}
 
 	private void initCategories() {
-		List<Category> categories = mCategories.get(mSelectedTab);
-		List<LinearLayout> layouts = mCategoriesLayout.get(mSelectedTab);
-
-		LinearLayout container = (LinearLayout) findViewById(R.id.categories_container);
-		container.removeAllViews();
-		//if (mSelectedTab == 0) {
-		if (layouts == null) {
-			layouts = new ArrayList<LinearLayout>();
-			if (categories != null && categories.size() > 0) {
-				for (int i = 0; i < categories.size(); i += 3) {
-					LinearLayout l = new LinearLayout(getContext());
-					l.setOrientation(LinearLayout.HORIZONTAL);
-					l.setWeightSum(3);
-
-					initCategoryView(categories, i, l);
-					initCategoryView(categories, i + 1, l);
-					initCategoryView(categories, i + 2, l);
-
-					LinearLayout.LayoutParams paramsContainer = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-					container.addView(l, paramsContainer);
-					layouts.add(l);
-				}
-			}
-			mCategoriesLayout.put(mSelectedTab, layouts);
-
-		} else {
-			for (LinearLayout l : layouts) {
-				LinearLayout.LayoutParams paramsContainer = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-				container.addView(l, paramsContainer);
-			}
+		GridView catGrid = (GridView) findViewById(R.id.categories_grid);
+		CategoryAdapter adapter = (CategoryAdapter) catGrid.getAdapter();
+		if (adapter == null) {
+			adapter = new CategoryAdapter(getContext());
+			catGrid.setAdapter(adapter);
+			catGrid.setOnItemClickListener(mOnCategoryClickListener);
 		}
-		//}
-	}
+		adapter.clear();
 
-	private void initCategoryView(List<Category> categories, int position, LinearLayout container) {
-		if (categories.size() > position) {
-			CategoryItemView item3 = new CategoryItemView(getContext());
-			item3.setBackgroundResource(ColorsHelper.getCategoryItemBackgroundResource(mSelectedTab));
-			item3.setOnClickListener(mOnCategoryClickListener);
-			item3.setTag(categories.get(position));
-			item3.setCategoryText(categories.get(position).getName());
-			if (categories.get(position).getActiveIconUrl() != null && categories.get(position).getActiveIconUrl().length() > 0) {
-				ImageLoader.getInstance().displayImage(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + categories.get(position).getInactiveIconUrl(), item3.getImageView(), mOptions);
-			}
-			LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1);
-			container.addView(item3, params3);
-		}
-	}
+		adapter.setSelectedTab(mSelectedTab);
+		adapter.addAll(mCategories.get(mSelectedTab));
+		adapter.notifyDataSetChanged();
 
-	private boolean shouldSelected(Category cat, int tab) {
-		if (cat == null) {
-			return false;
-		}
-		for (Category c : mCategoriesSelected.get(tab)) {
-			if (c.getId() == cat.getId()) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private void initColors() {
@@ -248,16 +184,6 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 		findViewById(R.id.categories_scroll).setBackgroundColor(ColorsHelper.getColorByTab(getContext(), false, mSelectedTab));
 	}
 
-	private boolean isCategoriesUpdated(List<Category> oldList, List<Category> newList) {
-		if (!oldList.containsAll(newList)) {
-			return true;
-		}
-
-		if (!newList.containsAll(oldList)) {
-			return true;
-		}
-		return false;
-	}
 
 	private OnClickListener mOnSearchClickListener = new OnClickListener() {
 		@Override
@@ -304,7 +230,12 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 
 	public void notifyUpdatedCategories() {
 		if (mCategoriesInterface != null) {
-			List<Category> selected = mCategoriesSelected.get(mSelectedTab);
+			List<Category> selected = new ArrayList<Category>();
+			for (Category c : mCategories.get(mSelectedTab)) {
+				if (c.isSelected()) {
+					selected.add(c);
+				}
+			}
 			if (selected.size() == 0) {
 				mCategoriesInterface.onCategoriesChanged(mRootCategories.get(mSelectedTab));
 			} else {
@@ -315,17 +246,19 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 		}
 	}
 
-	private OnClickListener mOnCategoryClickListener = new OnClickListener() {
+	private AdapterView.OnItemClickListener mOnCategoryClickListener = new AdapterView.OnItemClickListener() {
 		@Override
-		public void onClick(View v) {
-			v.setSelected(!v.isSelected());
-			List<Category> selectedCategories = mCategoriesSelected.get(mSelectedTab);
-
-			if (selectedCategories.contains(v.getTag())) {
-				selectedCategories.remove(v.getTag());
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			GridView catGrid = (GridView) findViewById(R.id.categories_grid);
+			CategoryAdapter adapter = (CategoryAdapter) catGrid.getAdapter();
+			Category c = adapter.getItem(position);
+			c.changeSelected();
+			if (mChangedCats.contains(c)) {
+				mChangedCats.remove(c);
 			} else {
-				selectedCategories.add((Category) v.getTag());
+				mChangedCats.add(c);
 			}
+			adapter.notifyDataSetChanged();
 		}
 	};
 
@@ -337,21 +270,13 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 				((TextView) findViewById(R.id.title)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_up, 0, 0, 0);
 				collapse();
 				mIsExpanded = false;
-
+				mChangedCats.clear();
 				notifyUpdatedCategories();
-
-
 			} else {
 				((TextView) findViewById(R.id.title)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_down, 0, 0, 0);
 				expand();
 				for (int i = 0; i < 3; i++) {
 					mIsExpanded = true;
-					mOldCategoriesSelected.get(i).clear();
-					if (mCategoriesSelected.get(i) != null && mCategoriesSelected.get(i).size() > 0) {
-						mOldCategoriesSelected.get(i).addAll(mCategoriesSelected.get(i));
-					} else {
-						mOldCategoriesSelected.get(i).addAll(mCategories.get(i));
-					}
 				}
 			}
 		}
@@ -361,27 +286,11 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 
 		((TextView) findViewById(R.id.title)).setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_up, 0, 0, 0);
 
-
-		for (int i = 0; i < 3; i++) {
-			mCategoriesSelected.get(i).clear();
-			if (mCategories.get(i).size() != mOldCategoriesSelected.get(i).size()) {
-				mCategoriesSelected.get(i).addAll(mOldCategoriesSelected.get(i));
-			}
-			List<LinearLayout> layouts = mCategoriesLayout.get(i);
-			if (layouts != null) {
-				for (LinearLayout l : layouts) {
-					for (int j = 0; j < l.getChildCount(); j++) {
-						View child = l.getChildAt(j);
-						child.setSelected(shouldSelected((Category) child.getTag(), i));
-					}
-
-				}
-			}
+		for (Category c : mChangedCats) {
+			c.changeSelected();
 		}
-
-
+		mChangedCats.clear();
 		mIsExpanded = false;
-
 		initCategories();
 		collapse();
 	}

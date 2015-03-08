@@ -25,6 +25,7 @@ import org.unpidf.univmobile.data.operations.ReadImageMapOperation;
 import org.unpidf.univmobile.data.operations.ReadPoiOperation;
 import org.unpidf.univmobile.data.operations.ReadPoisOperation;
 import org.unpidf.univmobile.data.operations.ReadRestMenuOperation;
+import org.unpidf.univmobile.data.operations.ReadUserUniversityOperation;
 import org.unpidf.univmobile.data.operations.RemoveBookamrkOperation;
 
 import java.io.IOException;
@@ -97,6 +98,7 @@ public class GeoDataModel extends AbsDataModel {
 	private PostCommentOperation mPostCommentOperation;
 
 	//Post poi
+	private ReadUserUniversityOperation mReadUserUniversityOperation;
 	private PostPoiOperation mPostPoiOperation;
 	private SimpleDateFormat mPoiDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -164,6 +166,9 @@ public class GeoDataModel extends AbsDataModel {
 		clearOperation(mRemoveBookmarkOperation);
 		mRemoveBookmarkOperation = null;
 
+		clearOperation(mReadUserUniversityOperation);
+		mReadUserUniversityOperation = null;
+
 	}
 
 	public void setPoiToBeShownId(int id) {
@@ -222,7 +227,7 @@ public class GeoDataModel extends AbsDataModel {
 		mReadBookmarksOperation = null;
 		mAfterPost = afterPost;
 
-		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		if (login == null) {
 			synchronized (lock) {
 				mBookmarksFinished = true;
@@ -246,7 +251,7 @@ public class GeoDataModel extends AbsDataModel {
 		clearOperation(mPostBookmarkOperation);
 		mPostBookmarkOperation = null;
 
-		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		if (login == null) {
 			mListener.showAuthorizationError();
 		} else {
@@ -255,29 +260,65 @@ public class GeoDataModel extends AbsDataModel {
 		}
 	}
 
-	public void postPoi(Category cat, String name, String address, String phone, String mail, String description) {
+	public void postPoi(final Category cat, final String name, final String address, final String phone, final String mail, final String description) {
+
+		clearOperation(mReadUserUniversityOperation);
+		mReadUserUniversityOperation = null;
+
 		clearOperation(mPostPoiOperation);
 		mPostPoiOperation = null;
-		try {
-			Geocoder geocoder = new Geocoder(mContext);
-			List<Address> addresses;
 
-			addresses = geocoder.getFromLocationName(address, 1);
-
-			String lat = null;
-			String lng = null;
-			if (addresses.size() > 0) {
-				lat = String.valueOf(addresses.get(0).getLatitude());
-				lng = String.valueOf(addresses.get(0).getLongitude());
+		Login l = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
+		if (l == null) {
+			if (mListener != null) {
+				mListener.showAuthorizationError();
 			}
+		} else {
+			mReadUserUniversityOperation = new ReadUserUniversityOperation(mContext, new OperationListener<University>() {
+				@Override
+				public void onOperationStarted() {
 
-			University univ = UniversitiesDataModel.getSavedUniversity(mContext);
-			String date = mPoiDateFormat.format(new Date());
-			mPostPoiOperation = new PostPoiOperation(mContext, mPostPoiOperationListener, cat, univ, name, date, address, phone, mail, description, lat, lng);
-			mPostPoiOperation.startOperation();
-		} catch (IOException e) {
-			e.printStackTrace();
+				}
+
+				@Override
+				public void onOperationFinished(ErrorEntity error, University result) {
+					if (result == null) {
+						if (mListener != null) {
+							mListener.poiPosted();
+						}
+					} else {
+						try {
+							Geocoder geocoder = new Geocoder(mContext);
+							List<Address> addresses;
+
+							addresses = geocoder.getFromLocationName(address, 1);
+
+							String lat = null;
+							String lng = null;
+							if (addresses.size() > 0) {
+								lat = String.valueOf(addresses.get(0).getLatitude());
+								lng = String.valueOf(addresses.get(0).getLongitude());
+							}
+
+							String date = mPoiDateFormat.format(new Date());
+							mPostPoiOperation = new PostPoiOperation(mContext, mPostPoiOperationListener, cat, result, name, date, address, phone, mail, description, lat, lng);
+							mPostPoiOperation.startOperation();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+				@Override
+				public void onPageDownloaded(University result) {
+
+				}
+			}, l.getId());
+			mReadUserUniversityOperation.startOperation();
 		}
+
+
 	}
 
 	public void postComment(String comment, Poi poi) {
@@ -426,8 +467,8 @@ public class GeoDataModel extends AbsDataModel {
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Bookmark> result) {
 			mBookmakrs = result;
-			if(mAfterPost ) {
-				if(mListener != null) {
+			if (mAfterPost) {
+				if (mListener != null) {
 					mListener.bookmarkPosted();
 				}
 			} else {
@@ -620,9 +661,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onPageDownloaded(List<Poi> result) {
-//			if (mListener != null) {
-//				mListener.populatePois(result);
-//			}
+			if (mListener != null) {
+				mListener.populatePois(result);
+			}
 		}
 	};
 

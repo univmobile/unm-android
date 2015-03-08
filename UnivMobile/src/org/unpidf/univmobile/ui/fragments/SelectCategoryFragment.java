@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.squareup.picasso.Picasso;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.data.entities.Category;
@@ -33,7 +31,6 @@ public class SelectCategoryFragment extends AbsFragment {
 	private ReadCategoriesOperation mReadCategoriesOperation;
 
 	private List<Category> mCategories;
-	private DisplayImageOptions mOptions;
 
 
 	public static SelectCategoryFragment newInstance(int rootCatId) {
@@ -54,8 +51,6 @@ public class SelectCategoryFragment extends AbsFragment {
 		if (getArguments() != null) {
 			mRootCatID = getArguments().getInt(ARG_ROOT_CAT_ID);
 		}
-
-		mOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).build();
 	}
 
 	@Override
@@ -141,7 +136,7 @@ public class SelectCategoryFragment extends AbsFragment {
 			item1.setTag(categories.get(position));
 			item1.setCategoryText(categories.get(position).getName());
 			if (categories.get(position).getActiveIconUrl() != null && categories.get(position).getActiveIconUrl().length() > 0) {
-				ImageLoader.getInstance().displayImage(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + categories.get(position).getInactiveIconUrl(), item1.getImageView(), mOptions);
+				Picasso.with(getActivity()).load(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + categories.get(position).getActiveIconUrl()).into(item1.getImageView());
 			}
 			LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(0, RelativeLayout.LayoutParams.WRAP_CONTENT, 1);
 			container.addView(item1, params1);

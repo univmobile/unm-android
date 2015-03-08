@@ -25,7 +25,7 @@ android {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
         targetSdkVersion 21
-        versionName = "0.5.7"
+        versionName = "0.5.11"
     }
 
 
@@ -74,9 +74,9 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.google.code.gson:gson:2.3'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.google.zxing:android-core:3.2.0'
     compile 'com.google.zxing:android-integration:3.2.0'
+    compile 'com.squareup.picasso:picasso:2.3.3'
 
 
 }

@@ -113,7 +113,7 @@ public class LoginDataModel extends AbsDataModel {
 			if (mShibbolethLoginDadaModelListener != null) {
 				if (result != null) {
 
-					((UnivMobileApp) mContext.getApplicationContext()).setmLogin(result);
+					((UnivMobileApp) mContext.getApplicationContext()).setLogin(result);
 					mShibbolethLoginDadaModelListener.shibbolethLoginSuccessfully(result);
 				} else {
 					mShibbolethLoginDadaModelListener.shibbolethLoginFailed();
@@ -169,7 +169,7 @@ public class LoginDataModel extends AbsDataModel {
 
 			if (mLoginDataModelListener != null) {
 				if (result != null) {
-					((UnivMobileApp) mContext.getApplicationContext()).setmLogin(result);
+					((UnivMobileApp) mContext.getApplicationContext()).setLogin(result);
 					mLoginDataModelListener.loginSuccessful(result);
 				} else {
 					mLoginDataModelListener.loginFailed(error);

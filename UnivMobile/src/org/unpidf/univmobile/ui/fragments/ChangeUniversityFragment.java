@@ -62,6 +62,13 @@ public class ChangeUniversityFragment extends AbsFragment {
 		TextView current = (TextView) view.findViewById(R.id.current_univ_value);
 		current.setText(univ.getTitle());
 
+		view.findViewById(R.id.exit).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getActivity().onBackPressed();
+			}
+		});
+
 //		mReadPoisOperation = new ReadPoisOperation(getActivity(), mReadPoisOperationListener, cat, -1, univID, null);
 //		mReadPoisOperation.startOperation();
 		//init fonts

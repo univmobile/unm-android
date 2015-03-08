@@ -1,11 +1,15 @@
 package org.unpidf.univmobile.ui.fragments;
 
 
+import android.app.Fragment;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +26,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
@@ -58,7 +58,6 @@ public class HomeFragment extends AbsFragment {
 	private UniversityDataModel mUniversityDataModel;
 
 	private SimpleDateFormat mDateFormat;
-	private DisplayImageOptions mOptions;
 
 	private MapView mMapView;
 	private GoogleMap mMap;
@@ -139,7 +138,6 @@ public class HomeFragment extends AbsFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		mOptions = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).build();
 		mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 		//init fonts
 		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
@@ -165,56 +163,67 @@ public class HomeFragment extends AbsFragment {
 			for (Poi p : pois) {
 				if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0) {
 
-					String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL;
 					Category cat = mUniversityDataModel.getCategoryById(p.getCategoryId());
-					if (cat != null && cat.getActiveIconUrl() != null && cat.getActiveIconUrl().length() > 0) {
-						url += cat.getActiveIconUrl();
-					} else {
-						url += "cat_active_5__marker-cross.png";
-					}
 
+					if (cat != null && cat.getMarkerIconUrl() != null && cat.getMarkerIconUrl().length() > 0) {
+						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getMarkerIconUrl();
 
-					synchronized (lock) {
-						if (!mBitmapsDownloadingUrls.contains(url)) {
-							mBitmapsDownloadingUrls.add(url);
-							List<Poi> poi = mPoisToBoLoaded.get(url);
-							if (poi == null) {
-								poi = new ArrayList<Poi>();
-							}
-							poi.add(p);
-							ImageLoader.getInstance().loadImage(url, new ImageSize(60, 60, 0), mOptions, new ImageLoadingListener() {
-								@Override
-								public void onLoadingStarted(String imageUri, View view) {
+						synchronized (lock) {
+							if (!mBitmapsDownloadingUrls.contains(url)) {
 
-								}
-
-								@Override
-								public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-								}
-
-								@Override
-								public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-									synchronized (lock) {
-										mLoadedBitmaps.put(imageUri, BitmapDescriptorFactory.fromBitmap(loadedImage));
-										addMarkersWithUri(imageUri);
-									}
-								}
-
-								@Override
-								public void onLoadingCancelled(String imageUri, View view) {
-
-								}
-							});
-						} else {
-							if (mLoadedBitmaps.get(url) != null) {
-								addMarker(p, mLoadedBitmaps.get(url));
-							} else {
+								mBitmapsDownloadingUrls.add(url);
 								List<Poi> poi = mPoisToBoLoaded.get(url);
 								if (poi == null) {
 									poi = new ArrayList<Poi>();
+									mPoisToBoLoaded.put(url, poi);
 								}
 								poi.add(p);
+								Resources r = getResources();
+								int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+								Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
+
+									@Override
+									public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+										synchronized (lock) {
+											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bitmap));
+											addMarkersWithUri(url);
+										}
+
+									}
+
+									@Override
+									public void onBitmapFailed(Drawable errorDrawable) {
+										synchronized (lock) {
+											Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
+											BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
+											Bitmap b = bd.getBitmap();
+
+											Resources r = getResources();
+											int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+											Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
+											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bhalfsize));
+											addMarkersWithUri(url);
+										}
+									}
+
+									@Override
+									public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+									}
+								});
+
+							} else {
+
+								if (mLoadedBitmaps.get(url) != null) {
+									addMarker(p, mLoadedBitmaps.get(url));
+								} else {
+									List<Poi> poi = mPoisToBoLoaded.get(url);
+									if (poi == null) {
+										poi = new ArrayList<Poi>();
+									}
+									poi.add(p);
+								}
 							}
 						}
 					}
@@ -226,7 +235,7 @@ public class HomeFragment extends AbsFragment {
 
 	private void addMarkersWithUri(String uri) {
 
-		Log.d("test", "adding markers by uri: " + uri);
+
 		List<Poi> pois = mPoisToBoLoaded.get(uri);
 		if (pois != null) {
 			for (Poi p : pois) {
@@ -283,7 +292,7 @@ public class HomeFragment extends AbsFragment {
 			ImageView mainArticleImage = (ImageView) getView().findViewById(R.id.main_article_image);
 			mainArticleImage.setImageResource(R.drawable.ic_launcher);
 			if (news.get(0).getImageUlr() != null) {
-				ImageLoader.getInstance().displayImage(news.get(0).getImageUlr(), mainArticleImage, mOptions);
+				Picasso.with(getActivity()).load(news.get(0).getImageUlr()).into(mainArticleImage);
 			}
 
 			try {
@@ -307,7 +316,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news1 = (NewsItemView) getView().findViewById(R.id.news1);
 			if (news.size() > 1) {
-				news1.populate(news.get(1), mDateFormat, mOptions);
+				news1.populate(news.get(1), mDateFormat);
 				news1.setVisibility(View.VISIBLE);
 			} else {
 				news1.setVisibility(View.GONE);
@@ -315,7 +324,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news2 = (NewsItemView) getView().findViewById(R.id.news2);
 			if (news.size() > 2) {
-				news2.populate(news.get(2), mDateFormat, mOptions);
+				news2.populate(news.get(2), mDateFormat);
 				news2.setVisibility(View.VISIBLE);
 			} else {
 				news2.setVisibility(View.GONE);
@@ -323,7 +332,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news3 = (NewsItemView) getView().findViewById(R.id.news3);
 			if (news.size() > 3) {
-				news3.populate(news.get(3), mDateFormat, mOptions);
+				news3.populate(news.get(3), mDateFormat);
 				news3.setVisibility(View.VISIBLE);
 			} else {
 				news3.setVisibility(View.GONE);
@@ -331,7 +340,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news4 = (NewsItemView) getView().findViewById(R.id.news4);
 			if (news.size() > 4) {
-				news4.populate(news.get(4), mDateFormat, mOptions);
+				news4.populate(news.get(4), mDateFormat);
 				news4.setVisibility(View.VISIBLE);
 			} else {
 				news4.setVisibility(View.GONE);

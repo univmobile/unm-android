@@ -92,6 +92,8 @@ public class LibraryFragment extends AbsFragment {
 
 		@Override
 		public void populateLibraries(List<Library> libraries) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			if (libraries != null && libraries.size() > 0) {
 				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
 				libraryList.setVisibility(View.VISIBLE);
@@ -106,7 +108,7 @@ public class LibraryFragment extends AbsFragment {
 
 		@Override
 		public void hideLoadingIndicator() {
-
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
 	};
 

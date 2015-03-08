@@ -3,6 +3,7 @@
 
 	<!-- Text Size -->
     <dimen name="date_size">8dp</dimen>
+	<dimen name="fill_text">11dp</dimen>
 	<dimen name="content_size">13dp</dimen>
 	<dimen name="title_size">16dp</dimen>
 	<dimen name="title_size_extra">24dp</dimen>

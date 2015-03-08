@@ -1,40 +1,24 @@
 package org.unpidf.univmobile.ui.views;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.squareup.picasso.Picasso;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Category;
-import org.unpidf.univmobile.data.entities.Comment;
-import org.unpidf.univmobile.data.entities.Poi;
-import org.unpidf.univmobile.data.entities.RestoMenu;
 import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
-import org.unpidf.univmobile.ui.adapters.CommentsAdapter;
-import org.unpidf.univmobile.ui.uiutils.ColorsHelper;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rviewniverse on 2015-02-07.
@@ -42,8 +26,6 @@ import java.util.List;
 public class AddNewPoiView extends RelativeLayout {
 
 	private AddNewPoiViewInterface mAddNewPoiViewInterface;
-
-	private DisplayImageOptions mOptions;
 
 	private Category mCat;
 
@@ -64,7 +46,6 @@ public class AddNewPoiView extends RelativeLayout {
 
 	private void init() {
 		LayoutInflater.from(getContext()).inflate(R.layout.view_add_new_poi, this, true);
-		mOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).build();
 		//init fonts
 		if (!isInEditMode()) {
 			FontHelper helper = ((UnivMobileApp) getContext().getApplicationContext()).getFontHelper();
@@ -91,21 +72,23 @@ public class AddNewPoiView extends RelativeLayout {
 
 	public void categorySelected(Category cat) {
 		mCat = cat;
-		findViewById(R.id.categories_select_text).setVisibility(View.GONE);
+		((TextView) findViewById(R.id.categories_select_text)).setText(mCat.getName());
+
+
 		ImageView catImage = (ImageView) findViewById(R.id.categories_select_icon);
 		catImage.setVisibility(View.VISIBLE);
 
 		if (cat.getActiveIconUrl() != null) {
-			ImageLoader.getInstance().displayImage(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getActiveIconUrl(), catImage, mOptions);
+			Picasso.with(getContext()).load(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getActiveIconUrl()).into(catImage);
 		}
-
 	}
+
 
 	private View.OnClickListener mOnHideKeyboardClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			EditText myEditText = (EditText) findViewById(R.id.description_edit);
-			InputMethodManager imm = (InputMethodManager)  getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
 		}
 	};

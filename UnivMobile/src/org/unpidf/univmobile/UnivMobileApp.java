@@ -2,10 +2,8 @@ package org.unpidf.univmobile;
 
 import android.app.Application;
 
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
@@ -21,19 +19,13 @@ public class UnivMobileApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		initImageLoader();
-
 		initLogin();
+
+		GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+		Tracker t = analytics.newTracker("UA-60498468-1");
+
 	}
 
-
-	private void initImageLoader() {
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).threadPriority(Thread.NORM_PRIORITY + 2).denyCacheImageMultipleSizesInMemory().diskCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO)
-				// .writeDebugLogs() // Remove for release app
-				.build();
-		// Initialize ImageLoader with configuration.
-		ImageLoader.getInstance().init(config);
-	}
 
 	public FontHelper getFontHelper() {
 		if (mFontHelper == null) {
@@ -60,11 +52,11 @@ public class UnivMobileApp extends Application {
 		}
 	}
 
-	public Login getmLogin() {
+	public Login getLogin() {
 		return mLogin;
 	}
 
-	public void setmLogin(Login mLogin) {
+	public void setLogin(Login mLogin) {
 		SharedPreferencesRepo.saveString(this, "login_name", mLogin.getName());
 		SharedPreferencesRepo.saveString(this, "login_token", mLogin.getToken());
 		SharedPreferencesRepo.saveString(this, "login_id", mLogin.getId());

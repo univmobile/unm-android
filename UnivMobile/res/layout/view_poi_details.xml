@@ -41,11 +41,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="23"
-                android:text=""
                 android:textColor="@android:color/white"
-                android:lines="1"
-                android:textSize="@dimen/title_size_extra"
-                android:padding="@dimen/horizontal" />
+                android:lines="2"
+				android:gravity="center_vertical"
+                android:textSize="@dimen/title_size"
+                android:padding="3dp" />
 
             <ImageView
                 android:layout_width="0dp"
@@ -203,7 +203,6 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:id="@+id/category_image"
-                    android:padding="10dp"
                     android:layout_marginBottom="-7dp"
                     android:layout_marginTop="-7dp" />
             </RelativeLayout>

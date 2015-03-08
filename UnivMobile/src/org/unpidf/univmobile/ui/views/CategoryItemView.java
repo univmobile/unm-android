@@ -60,20 +60,6 @@ public class CategoryItemView extends LinearLayout {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
 		int height = (int) (width * 1.2);
 		super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-		//super.onMeasure(widthMeasureSpec, widthMeasureSpec);
-//		if( !mMeasured) {
-//			int totalHeight = MeasureSpec.getSize(widthMeasureSpec);
-//			int textHeight = ((TextView) findViewById(R.id.title)).getMeasuredHeight();
-//			if (mText != null && totalHeight > 0 && textHeight > 0) {
-//				mMeasured = true;
-//				Log.d("test", mText + " textHeight " + textHeight);
-//				Log.d("test", mText + " totalHeight " + totalHeight);
-//				Log.d("test", mText + " image " + (totalHeight - textHeight));
-//				View view = findViewById(R.id.category_image);
-//				view.getLayoutParams().height = 174;
-//				view.requestLayout();
-//			}
-//		}
 	}
 
 }

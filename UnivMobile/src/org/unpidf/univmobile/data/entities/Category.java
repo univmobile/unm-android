@@ -12,10 +12,12 @@ public class Category {
 	private boolean active;
 	private String apiParisId;
 	private String activeIconUrl;
-	private String inactiveIconUrl;
+	//private String inactiveIconUrl;
 	private String markerIconUrl;
 	private List<Integer> legacyIds;
 	private String self;
+
+	private boolean selected = false;
 
 	public int getId() {
 		return id;
@@ -64,14 +66,14 @@ public class Category {
 	public void setActiveIconUrl(String activeIconUrl) {
 		this.activeIconUrl = activeIconUrl;
 	}
-
-	public String getInactiveIconUrl() {
-		return inactiveIconUrl;
-	}
-
-	public void setInactiveIconUrl(String inactiveIconUrl) {
-		this.inactiveIconUrl = inactiveIconUrl;
-	}
+//
+//	public String getInactiveIconUrl() {
+//		return inactiveIconUrl;
+//	}
+//
+//	public void setInactiveIconUrl(String inactiveIconUrl) {
+//		this.inactiveIconUrl = inactiveIconUrl;
+//	}
 
 	public String getMarkerIconUrl() {
 		return markerIconUrl;
@@ -95,5 +97,13 @@ public class Category {
 
 	public void setSelf(String self) {
 		this.self = self;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void changeSelected() {
+		selected = !selected;
 	}
 }

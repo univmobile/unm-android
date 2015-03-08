@@ -3,25 +3,18 @@ package org.unpidf.univmobile.ui.views;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.text.Html;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.squareup.picasso.Picasso;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
@@ -30,7 +23,6 @@ import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -70,13 +62,13 @@ public class NewsItemView extends RelativeLayout {
 		}
 	}
 
-	public void populate(News news, SimpleDateFormat format, DisplayImageOptions options) {
+	public void populate(News news, SimpleDateFormat format) {
 		mNews = news;
 
 		ImageView image = (ImageView) findViewById(R.id.icon_act);
 		image.setImageResource(R.drawable.ic_launcher);
 		if (news.getImageUlr() != null) {
-			ImageLoader.getInstance().displayImage(news.getImageUlr(), image, options);
+			Picasso.with(getContext()).load(news.getImageUlr()).into(image);
 		}
 
 		try {

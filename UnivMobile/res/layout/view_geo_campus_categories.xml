@@ -4,8 +4,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent">
 
-
-
 	<RelativeLayout
 		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="53dp"
@@ -63,19 +61,11 @@
 			android:visibility="gone"
 			android:id="@+id/categories_scroll">
 
-			<ScrollView
+			<GridView
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:scrollbarThumbVertical="@drawable/scrollbar">
-
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:id="@+id/categories_container"
-					android:orientation="vertical">
-
-				</LinearLayout>
-			</ScrollView>
+				android:id="@+id/categories_grid"
+				android:numColumns="3"/>
 		</RelativeLayout>
 	</RelativeLayout>
 

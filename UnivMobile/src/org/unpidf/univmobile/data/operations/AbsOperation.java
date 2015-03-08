@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
@@ -24,8 +22,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by rviewniverse on 2015-01-31.
@@ -163,7 +159,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 				if (body != null) {
 					((HttpPost) request).setEntity(new StringEntity(body));
 					((HttpPost) request).setHeader("Content-type", "application/json");
-					Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+					Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 					if (login != null) {
 						((HttpPost) request).setHeader("Authentication-Token", login.getToken());
 					}
@@ -172,7 +168,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 			case DELETE:
 				request = new HttpDelete(url);
 				((HttpDelete) request).setHeader("Content-type", "application/json");
-				Login login = ((UnivMobileApp) mContext.getApplicationContext()).getmLogin();
+				Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 				if (login != null) {
 					((HttpDelete) request).setHeader("Authentication-Token", login.getToken());
 				}
