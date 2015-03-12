@@ -25,7 +25,7 @@ android {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
         targetSdkVersion 21
-        versionName = "0.5.11"
+        versionName = "0.5.13"
     }
 
 

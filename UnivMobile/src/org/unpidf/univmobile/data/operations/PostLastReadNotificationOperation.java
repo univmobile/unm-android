@@ -13,7 +13,7 @@ import org.unpidf.univmobile.data.entities.ErrorEntity;
 public class PostLastReadNotificationOperation extends AbsOperation<Boolean> {
 
 
-	private static final String NOTIFICATIONS = "/notifications/lastRead?userId=%d&notificationId=%d";
+	private static final String NOTIFICATIONS = "/notifications/lastRead?userId=%s&notificationId=%d";
 
 
 	private String mUserId;

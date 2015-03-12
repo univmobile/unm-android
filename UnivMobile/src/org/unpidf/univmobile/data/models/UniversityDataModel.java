@@ -75,7 +75,7 @@ public class UniversityDataModel extends AbsDataModel {
 		mReadNewsOperation = null;
 
 		int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID);
+		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 5);
 		mReadNewsOperation.startOperation();
 	}
 

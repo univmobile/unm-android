@@ -18,13 +18,17 @@ import java.util.List;
  */
 public class ReadNewsOperation extends AbsOperation<List<News>> {
 
-	private static final String NEWS_SEARCH_UNIV = "news/search/findNewsForUniversity?universityId=%d";
+	private static final String NEWS_SEARCH_UNIV = "news/search/findNewsForUniversity?universityId=%d?";
 
 	private int mUniversityID;
+	private int mPage;
+	private int mTotalSize;
 
-	public ReadNewsOperation(Context c, OperationListener listener, int universityId) {
+	public ReadNewsOperation(Context c, OperationListener listener, int universityId, int page, int totalSize) {
 		super(c, listener);
 		mUniversityID = universityId;
+		mPage = page;
+		mTotalSize = totalSize;
 	}
 
 	@Override
@@ -61,20 +65,23 @@ public class ReadNewsOperation extends AbsOperation<List<News>> {
 	@Override
 	protected String getOperationUrl(int page) {
 		String url = BASE_URL_API + String.format(NEWS_SEARCH_UNIV, mUniversityID);
-		if (page != 0) {
-			url += "&page=" + page;
+		if (mTotalSize != 0) {
+			url += "&size=" + mTotalSize;
+		}
+		if (mPage != 0) {
+			url += "&page=" + mPage;
 		}
 		return url;
 	}
-
-	@Override
-	protected List<News> combine(List<News> newData, List<News> oldData) {
-		oldData.addAll(newData);
-		return oldData;
-	}
-
-	@Override
-	protected boolean shouldBePaged() {
-		return true;
-	}
+////
+////	@Override
+////	protected List<News> combine(List<News> newData, List<News> oldData) {
+////		oldData.addAll(newData);
+////		return oldData;
+////	}
+//
+//	@Override
+//	protected boolean shouldBePaged() {
+//		return false;
+//	}
 }

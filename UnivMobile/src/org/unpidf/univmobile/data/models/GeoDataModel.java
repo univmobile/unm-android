@@ -179,15 +179,6 @@ public class GeoDataModel extends AbsDataModel {
 		mImageMapToBeShownId = id;
 	}
 
-	public Category getCategoryById(int id) {
-		for (Category c : mCategoriesAll) {
-			if (c.getId() == id) {
-				return c;
-			}
-		}
-		return null;
-	}
-
 	public boolean isBookmarked(Poi poi) {
 		if (mBookmakrs != null && mBookmakrs.size() > 0) {
 			for (Bookmark b : mBookmakrs) {

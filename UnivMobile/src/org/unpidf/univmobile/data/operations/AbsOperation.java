@@ -124,7 +124,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 				result = combine(result, oldData);
 			}
 
-			if (mCurrentPage + 1 < mTotalPages && shouldBePaged()) {
+			if (hasNextPage() && shouldBePaged()) {
 				result = getOnePage(mCurrentPage + 1, result);
 			}
 		} catch (IllegalArgumentException e) {
@@ -217,6 +217,18 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean hasNextPage() {
+		if (mCurrentPage + 1 < mTotalPages) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public int getNextPage() {
+		return mCurrentPage + 1;
 	}
 
 	protected void handleStatusLine(HttpResponse response) {

@@ -18,6 +18,7 @@ import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Region;
 import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
+import org.unpidf.univmobile.data.operations.PostStatisticsOperation;
 import org.unpidf.univmobile.ui.adapters.UniversityListAdapter;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 
@@ -43,11 +44,14 @@ public class SplashScreenActivity extends Activity {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.title), FontHelper.FONT.EXO_REGULAR);
 		helper.loadFont((android.widget.TextView) findViewById(R.id.accept_button), FontHelper.FONT.EXO_REGULAR);
 
-		mModel = new UniversitiesDataModel(this);
 
 		if (UniversitiesDataModel.isUniversitySaved(this)) {
 			startHomeActivityDelayed();
+
+			PostStatisticsOperation op = new PostStatisticsOperation(this, UniversitiesDataModel.getSavedUniversity(this).getSelf());
+			op.startOperation();
 		} else {
+			mModel = new UniversitiesDataModel(this);
 			mSpinner = (Spinner) findViewById(R.id.spinner);
 			mModel.getRegions(mUniversitiesDataModelListener);
 		}
@@ -57,8 +61,10 @@ public class SplashScreenActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mModel.clear();
-		mModel = null;
+		if(mModel != null) {
+			mModel.clear();
+			mModel = null;
+		}
 	}
 
 	private void startHomeActivityDelayed() {

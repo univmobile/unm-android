@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -121,7 +122,7 @@ public class PoiDetailsView extends LinearLayout {
 		mPoiDetailsInterface = null;
 	}
 
-	public void populate(PoiDetailsInterface listener, Poi poi, Category cat, int categoryTab, boolean isBookmarked) {
+	public void populate(PoiDetailsInterface listener, Poi poi, int categoryTab, boolean isBookmarked) {
 		mPoiDetailsInterface = listener;
 		mPoi = poi;
 		mOnTabClickListener.onClick(findViewById(R.id.tab_info));
@@ -131,7 +132,7 @@ public class PoiDetailsView extends LinearLayout {
 		//initComments(comments, tab);
 		initColors(mSelectedCategoryTab);
 		initTabs();
-		initCategoryIcon(cat);
+		initCategoryIcon();
 		show();
 
 		initBookmark(isBookmarked);
@@ -177,18 +178,23 @@ public class PoiDetailsView extends LinearLayout {
 
 		CommentsAdapter adapter = new CommentsAdapter(getContext(), comments, mSelectedCategoryTab);
 
-		if (comments.size() == 0 && mCommentsHeader == null) {
-			mCommentsHeader = new TextView(getContext());
-			mCommentsHeader.setText(getResources().getString(R.string.no_results));
-			mCommentsHeader.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
-			mCommentsHeader.setTextColor(ColorsHelper.getColorByTab(getContext(), false, mSelectedCategoryTab));
-			mCommentsHeader.setGravity(Gravity.CENTER_HORIZONTAL);
-			mCommentsHeader.setPadding(0, 50, 0, 50);
-			((UnivMobileApp) getContext().getApplicationContext()).getFontHelper().loadFont(mCommentsHeader, FontHelper.FONT.EXO_MEDIUM);
-			list.addHeaderView(mCommentsHeader);
+
+
+		if (comments.size() == 0) {
+			if (mCommentsHeader == null) {
+				mCommentsHeader = new TextView(getContext());
+				mCommentsHeader.setText(getResources().getString(R.string.no_results));
+				mCommentsHeader.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
+				mCommentsHeader.setTextColor(ColorsHelper.getColorByTab(getContext(), false, mSelectedCategoryTab));
+				mCommentsHeader.setGravity(Gravity.CENTER_HORIZONTAL);
+				mCommentsHeader.setPadding(0, 50, 0, 50);
+				((UnivMobileApp) getContext().getApplicationContext()).getFontHelper().loadFont(mCommentsHeader, FontHelper.FONT.EXO_MEDIUM);
+				list.addHeaderView(mCommentsHeader);
+			} else {
+				mCommentsHeader.setVisibility(View.VISIBLE);
+			}
 		}
 
-		list.setAdapter(adapter);
 
 		if (mCommentsFooter == null) {
 			mCommentsFooter = new EditText(getContext());
@@ -204,13 +210,16 @@ public class PoiDetailsView extends LinearLayout {
 
 			list.addFooterView(mCommentsFooter);
 		} else {
+			mCommentsFooter.setVisibility(View.VISIBLE);
 			mCommentsFooter.setText("");
 		}
+
+		list.setAdapter(adapter);
 	}
 
 	public void populateRestoMenu(List<RestoMenu> menus) {
 		if (menus == null || menus.size() == 0) {
-			findViewById(R.id.tab_menu).setVisibility(View.GONE);
+			findViewById(R.id.tab_menu).setVisibility(View.INVISIBLE);
 		} else {
 			findViewById(R.id.tab_menu).setVisibility(View.VISIBLE);
 			WebView webView = (WebView) findViewById(R.id.resto_menu_container);
@@ -227,14 +236,20 @@ public class PoiDetailsView extends LinearLayout {
 		View progress = findViewById(R.id.progressBar1);
 		if (progress.getVisibility() != View.VISIBLE) {
 			ListView list = (ListView) findViewById(R.id.comments_list);
+			if (list.getAdapter() instanceof CommentsAdapter) {
+				CommentsAdapter a = (CommentsAdapter) list.getAdapter();
+				if (a != null) {
+					a.clear();
+				}
+			}
 			if (mCommentsFooter != null) {
-				list.removeFooterView(mCommentsFooter);
-				mCommentsFooter = null;
+				mCommentsFooter.setVisibility(View.GONE);
 			}
+
 			if (mCommentsHeader != null) {
-				list.removeHeaderView(mCommentsHeader);
-				mCommentsFooter = null;
+				mCommentsHeader.setVisibility(View.GONE);
 			}
+
 			progress.setVisibility(View.VISIBLE);
 			list.setVisibility(View.INVISIBLE);
 		}
@@ -499,13 +514,13 @@ public class PoiDetailsView extends LinearLayout {
 		requestLayout();
 	}
 
-	private void initCategoryIcon(Category cat) {
+	private void initCategoryIcon() {
 
 		ImageView catImage = (ImageView) findViewById(R.id.category_image);
-		catImage.setBackgroundResource(ColorsHelper.getCircleByTab(getContext(), mSelectedCategoryTab));
+		//catImage.setBackgroundResource(ColorsHelper.getCircleByTab(getContext(), mSelectedCategoryTab));
 		catImage.setImageDrawable(null);
-		if (cat != null && cat.getActiveIconUrl() != null) {
-			Picasso.with(getContext()).load(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getActiveIconUrl()).into(catImage);
+		if (mPoi != null && mPoi.getCategoryActiveIcon() != null) {
+			Picasso.with(getContext()).load(ReadCategoriesOperation.CATEGORIES_IMAGE_URL + mPoi.getCategoryActiveIcon()).fit().into(catImage);
 		}
 	}
 
@@ -583,6 +598,7 @@ public class PoiDetailsView extends LinearLayout {
 		void postBookmark(Poi poi);
 
 		void removeBookmark(Poi poi);
+
 		void showSearch();
 	}
 }

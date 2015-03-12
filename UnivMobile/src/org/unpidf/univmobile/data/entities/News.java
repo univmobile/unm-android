@@ -12,7 +12,7 @@ public class News {
 	private String author;
 	private String guid;
 	private String publishedDate;
-	private String imageUlr;
+	private String imageUrl;
 	private int restoreID;
 	private String category;
 	private boolean expanded;
@@ -74,12 +74,12 @@ public class News {
 		this.publishedDate = publishedDate;
 	}
 
-	public String getImageUlr() {
-		return imageUlr;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
-	public void setImageUlr(String imageUlr) {
-		this.imageUlr = imageUlr;
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public int getRestoreID() {

@@ -66,9 +66,9 @@ public class NewsItemView extends RelativeLayout {
 		mNews = news;
 
 		ImageView image = (ImageView) findViewById(R.id.icon_act);
-		image.setImageResource(R.drawable.ic_launcher);
-		if (news.getImageUlr() != null) {
-			Picasso.with(getContext()).load(news.getImageUlr()).into(image);
+		image.setImageDrawable(null);
+		if (news.getImageUrl() != null) {
+			Picasso.with(getContext()).load(news.getImageUrl()).into(image);
 		}
 
 		try {

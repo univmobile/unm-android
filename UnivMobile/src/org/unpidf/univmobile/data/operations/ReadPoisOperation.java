@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class ReadPoisOperation extends AbsOperation<List<Poi>> {
 
-	private static final String POIS_SEARCH_UNIV_AND_CAT_ROOT = "pois/search/findByUniversityAndCategoryRoot?universityId=%d&categoryId=%d";
-	private static final String POIS_SEARCH_CAT_ROOT = "pois/search/findByCategoryRoot?categoryId=%d";
-	private static final String POIS_SEARCH_UNIV_AND_CAT_LIST = "pois/search/findByUniversityAndCategoryIn?universityId=%d&categories=";
-	private static final String POIS_SEARCH_UNIV = "pois/search/findByUniversity?universityId=%d";
-	private static final String POIS_SEARCH_CAT_LIST = "pois/search/findByCategoryIn?categories=";
+	private static final String POIS_SEARCH_UNIV_AND_CAT_ROOT = "pois/search/findByUniversityAndCategoryRoot?universityId=%d&categoryId=%d&size=200";
+	private static final String POIS_SEARCH_CAT_ROOT = "pois/search/findByCategoryRoot?categoryId=%d&size=200";
+	private static final String POIS_SEARCH_UNIV_AND_CAT_LIST = "pois/search/findByUniversityAndCategoryIn?universityId=%d&size=200&categories=";
+	private static final String POIS_SEARCH_UNIV = "pois/search/findByUniversity?universityId=%d&size=200";
+	private static final String POIS_SEARCH_CAT_LIST = "pois/search/findByCategoryIn?size=200&categories=";
 
 
 

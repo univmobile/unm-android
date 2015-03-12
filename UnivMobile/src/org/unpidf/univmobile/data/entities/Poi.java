@@ -35,11 +35,13 @@ public class Poi {
 	private int universityId;
 	private String commentsUrl;
 	private int categoryId;
-    private String publicWelcome;
-    private String disciplines;
-    private String closingHours;
+	private String publicWelcome;
+	private String disciplines;
+	private String closingHours;
+	private String categoryMarkerIcon;
+	private String categoryActiveIcon;
 
-    public int getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -279,27 +281,43 @@ public class Poi {
 		this.categoryId = categoryId;
 	}
 
-    public String getPublicWelcome() {
-        return publicWelcome;
-    }
+	public String getPublicWelcome() {
+		return publicWelcome;
+	}
 
-    public void setPublicWelcome(String publicWelcome) {
-        this.publicWelcome = publicWelcome;
-    }
+	public void setPublicWelcome(String publicWelcome) {
+		this.publicWelcome = publicWelcome;
+	}
 
-    public String getDisciplines() {
-        return disciplines;
-    }
+	public String getDisciplines() {
+		return disciplines;
+	}
 
-    public void setDisciplines(String disciplines) {
-        this.disciplines = disciplines;
-    }
+	public void setDisciplines(String disciplines) {
+		this.disciplines = disciplines;
+	}
 
-    public String getClosingHours() {
-        return closingHours;
-    }
+	public String getClosingHours() {
+		return closingHours;
+	}
 
-    public void setClosingHours(String closingHours) {
-        this.closingHours = closingHours;
-    }
+	public void setClosingHours(String closingHours) {
+		this.closingHours = closingHours;
+	}
+
+	public String getCategoryMarkerIcon() {
+		return categoryMarkerIcon;
+	}
+
+	public void setCategoryMarkerIcon(String categoryMarkerIcon) {
+		this.categoryMarkerIcon = categoryMarkerIcon;
+	}
+
+	public String getCategoryActiveIcon() {
+		return categoryActiveIcon;
+	}
+
+	public void setCategoryActiveIcon(String categoryActiveIcon) {
+		this.categoryActiveIcon = categoryActiveIcon;
+	}
 }

@@ -236,7 +236,7 @@ public class GeoCampusFragment extends AbsFragment {
 		PoiDetailsView view = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);
 		GeoCampusCategoriesView catView = (GeoCampusCategoriesView) getView().findViewById(R.id.categories);
 
-		view.populate(mPoiDetailsInterface, poi, mModel.getCategoryById(poi.getCategoryId()), catView.getSelectedTab(), mModel.isBookmarked(poi));
+		view.populate(mPoiDetailsInterface, poi, catView.getSelectedTab(), mModel.isBookmarked(poi));
 		mModel.getRestoMenu(poi);
 		mModel.getComments(poi, false);
 
@@ -438,14 +438,12 @@ public class GeoCampusFragment extends AbsFragment {
 		public void populatePois(List<Poi> pois) {
 			if (mMap != null && pois != null) {
 				for (Poi p : pois) {
-					if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0) {
+					if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
 
-						Category cat = mModel.getCategoryById(p.getCategoryId());
-						if (cat == null || cat.getMarkerIconUrl() == null || cat.getMarkerIconUrl().length() == 0) {
-							cat = new Category();
-							cat.setMarkerIconUrl("cat_marker_7__biblio_big_jaune_marker.png");
+						if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
+							p.setCategoryMarkerIcon("cat_marker_7__biblio_big_jaune_marker.png");
 						}
-						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getMarkerIconUrl();
+						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
 
 
 						synchronized (lock) {

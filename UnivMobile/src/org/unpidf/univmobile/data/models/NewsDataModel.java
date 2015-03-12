@@ -19,7 +19,8 @@ public class NewsDataModel extends AbsDataModel {
 	private NewsModelListener mListener;
 
 	private ReadNewsOperation mReadNewsOperation;
-	private boolean mShouldBePaged = false;
+
+	private List<News> mNews;
 
 	public NewsDataModel(Context c) {
 		mContext = c;
@@ -34,19 +35,32 @@ public class NewsDataModel extends AbsDataModel {
 		mListener = null;
 	}
 
-
-	public void getNews(NewsModelListener listener, boolean shouldBePaged) {
-		clearOperation(mReadNewsOperation);
-		mReadNewsOperation = null;
-
+	public void setListener(NewsModelListener listener) {
 		mListener = listener;
-		mShouldBePaged = shouldBePaged;
+	}
+	public void loadNextPage() {
+		if(mReadNewsOperation != null && mReadNewsOperation.hasNextPage()) {
+			int nextPage = mReadNewsOperation.getNextPage();
+			clearOperation(mReadNewsOperation);
+			mReadNewsOperation = null;
 
-		int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID);
-		mReadNewsOperation.startOperation();
+			int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
+			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, nextPage, 0);
+			mReadNewsOperation.startOperation();
+		} else {
+			int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
+			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 0);
+			mReadNewsOperation.startOperation();
+		}
 	}
 
+	public boolean hasNewPage() {
+		if(mReadNewsOperation != null) {
+			return mReadNewsOperation.hasNextPage();
+		} else {
+			return true;
+		}
+	}
 
 	private OperationListener<List<News>> mReadNewsListener = new OperationListener<List<News>>() {
 		@Override
@@ -58,9 +72,6 @@ public class NewsDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<News> result) {
-			clearOperation(mReadNewsOperation);
-			mReadNewsOperation = null;
-
 			if (mListener != null) {
 				if (result != null) {
 					mListener.showNews(result);
@@ -72,11 +83,6 @@ public class NewsDataModel extends AbsDataModel {
 
 		@Override
 		public void onPageDownloaded(List<News> result) {
-			if (mListener != null && mShouldBePaged) {
-
-				mListener.updateNewsWithOnePage(result);
-
-			}
 		}
 	};
 

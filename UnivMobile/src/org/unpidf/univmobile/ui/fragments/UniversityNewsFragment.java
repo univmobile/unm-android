@@ -15,6 +15,7 @@ import org.unpidf.univmobile.data.models.NewsDataModel;
 import org.unpidf.univmobile.ui.adapters.NewsAdapter;
 import org.unpidf.univmobile.ui.views.NewsListHeaderView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,8 +31,12 @@ public class UniversityNewsFragment extends AbsFragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		mNewsDataModel.clear();
+		if (mNewsDataModel != null) {
+			mNewsDataModel.clear();
+			mNewsDataModel = null;
+		}
 	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,46 +48,54 @@ public class UniversityNewsFragment extends AbsFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mListView = ((ListView) view.findViewById(R.id.list_view));
-		mNewsDataModel = new NewsDataModel(getActivity());
-		mNewsDataModel.getNews(mNewsDataModelListener, true);
+
+		if (mNewsAdapter == null) {
+			mNewsAdapter = new NewsAdapter(getActivity(), new ArrayList<News>(), mOnLoadNextListener);
+			mListView.setAdapter(mNewsAdapter);
+		} else {
+			mNewsAdapter.notifyDataSetChanged();
+		}
 	}
 
 	private NewsDataModel.NewsModelListener mNewsDataModelListener = new NewsDataModel.NewsModelListener() {
 		@Override
 		public void showLoadingIndicator() {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
 		}
 
 		@Override
 		public void updateNewsWithOnePage(List<News> news) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			if (mNewsAdapter == null) {
-				mNewsAdapter = new NewsAdapter(getActivity(), news);
-				mListView.setAdapter(mNewsAdapter);
-			} else {
-				mNewsAdapter.addAll(news);
-				mNewsAdapter.notifyDataSetChanged();
-			}
 		}
 
 		@Override
 		public void showErrorMessage(ErrorEntity error) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
 
 		@Override
 		public void showNews(List<News> news) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-
-			if (mNewsAdapter == null) {
-				mNewsAdapter = new NewsAdapter(getActivity(), news);
-				mListView.setAdapter(mNewsAdapter);
-			} else {
-				mNewsAdapter.clear();
+			if (mNewsAdapter != null) {
 				mNewsAdapter.addAll(news);
-				mNewsAdapter.notifyDataSetChanged();
 			}
+		}
+	};
 
+
+	private NewsAdapter.OnLoadNextListener mOnLoadNextListener = new NewsAdapter.OnLoadNextListener() {
+		@Override
+		public void loadNextData() {
+			if (mNewsDataModel == null) {
+				mNewsDataModel = new NewsDataModel(getActivity());
+				mNewsDataModel.setListener(mNewsDataModelListener);
+			}
+			mNewsDataModel.loadNextPage();
+		}
+
+		@Override
+		public boolean hasNextPage() {
+			if (mNewsDataModel != null) {
+				return mNewsDataModel.hasNewPage();
+			} else {
+				return true;
+			}
 		}
 	};
 }

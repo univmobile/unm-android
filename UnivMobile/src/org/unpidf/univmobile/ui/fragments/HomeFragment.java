@@ -2,13 +2,14 @@ package org.unpidf.univmobile.ui.fragments;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,10 @@ import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.NewsItemView;
+import org.w3c.dom.Text;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -291,8 +295,8 @@ public class HomeFragment extends AbsFragment {
 		} else {
 			ImageView mainArticleImage = (ImageView) getView().findViewById(R.id.main_article_image);
 			mainArticleImage.setImageResource(R.drawable.ic_launcher);
-			if (news.get(0).getImageUlr() != null) {
-				Picasso.with(getActivity()).load(news.get(0).getImageUlr()).into(mainArticleImage);
+			if (news.get(0).getImageUrl() != null) {
+				Picasso.with(getActivity()).load(news.get(0).getImageUrl()).into(mainArticleImage);
 			}
 
 			try {
@@ -312,7 +316,29 @@ public class HomeFragment extends AbsFragment {
 			title.setText(news.get(0).getTitle());
 
 			TextView description = (TextView) getView().findViewById(R.id.main_article_content);
-			title.setText(news.get(0).getTitle());
+			description.setText(news.get(0).getDescription());
+
+			TextView button = (TextView)getView().findViewById(R.id.main_article_action_button);
+			if(news.get(0).getLink() != null) {
+				try {
+					URL url = new URL(news.get(0).getLink());
+
+					final String urlString = news.get(0).getLink();
+					button.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+							getActivity().startActivity(i);
+						}
+					});
+
+				} catch (MalformedURLException e) {
+					button.setVisibility(View.GONE);
+					e.printStackTrace();
+				}
+			} else {
+				button.setVisibility(View.GONE);
+			}
 
 			NewsItemView news1 = (NewsItemView) getView().findViewById(R.id.news1);
 			if (news.size() > 1) {

@@ -13,7 +13,7 @@
 			android:layout_height="match_parent"
 			android:orientation="vertical"
 			android:id="@+id/news_container"
-			android:visibility="gone">
+			android:visibility="visible">
 
 			<ImageView
 				android:layout_width="match_parent"
@@ -22,11 +22,6 @@
 				android:scaleType="centerCrop"
 				android:id="@+id/main_article_image"
 				android:src="@drawable/ic_home_header"/>
-
-			<ImageView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/article_arrow_padding"/>
 
 			<TextView
 				android:layout_width="match_parent"
@@ -47,14 +42,38 @@
 				android:layout_marginLeft="@dimen/horizontal"
 				android:paddingBottom="3dp"/>
 
-			<TextView
+			<LinearLayout
+				android:orientation="vertical"
+				android:id="@+id/main_article_content_container"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:id="@+id/main_article_content"
-				android:textColor="@android:color/black"
-				android:textSize="@dimen/content_size"
 				android:layout_marginRight="@dimen/horizontal"
-				android:layout_marginLeft="@dimen/horizontal"/>
+				android:layout_marginLeft="@dimen/horizontal"
+				android:paddingTop="5dp"
+				android:paddingBottom="5dp">
+
+				<TextView
+					android:id="@+id/main_article_content"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:textSize="@dimen/content_size"
+					android:textColor="@android:color/black"
+					android:paddingBottom="5dp"/>
+
+				<TextView
+					android:clickable="true"
+					android:id="@+id/main_article_action_button"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/button_size"
+					android:background="@drawable/selector_button_yellow"
+					android:textColor="@android:color/white"
+					android:text="Aller plus loin "
+					android:layout_gravity="right"
+					android:padding="5dp"/>
+			</LinearLayout>
+
 
 			<TextView
 				android:layout_width="match_parent"

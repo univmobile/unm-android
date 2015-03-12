@@ -61,7 +61,7 @@
 	<string name="post">VALIDER</string>
 
 	<!-- search -->
-	<string name="search_hint">Tappez votre recherche</string>
+	<string name="search_hint">Tapez votre recherche</string>
 	<string name="search_results">Résultats</string>
 
 	<!-- Login -->

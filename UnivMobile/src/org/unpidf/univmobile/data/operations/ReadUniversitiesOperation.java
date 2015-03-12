@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.University;
 
 import java.util.ArrayList;
@@ -50,17 +51,26 @@ private static final String UNIVERSITIES = "universities/";
 	}
 
 	@Override
+	protected String getOperationUrl(int page) {
+		String url = mUrl;
+		if(mUrl == null) {
+			url =  BASE_URL_API + UNIVERSITIES;
+		}
+		if (page != 0) {
+			url += "?page=" + page;
+		}
+		return url;
+	}
+
+
+	@Override
 	protected List<University> combine(List<University> newData, List<University> oldData) {
-		return null;
+		oldData.addAll(newData);
+		return oldData;
 	}
 
 	@Override
-	protected String getOperationUrl(int page) {
-		if(mUrl == null) {
-			return BASE_URL_API + UNIVERSITIES;
-		}
-
-		return mUrl;
+	protected boolean shouldBePaged() {
+		return true;
 	}
-
 }

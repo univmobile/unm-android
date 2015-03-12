@@ -14,6 +14,7 @@ import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.University;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.data.operations.OperationListener;
+import org.unpidf.univmobile.data.operations.PostStatisticsOperation;
 import org.unpidf.univmobile.data.operations.ReadUniversitiesOperation;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.adapters.UniversitiesAdapter;
@@ -101,6 +102,8 @@ public class ChangeUniversityFragment extends AbsFragment {
 				list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						PostStatisticsOperation op = new PostStatisticsOperation(getActivity(), UniversitiesDataModel.getSavedUniversity(getActivity()).getSelf());
+						op.startOperation();
 						UniversitiesDataModel model = new UniversitiesDataModel(getActivity());
 						model.saveUniversity(adapter.getItem(position));
 

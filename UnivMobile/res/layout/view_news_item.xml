@@ -8,14 +8,16 @@
 					android:orientation="vertical"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:id="@+id/header">
+					android:id="@+id/header"
+					android:gravity="center_vertical">
 
 		<ImageView
 			android:layout_width="110dp"
 			android:layout_height="wrap_content"
 			android:adjustViewBounds="true"
 			android:id="@+id/icon_act"
-			android:layout_marginRight="10dp"/>
+			android:layout_marginRight="10dp"
+			android:layout_centerVertical="true"/>
 
 		<ImageView
 			android:layout_width="wrap_content"
@@ -34,7 +36,6 @@
 			android:orientation="vertical"
 			android:layout_toLeftOf="@id/ic_arrow"
 			android:layout_toRightOf="@id/icon_act"
-			android:layout_alignBottom="@id/icon_act"
 			android:layout_alignTop="@id/icon_act"
 			android:gravity="center_vertical">
 
@@ -43,7 +44,6 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/time_act"
 				android:textSize="@dimen/date_size"
-				android:text="Nom du flux - 04/01/2015"
 				android:textColor="@android:color/black"
 				android:paddingBottom="2dp"/>
 
@@ -53,9 +53,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/title_act"
 				android:textSize="@dimen/content_size"
-				android:text="Vivre avec une personne âgée : une coloc’ originale pour les étudiants"
-				android:textColor="@android:color/black"
-				android:lines="2"/>
+				android:textColor="@android:color/black"/>
 		</LinearLayout>
 
 	</RelativeLayout>
