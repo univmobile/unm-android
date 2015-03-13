@@ -3,6 +3,7 @@ package org.unpidf.univmobile.ui.fragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ public class NotificationsFragment extends AbsFragment {
 
 
 	private NotificationsDataModel mNotificationsDataModel;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private NotificationsAdapter mAdapter;
+	private boolean mShowLoading = true;
 
 	public static NotificationsFragment newInstance() {
 		NotificationsFragment fragment = new NotificationsFragment();
@@ -65,11 +69,30 @@ public class NotificationsFragment extends AbsFragment {
 		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
 		helper.loadFont((android.widget.TextView) view.findViewById(R.id.title), FontHelper.FONT.EXO_SEMI_BOLD);
 
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_purple_light);
+
 		initNotifications();
 	}
 
+
+	private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+		@Override
+		public void onRefresh() {
+			if (mAdapter != null) {
+				mAdapter.clear();
+			}
+			mShowLoading = false;
+			initNotifications();
+		}
+	};
+
+
 	private void initNotifications() {
-		mNotificationsDataModel = new NotificationsDataModel(getActivity());
+		if (mNotificationsDataModel == null) {
+			mNotificationsDataModel = new NotificationsDataModel(getActivity());
+		}
 		mNotificationsDataModel.getNotifications(mNotificationsListener);
 	}
 
@@ -77,7 +100,9 @@ public class NotificationsFragment extends AbsFragment {
 
 		@Override
 		public void showLoadingIndicator() {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
+			if (mShowLoading) {
+				getView().findViewById(R.id.progressBar1).setVisibility(View.VISIBLE);
+			}
 			getView().findViewById(R.id.listView).setVisibility(View.GONE);
 		}
 
@@ -86,6 +111,8 @@ public class NotificationsFragment extends AbsFragment {
 
 			((HomeActivity) getActivity()).resetNewNotificationsCount();
 			mNotificationsDataModel.saveNotificationsReadDate();
+
+			mSwipeRefreshLayout.setRefreshing(false);
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 
 
@@ -103,6 +130,8 @@ public class NotificationsFragment extends AbsFragment {
 
 		@Override
 		public void onError(ErrorEntity mError) {
+
+			mSwipeRefreshLayout.setRefreshing(false);
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			handleError(mError);
 		}

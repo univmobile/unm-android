@@ -58,7 +58,7 @@ public class UniversityNewsFragment extends AbsFragment {
 
 		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
-		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_orange_light);
 
 		if (mNewsAdapter == null) {
 			mNewsAdapter = new NewsAdapter(getActivity(), new ArrayList<News>(), mOnLoadNextListener, mExpandListener);
@@ -102,12 +102,12 @@ public class UniversityNewsFragment extends AbsFragment {
 
 		@Override
 		public void showErrorMessage(ErrorEntity error) {
+			mSwipeRefreshLayout.setRefreshing(false);
 			hideList();
 		}
 
 		@Override
 		public void showNews(List<News> news) {
-
 			mSwipeRefreshLayout.setRefreshing(false);
 			if (news == null || news.size() <= 0) {
 				hideList();
@@ -120,6 +120,7 @@ public class UniversityNewsFragment extends AbsFragment {
 
 		@Override
 		public void onError(ErrorEntity mError) {
+			mSwipeRefreshLayout.setRefreshing(false);
 			handleError(mError);
 		}
 	};
