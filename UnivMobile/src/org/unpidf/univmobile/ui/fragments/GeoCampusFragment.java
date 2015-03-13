@@ -150,19 +150,22 @@ public class GeoCampusFragment extends AbsFragment {
 
 		// Gets the MapView from the XML layout and creates it
 		mMapView = (MapView) getView().findViewById(R.id.mapview);
-		mMapView.onCreate(null);
+		if (mMapView != null) {
+			mMapView.onCreate(null);
 
-		mMapView.onResume();
+			mMapView.onResume();
 
-		// Gets to GoogleMap from the MapView and does initialization stuff
-		mMap = mMapView.getMap();
-		mMap.getUiSettings().setMyLocationButtonEnabled(false);
-		mMap.setMyLocationEnabled(true);
+			// Gets to GoogleMap from the MapView and does initialization stuff
+			mMap = mMapView.getMap();
+			if (mMap != null) {
+				mMap.getUiSettings().setMyLocationButtonEnabled(false);
+				mMap.setMyLocationEnabled(true);
 
-		mMap.setOnMarkerClickListener(mOnMarkerClickListener);
-		mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
-		MapsInitializer.initialize(this.getActivity());
-
+				mMap.setOnMarkerClickListener(mOnMarkerClickListener);
+				mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
+				MapsInitializer.initialize(this.getActivity());
+			}
+		}
 	}
 
 	@Override
@@ -275,14 +278,16 @@ public class GeoCampusFragment extends AbsFragment {
 	}
 
 	private void addMarker(Poi p, BitmapDescriptor des) {
-		MarkerOptions options = new MarkerOptions();
-		options.icon(des);
-		options.anchor(0.5f, 0.5f);
-		options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
-		options.title(p.getName());
+		if (mMap != null) {
+			MarkerOptions options = new MarkerOptions();
+			options.icon(des);
+			options.anchor(0.5f, 0.5f);
+			options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
+			options.title(p.getName());
 
-		Marker m = mMap.addMarker(options);
-		mMarkers.put(m, p);
+			Marker m = mMap.addMarker(options);
+			mMarkers.put(m, p);
+		}
 	}
 
 
@@ -529,28 +534,30 @@ public class GeoCampusFragment extends AbsFragment {
 		@Override
 		public void showImageMapPois(ImageMap map) {
 
-			if (mMarkers != null) {
-				Iterator it = mMarkers.entrySet().iterator();
-				while (it.hasNext()) {
-					Map.Entry pairs = (Map.Entry) it.next();
-					Marker m = (Marker) pairs.getKey();
-					m.remove();
+			if (mMap != null) {
+				if (mMarkers != null) {
+					Iterator it = mMarkers.entrySet().iterator();
+					while (it.hasNext()) {
+						Map.Entry pairs = (Map.Entry) it.next();
+						Marker m = (Marker) pairs.getKey();
+						m.remove();
+					}
+					mMarkers.clear();
 				}
-				mMarkers.clear();
+
+				mDataModelListener.populatePois(map.getPois());
+
+				GroundOverlayOptions newarkMap = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromBitmap(map.getImage())).anchor(0.5f, 0.5f).position(new LatLng(0, 0), 1000, 1000);
+				mImageOverlay = mMap.addGroundOverlay(newarkMap);
+
+				mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 17));
+
+				mStopHandler = false;
+				mOverscrollHandler.sendEmptyMessageDelayed(0, 100);
+
+				disableLayout();
 			}
-
-			mDataModelListener.populatePois(map.getPois());
-
-			GroundOverlayOptions newarkMap = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromBitmap(map.getImage())).anchor(0.5f, 0.5f).position(new LatLng(0, 0), 1000, 1000);
-			mImageOverlay = mMap.addGroundOverlay(newarkMap);
-
-			mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 17));
-
-			mStopHandler = false;
-			mOverscrollHandler.sendEmptyMessageDelayed(0, 100);
-
-			disableLayout();
 		}
 
 		@Override

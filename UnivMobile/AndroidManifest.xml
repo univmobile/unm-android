@@ -64,7 +64,9 @@
 				<data android:scheme="univmobile"/>
 			</intent-filter>
 		</activity>
-
+		<meta-data
+			android:name="com.crashlytics.ApiKey"
+			android:value="6362d562506515c87c694ac1612d0f2b43c1dc5c" />
 	</application>
 
 </manifest>

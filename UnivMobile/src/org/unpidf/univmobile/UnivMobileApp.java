@@ -8,6 +8,7 @@ import com.google.android.gms.analytics.Tracker;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
+import com.crashlytics.android.Crashlytics;
 
 /**
  * Created by rviewniverse on 2015-01-31.
@@ -19,6 +20,7 @@ public class UnivMobileApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Crashlytics.start(this);
 		initLogin();
 
 		GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
