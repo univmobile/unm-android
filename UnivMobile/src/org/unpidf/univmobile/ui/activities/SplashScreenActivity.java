@@ -46,8 +46,8 @@ public class SplashScreenActivity extends AbsActivity {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.title), FontHelper.FONT.EXO_REGULAR);
 		helper.loadFont((android.widget.TextView) findViewById(R.id.accept_button), FontHelper.FONT.EXO_REGULAR);
 
-
-		if (UniversitiesDataModel.isUniversitySaved(this)) {
+		boolean ignoreSaved = getIntent().getBooleanExtra("ignore_saved", false);
+		if (UniversitiesDataModel.isUniversitySaved(this) && !ignoreSaved) {
 			startHomeActivityDelayed();
 
 			PostStatisticsOperation op = new PostStatisticsOperation(this, UniversitiesDataModel.getSavedUniversity(this).getSelf());
@@ -85,7 +85,7 @@ public class SplashScreenActivity extends AbsActivity {
 	}
 
 	private void startHomeActivity() {
-
+		setResult(222);
 		Intent i = new Intent(SplashScreenActivity.this, HomeActivity.class);
 		startActivity(i);
 		finish();
@@ -179,6 +179,7 @@ public class SplashScreenActivity extends AbsActivity {
 			findViewById(R.id.accept_button).setOnClickListener(mSelectRegionListener);
 
 		} else {
+			setResult(-1);
 			super.onBackPressed();
 		}
 	}

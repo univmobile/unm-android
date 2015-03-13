@@ -211,6 +211,14 @@ public class HomeActivity extends AbsActivity {
 			}
 		});
 
+		actionBarView.findViewById(R.id.university_container).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showSplashScreen();
+			}
+		});
+
+
 //		actionBarView.findViewById(R.id.login_container).setOnClickListener(new View.OnClickListener() {
 //			@Override
 //			public void onClick(View v) {
@@ -518,26 +526,33 @@ public class HomeActivity extends AbsActivity {
 		}
 	}
 
-	public void removeTopFragment() {
-		FragmentManager manager = getFragmentManager();
-		Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
-		manager.beginTransaction().remove(currentFragment).commit();
+	public void showSplashScreen() {
+		Intent i = new Intent(this, SplashScreenActivity.class);
+		i.putExtra("ignore_saved", true);
+		startActivityForResult(i, 111);
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		if (scanResult != null && scanResult.getContents() != null) {
-			Uri data = Uri.parse(scanResult.getContents());
-			String id = data.getQueryParameter("ID");
-			if (id != null) {
-				id = id.replaceAll("\\s", "");
-				id = id.replaceAll("\\n", "");
-				FragmentManager manager = getFragmentManager();
-				GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-				f.showImageMap(Integer.parseInt(id));
+		if (requestCode == 111) {
+			if (resultCode == 222) {
+				finish();
+			}
+		} else {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			if (scanResult != null && scanResult.getContents() != null) {
+				Uri data = Uri.parse(scanResult.getContents());
+				String id = data.getQueryParameter("ID");
+				if (id != null) {
+					id = id.replaceAll("\\s", "");
+					id = id.replaceAll("\\n", "");
+					FragmentManager manager = getFragmentManager();
+					GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+					f.showImageMap(Integer.parseInt(id));
+				}
 			}
 		}
 
 	}
+
 
 }

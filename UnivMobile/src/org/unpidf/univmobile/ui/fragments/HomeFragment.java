@@ -221,11 +221,12 @@ public class HomeFragment extends AbsFragment {
 	private void addMarker(Poi p, BitmapDescriptor des) {
 		if (mMap != null) {
 			MarkerOptions options = new MarkerOptions();
-			options.icon(des);
+			if (des != null) {
+				options.icon(des);
+			}
 			options.anchor(0.5f, 0.5f);
 			options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
 			options.title(p.getName());
-
 			Marker m = mMap.addMarker(options);
 		}
 	}

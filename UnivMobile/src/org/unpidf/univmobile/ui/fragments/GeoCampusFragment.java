@@ -261,7 +261,9 @@ public class GeoCampusFragment extends AbsFragment {
 	private void addMarker(Poi p, BitmapDescriptor des) {
 		if (mMap != null) {
 			MarkerOptions options = new MarkerOptions();
-			options.icon(des);
+			if (des != null) {
+				options.icon(des);
+			}
 			options.anchor(0.5f, 0.5f);
 			options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
 			options.title(p.getName());
@@ -427,44 +429,34 @@ public class GeoCampusFragment extends AbsFragment {
 					if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
 
 						if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
-							p.setCategoryMarkerIcon("cat_marker_7__biblio_big_jaune_marker.png");
+							addMarker(p, null);
+						} else {
+							final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
+
+
+							Resources r = getResources();
+							int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+							Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
+
+								@Override
+								public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+									addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
+								}
+
+								@Override
+								public void onBitmapFailed(Drawable errorDrawable) {
+									addMarker(p, null);
+
+								}
+
+								@Override
+								public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+								}
+							});
+
+
 						}
-						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
-
-
-						Resources r = getResources();
-						int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-						Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
-
-							@Override
-							public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-								addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
-
-
-							}
-
-							@Override
-							public void onBitmapFailed(Drawable errorDrawable) {
-
-								Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
-								BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
-								Bitmap b = bd.getBitmap();
-
-								Resources r = getResources();
-								int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-								Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
-								addMarker(p, BitmapDescriptorFactory.fromBitmap(bhalfsize));
-
-							}
-
-							@Override
-							public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-							}
-						});
-
-
 					}
 				}
 
