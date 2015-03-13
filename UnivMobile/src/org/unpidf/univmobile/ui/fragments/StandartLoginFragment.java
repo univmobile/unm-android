@@ -139,6 +139,13 @@ public class StandartLoginFragment extends AbsFragment {
 		public void loginFailed(ErrorEntity error) {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
+
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
+		}
 	};
 
 

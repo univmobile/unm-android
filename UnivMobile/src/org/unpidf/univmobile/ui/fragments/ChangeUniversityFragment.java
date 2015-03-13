@@ -91,9 +91,12 @@ public class ChangeUniversityFragment extends AbsFragment {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, final List<University> result) {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			if (error != null) {
+				handleError(error);
+			}
 			if (result != null && result.size() > 0) {
 
-				getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 				final UniversitiesAdapter adapter = new UniversitiesAdapter(getActivity(), result);
 
 				ListView list = (ListView) getView().findViewById(R.id.list);

@@ -18,12 +18,14 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Category;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.entities.NavigationMenu;
 import org.unpidf.univmobile.data.entities.NotificationEntity;
@@ -51,7 +53,7 @@ import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends AbsActivity {
 
 	private static final int MY_PROFILE_MENU_ID = 15;
 	private static final int MY_LIBRARY_MENU_ID = 16;
@@ -98,6 +100,12 @@ public class HomeActivity extends Activity {
 			mMenusDataModel.clear();
 			mMenusDataModel = null;
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_key));
 	}
 
 	@Override
@@ -150,6 +158,11 @@ public class HomeActivity extends Activity {
 						countView.setText(Integer.toString(newNotificationsCount));
 					}
 				}
+			}
+
+			@Override
+			public void onError(ErrorEntity mError) {
+				handleError(mError);
 			}
 		});
 	}
@@ -306,6 +319,13 @@ public class HomeActivity extends Activity {
 				mDrawerList.setOnGroupClickListener(mOnGroupClickListener);
 
 				mDrawerList.setOnChildClickListener(mtOnChildClickListener);
+			}
+
+
+			@Override
+			public void onError(ErrorEntity mError) {
+				mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
+				handleError(mError);
 			}
 		});
 

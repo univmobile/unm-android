@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import org.unpidf.univmobile.R;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.entities.ShibbolethPrepare;
 import org.unpidf.univmobile.data.models.LoginDataModel;
@@ -118,6 +119,11 @@ public class ShibbolethLoginFragment extends AbsFragment {
 		@Override
 		public void shibbolethLoginFailed() {
 			Toast.makeText(getActivity(), "Erreur...", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			handleError(mError);
 		}
 	};
 }

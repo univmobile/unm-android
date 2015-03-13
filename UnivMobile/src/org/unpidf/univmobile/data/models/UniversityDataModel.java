@@ -97,6 +97,9 @@ public class UniversityDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Category> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 
 			mReadCategoriesOperationAll.clear();
 			mReadCategoriesOperationAll = null;
@@ -120,6 +123,9 @@ public class UniversityDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Poi> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mReadPoisOperation);
 
 			if (mListener != null) {
@@ -146,6 +152,9 @@ public class UniversityDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<News> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mReadNewsOperation);
 			mReadNewsOperation = null;
 
@@ -164,7 +173,7 @@ public class UniversityDataModel extends AbsDataModel {
 	};
 
 
-	public interface UniversityModelListener {
+	public interface UniversityModelListener extends ModelListener {
 
 
 		void updateNews(List<News> news);

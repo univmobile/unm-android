@@ -94,9 +94,12 @@ public class SelectCategoryFragment extends AbsFragment {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, final List<Category> result) {
+			getView().findViewById(R.id.loading).setVisibility(View.GONE);
+			if (error != null) {
+				handleError(error);
+			}
 			if (result != null && result.size() > 0) {
 				mCategories = result;
-				getView().findViewById(R.id.loading).setVisibility(View.GONE);
 				initCategories(result);
 
 			}

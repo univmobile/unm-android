@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.NotificationEntity;
 import org.unpidf.univmobile.data.models.NotificationsDataModel;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
@@ -98,6 +99,12 @@ public class NotificationsFragment extends AbsFragment {
 			} else {
 				getView().findViewById(R.id.no_data).setVisibility(View.VISIBLE);
 			}
+		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
 		}
 	};
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.University;
@@ -96,6 +97,7 @@ public class MyProfileFragment extends AbsFragment {
 		mModel.getLibraries();
 		mModel.getBookmarks();
 	}
+
 	public void reload() {
 		MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
 		mediaList.setVisibility(View.GONE);
@@ -115,6 +117,7 @@ public class MyProfileFragment extends AbsFragment {
 		laodData();
 
 	}
+
 	private View.OnClickListener mChangeUnivListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -151,7 +154,7 @@ public class MyProfileFragment extends AbsFragment {
 	private MyProfileDataModel.MyProfileDataModelInterface mMyProfileDataModelInterface = new MyProfileDataModel.MyProfileDataModelInterface() {
 		@Override
 		public void populateLinks(List<Link> links) {
-			if(links != null && links.size() > 0) {
+			if (links != null && links.size() > 0) {
 				MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
 				mediaList.setVisibility(View.VISIBLE);
 				mediaList.init(links, 5, mOnAllMediaClickListener);
@@ -170,7 +173,7 @@ public class MyProfileFragment extends AbsFragment {
 		@Override
 		public void populateBookmarks(List<Bookmark> bookmarks) {
 			BookmarksListView bookmarksList = (BookmarksListView) getView().findViewById(R.id.bookmarks_list);
-			if (bookmarks != null&& bookmarks.size() > 0) {
+			if (bookmarks != null && bookmarks.size() > 0) {
 				bookmarksList.setVisibility(View.VISIBLE);
 				bookmarksList.init(bookmarks, 5, mOnAllBookmarksClickListener, mOnBookmarkCLickListener);
 			}
@@ -180,13 +183,20 @@ public class MyProfileFragment extends AbsFragment {
 		public void hideLoadingIndicator() {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
+		}
 	};
 
 	private LibraryListView.OnLibraryClickListener mOnLibraryClickListener = new LibraryListView.OnLibraryClickListener() {
 		@Override
 		public void onLibraryClicked(int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poiID,0);
+			a.showPoi(poiID, 0);
 		}
 	};
 
@@ -194,7 +204,7 @@ public class MyProfileFragment extends AbsFragment {
 		@Override
 		public void onBookmarkClicked(int root, int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poiID,0);
+			a.showPoi(poiID, 0);
 		}
 	};
 

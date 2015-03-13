@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.flurry.android.FlurryAgent;
+
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.data.entities.Bookmark;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
@@ -85,13 +88,20 @@ public class BookmarksFragment extends AbsFragment {
 		public void hideLoadingIndicator() {
 
 		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
+		}
 	};
 
 	private BookmarksListView.OnBookmarkClickListener mOnBookmarkCLickListener = new BookmarksListView.OnBookmarkClickListener() {
 		@Override
 		public void onBookmarkClicked(int root, int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi( poiID, root);
+			a.showPoi(poiID, root);
 		}
 	};
 }

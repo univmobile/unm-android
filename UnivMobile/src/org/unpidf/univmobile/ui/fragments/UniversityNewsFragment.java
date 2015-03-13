@@ -76,6 +76,12 @@ public class UniversityNewsFragment extends AbsFragment {
 				mNewsAdapter.addAll(news);
 			}
 		}
+
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			handleError(mError);
+		}
 	};
 
 

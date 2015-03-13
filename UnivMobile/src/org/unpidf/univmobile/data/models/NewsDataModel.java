@@ -38,8 +38,9 @@ public class NewsDataModel extends AbsDataModel {
 	public void setListener(NewsModelListener listener) {
 		mListener = listener;
 	}
+
 	public void loadNextPage() {
-		if(mReadNewsOperation != null && mReadNewsOperation.hasNextPage()) {
+		if (mReadNewsOperation != null && mReadNewsOperation.hasNextPage()) {
 			int nextPage = mReadNewsOperation.getNextPage();
 			clearOperation(mReadNewsOperation);
 			mReadNewsOperation = null;
@@ -55,7 +56,7 @@ public class NewsDataModel extends AbsDataModel {
 	}
 
 	public boolean hasNewPage() {
-		if(mReadNewsOperation != null) {
+		if (mReadNewsOperation != null) {
 			return mReadNewsOperation.hasNextPage();
 		} else {
 			return true;
@@ -72,6 +73,9 @@ public class NewsDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<News> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null) {
 				if (result != null) {
 					mListener.showNews(result);
@@ -87,7 +91,7 @@ public class NewsDataModel extends AbsDataModel {
 	};
 
 
-	public interface NewsModelListener {
+	public interface NewsModelListener extends ModelListener{
 		void showLoadingIndicator();
 
 		void updateNewsWithOnePage(List<News> news);

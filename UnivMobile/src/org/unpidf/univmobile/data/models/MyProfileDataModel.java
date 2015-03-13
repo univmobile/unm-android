@@ -104,6 +104,9 @@ public class MyProfileDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Bookmark> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null && result != null) {
 				mListener.populateBookmarks(result);
 			}
@@ -127,6 +130,9 @@ public class MyProfileDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Link> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null && result != null) {
 				mListener.populateLinks(result);
 			}
@@ -150,6 +156,9 @@ public class MyProfileDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Library> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null && result != null) {
 
 				mListener.populateLibraries(result);
@@ -166,7 +175,7 @@ public class MyProfileDataModel extends AbsDataModel {
 		}
 	};
 
-	public interface MyProfileDataModelInterface {
+	public interface MyProfileDataModelInterface extends ModelListener {
 		public void populateLinks(List<Link> links);
 
 		public void populateLibraries(List<Library> libraries);

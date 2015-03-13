@@ -446,5 +446,11 @@ public class HomeFragment extends AbsFragment {
 			getView().findViewById(R.id.news_container).setVisibility(View.GONE);
 
 		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
+		}
 	};
 }

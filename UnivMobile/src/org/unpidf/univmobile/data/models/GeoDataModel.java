@@ -273,6 +273,9 @@ public class GeoDataModel extends AbsDataModel {
 
 				@Override
 				public void onOperationFinished(ErrorEntity error, University result) {
+					if(error != null && mListener != null) {
+						mListener.onError(error);
+					}
 					if (result == null) {
 						if (mListener != null) {
 							mListener.poiPosted();
@@ -417,6 +420,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Poi result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null) {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					getBookmarks(true);
@@ -441,6 +447,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Poi result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			getBookmarks(true);
 		}
 
@@ -457,6 +466,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Bookmark> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			mBookmakrs = result;
 			if (mAfterPost) {
 				if (mListener != null) {
@@ -487,6 +499,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Boolean result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null) {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					mListener.poiPosted();
@@ -510,6 +525,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Poi result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (mListener != null) {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					mListener.commentPosted(result);
@@ -533,6 +551,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Poi result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (result != null) {
 				if (mListener != null) {
 					mListener.showPoi(result);
@@ -553,6 +574,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, ImageMap result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (result != null && result.getPoisUrl() != null && result.getPoisUrl().length() > 0) {
 
 				mImageMap = result;
@@ -574,6 +598,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Poi> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (result != null) {
 				mImageMap.setPois(result);
 				if (mListener != null) {
@@ -597,6 +624,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<RestoMenu> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mReadRestMenuOperation);
 			mReadRestMenuOperation = null;
 
@@ -621,6 +651,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Comment> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			//if(result != null) {
 			mComments = result;
 			if (mListener != null) {
@@ -643,6 +676,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Poi> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			if (result != null) {
 				if (mListener != null) {
 					mListener.populatePois(result);
@@ -666,6 +702,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Category> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			synchronized (lock) {
 				mReadCategoriesOperationAll.clear();
 				mReadCategoriesOperationAll = null;
@@ -695,6 +734,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Category> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			synchronized (lock) {
 				mReadCategoriesOperation1.clear();
 				mReadCategoriesOperation1 = null;
@@ -717,6 +759,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Category> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			synchronized (lock) {
 				mReadCategoriesOperation2.clear();
 				mReadCategoriesOperation2 = null;
@@ -739,6 +784,9 @@ public class GeoDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Category> result) {
+			if(error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			synchronized (lock) {
 				mReadCategoriesOperation3.clear();
 				mReadCategoriesOperation3 = null;
@@ -802,7 +850,7 @@ public class GeoDataModel extends AbsDataModel {
 		return mCategories2;
 	}
 
-	public interface GeoModelListener {
+	public interface GeoModelListener extends ModelListener {
 		public void showErrorMessage(ErrorEntity error);
 
 		public void populateCategories();

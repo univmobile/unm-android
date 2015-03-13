@@ -11,7 +11,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,6 @@ import org.unpidf.univmobile.data.entities.RestoMenu;
 import org.unpidf.univmobile.data.models.GeoDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
-import org.unpidf.univmobile.ui.SimpleDialogFragment;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.views.AddNewPoiView;
 import org.unpidf.univmobile.ui.views.GeoCampusCategoriesView;
@@ -63,7 +61,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GeoCampusFragment extends AbsFragment {
+public class GeoCampusFragment extends AbsFragment  {
 
 	private static final String ARG_TAB_ID = "tab_id";
 	private static final String ARG_IMAGE_MAP_ID = "arg_image_map_id";
@@ -607,7 +605,10 @@ public class GeoCampusFragment extends AbsFragment {
 			newPoiView.loadFinished();
 		}
 
-
+		@Override
+		public void onError(ErrorEntity mError) {
+			handleError(mError);
+		}
 	};
 
 

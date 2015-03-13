@@ -6,6 +6,7 @@
     <string name="ok">OK</string>
 	<string name="no_results">Pas de résultat</string>
 	<string name="need_to_login">besoin de vous connecter avant de poster un commentaire</string>
+	<string name="no_internet">Vous n\'êtes pas connecté à internet. Merci de vous connecter.</string>
 
     <!-- Select region and university -->
     <string name="select_region">Choisir sa région</string>

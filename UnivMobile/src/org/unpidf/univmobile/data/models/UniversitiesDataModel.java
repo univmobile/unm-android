@@ -91,6 +91,9 @@ public class UniversitiesDataModel  extends AbsDataModel{
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Region> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			mRegions = result;
 
 			clearOperation(mReadRegionsOperation);
@@ -121,6 +124,9 @@ public class UniversitiesDataModel  extends AbsDataModel{
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<University> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			mUniversities = result;
 
 			clearOperation(mReadUniversitiesOperation);
@@ -183,7 +189,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		this.mUniversities = mUniversities;
 	}
 
-	public interface UniversitiesDataModelListener {
+	public interface UniversitiesDataModelListener extends ModelListener{
 		public void showLoadingIndicator();
 
 		public void showRegions(List<Region> regionsList);

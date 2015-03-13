@@ -107,6 +107,9 @@ public class LoginDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Login result) {
+			if(error != null && mShibbolethLoginDadaModelListener != null) {
+				mShibbolethLoginDadaModelListener.onError(error);
+			}
 			clearOperation(mShibbolethRetrieveOperation);
 			mShibbolethRetrieveOperation = null;
 
@@ -134,6 +137,9 @@ public class LoginDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, ShibbolethPrepare result) {
+			if(error != null && mShibbolethLoginDadaModelListener != null) {
+				mShibbolethLoginDadaModelListener.onError(error);
+			}
 			clearOperation(mShibbolethPrepareOperation);
 			mShibbolethPrepareOperation = null;
 
@@ -164,6 +170,9 @@ public class LoginDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, Login result) {
+			if(error != null && mShibbolethLoginDadaModelListener != null) {
+				mShibbolethLoginDadaModelListener.onError(error);
+			}
 			clearOperation(mStandardLoginOperation);
 			mStandardLoginOperation = null;
 
@@ -183,7 +192,7 @@ public class LoginDataModel extends AbsDataModel {
 		}
 	};
 
-	public interface StandardLoginDataModelListener {
+	public interface StandardLoginDataModelListener extends ModelListener {
 		public void showLoadingIndicator();
 
 		public void loginSuccessful(Login login);
@@ -191,7 +200,7 @@ public class LoginDataModel extends AbsDataModel {
 		public void loginFailed(ErrorEntity error);
 	}
 
-	public interface ShibbolethLoginDadaModelListener {
+	public interface ShibbolethLoginDadaModelListener extends ModelListener {
 		public void shibbolethPreparedSuccessfully(ShibbolethPrepare prepare);
 
 		public void shibbolethPrepareFailed();

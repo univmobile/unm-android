@@ -111,6 +111,9 @@ public class NotificationsDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<NotificationEntity> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mReadNotificationsOperation);
 			mReadNotificationsOperation = null;
 
@@ -128,9 +131,10 @@ public class NotificationsDataModel extends AbsDataModel {
 	};
 
 
-	public interface NotificationsModelListener {
+	public interface NotificationsModelListener extends ModelListener {
 		void showLoadingIndicator();
 
 		void notificationsReceived(int newNotificationsCount, List<NotificationEntity> notifications);
+
 	}
 }

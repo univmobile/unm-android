@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends AbsActivity {
 
 
 	private UniversitiesDataModel mModel;
@@ -61,10 +63,16 @@ public class SplashScreenActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(mModel != null) {
+		if (mModel != null) {
 			mModel.clear();
 			mModel = null;
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, getString(R.string.flurry_key));
 	}
 
 	private void startHomeActivityDelayed() {
@@ -144,6 +152,12 @@ public class SplashScreenActivity extends Activity {
 		@Override
 		public void showErrorMessage(ErrorEntity error) {
 			findViewById(R.id.progressBar1).setVisibility(View.GONE);
+		}
+
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			handleError(mError);
 		}
 	};
 

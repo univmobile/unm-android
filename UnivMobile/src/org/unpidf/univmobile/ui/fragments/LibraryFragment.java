@@ -11,6 +11,7 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.entities.Poi;
@@ -110,6 +111,13 @@ public class LibraryFragment extends AbsFragment {
 		public void hideLoadingIndicator() {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 		}
+
+		@Override
+		public void onError(ErrorEntity mError) {
+
+			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+			handleError(mError);
+		}
 	};
 
 
@@ -117,7 +125,7 @@ public class LibraryFragment extends AbsFragment {
 		@Override
 		public void onLibraryClicked(int poiID) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poiID,0);
+			a.showPoi(poiID, 0);
 		}
 	};
 }

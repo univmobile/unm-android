@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
+import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Poi;
 import org.unpidf.univmobile.data.models.GeoDataModel;
 import org.unpidf.univmobile.data.models.SearchPoisDataModel;
@@ -161,6 +162,12 @@ public class PoisSearchFragment extends AbsFragment {
 				mAdapter.addAll(pois);
 			}
 			mAdapter.notifyDataSetChanged();
+		}
+
+
+		@Override
+		public void onError(ErrorEntity mError) {
+			handleError(mError);
 		}
 	};
 }

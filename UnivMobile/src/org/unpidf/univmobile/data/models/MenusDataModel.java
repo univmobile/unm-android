@@ -64,6 +64,9 @@ public class MenusDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<NavigationMenu> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mReadMenusOperation);
 			mReadMenusOperation = null;
 
@@ -84,7 +87,7 @@ public class MenusDataModel extends AbsDataModel {
 	};
 
 
-	public interface MenusModelListener {
+	public interface MenusModelListener extends ModelListener {
 		void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus);
 	}
 }

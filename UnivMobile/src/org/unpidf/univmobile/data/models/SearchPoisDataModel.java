@@ -66,6 +66,9 @@ public class SearchPoisDataModel extends AbsDataModel {
 
 		@Override
 		public void onOperationFinished(ErrorEntity error, List<Poi> result) {
+			if (error != null && mListener != null) {
+				mListener.onError(error);
+			}
 			clearOperation(mSearchPoisOperation);
 			mSearchPoisOperation = null;
 			if (mListener != null) {
@@ -82,7 +85,7 @@ public class SearchPoisDataModel extends AbsDataModel {
 		}
 	};
 
-	public interface SearchPoisModelListener {
+	public interface SearchPoisModelListener extends ModelListener {
 
 
 		public void showSearchResults(List<Poi> pois);
