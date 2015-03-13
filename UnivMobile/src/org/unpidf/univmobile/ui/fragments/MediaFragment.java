@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
+import org.unpidf.univmobile.data.entities.Library;
 import org.unpidf.univmobile.data.entities.Link;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.data.operations.OperationListener;
@@ -18,6 +19,7 @@ import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.LibraryListView;
 import org.unpidf.univmobile.ui.views.MediaListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,11 +74,18 @@ public class MediaFragment extends AbsFragment {
 			if (error != null) {
 				handleError(error);
 			}
-			if (result != null) {
-				MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
-				mediaList.init(result, Integer.MAX_VALUE, null);
+
+			if (result == null || result.size() > 0) {
+				result = new ArrayList<Link>();
+				Link l = new Link();
+				l.setLabel(getString(R.string.no_media));
+				l.setId(-1);
+				result.add(l);
 			}
+			MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
+			mediaList.init(result, Integer.MAX_VALUE, null);
 		}
+
 
 		@Override
 		public void onPageDownloaded(List<Link> result) {

@@ -32,6 +32,9 @@ public class LibraryItemView extends RelativeLayout {
 		if (!lib.isIconRuedesfacs()) {
 			findViewById(R.id.library_icons).setVisibility(View.INVISIBLE);
 		}
+		if (lib.getPoiId() == -1) {
+			findViewById(R.id.library_bookmark_ic).setVisibility(View.GONE);
+		}
 
 		//init fonts
 		FontHelper helper = ((UnivMobileApp) getContext().getApplicationContext()).getFontHelper();

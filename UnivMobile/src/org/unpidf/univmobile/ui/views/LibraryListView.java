@@ -43,23 +43,28 @@ public class LibraryListView extends RelativeLayout {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.go_to_library_fragment), FontHelper.FONT.EXO_BOLD);
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
-		for (int i = 0; i < libraries.size() && i < maxCount; i++) {
-			LibraryItemView item = new LibraryItemView(getContext(), libraries.get(i));
-			final int poiID = libraries.get(i).getPoiId();
-			item.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(myListener != null) {
-						myListener.onLibraryClicked(poiID);
+		if (libraries != null) {
+			l.setVisibility(View.VISIBLE);
+			for (int i = 0; i < libraries.size() && i < maxCount; i++) {
+				LibraryItemView item = new LibraryItemView(getContext(), libraries.get(i));
+				final int poiID = libraries.get(i).getPoiId();
+				item.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (myListener != null) {
+							myListener.onLibraryClicked(poiID);
+						}
 					}
-				}
-			});
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			l.addView(item, params);
+				});
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				l.addView(item, params);
+			}
+		} else {
+			l.setVisibility(View.GONE);
 		}
 
 		View v = findViewById(R.id.go_to_library_fragment);
-		if(listener == null) {
+		if (listener == null || libraries == null) {
 			v.setVisibility(View.GONE);
 		} else {
 			v.setOnClickListener(listener);

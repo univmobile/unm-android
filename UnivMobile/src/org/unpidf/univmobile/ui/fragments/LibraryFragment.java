@@ -95,11 +95,17 @@ public class LibraryFragment extends AbsFragment {
 		public void populateLibraries(List<Library> libraries) {
 
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			if (libraries != null && libraries.size() > 0) {
-				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
-				libraryList.setVisibility(View.VISIBLE);
-				libraryList.init(libraries, 5, null, mOnLibraryClickListener);
+			if (libraries == null || libraries.size() > 0) {
+				libraries = new ArrayList<Library>();
+				Library l = new Library();
+				l.setPoiName(getString(R.string.no_libraries));
+				l.setPoiId(-1);
+				libraries.add(l);
 			}
+			LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
+			libraryList.setVisibility(View.VISIBLE);
+			libraryList.init(libraries, 5, null, mOnLibraryClickListener);
+
 		}
 
 		@Override
@@ -124,8 +130,10 @@ public class LibraryFragment extends AbsFragment {
 	private LibraryListView.OnLibraryClickListener mOnLibraryClickListener = new LibraryListView.OnLibraryClickListener() {
 		@Override
 		public void onLibraryClicked(int poiID) {
-			HomeActivity a = (HomeActivity) getActivity();
-			a.showPoi(poiID, 0);
+			if (poiID != -1) {
+				HomeActivity a = (HomeActivity) getActivity();
+				a.showPoi(poiID, 0);
+			}
 		}
 	};
 }

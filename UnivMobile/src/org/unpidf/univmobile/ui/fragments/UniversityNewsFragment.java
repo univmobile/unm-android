@@ -64,14 +64,19 @@ public class UniversityNewsFragment extends AbsFragment {
 
 		@Override
 		public void updateNewsWithOnePage(List<News> news) {
+
 		}
 
 		@Override
 		public void showErrorMessage(ErrorEntity error) {
+			hideList();
 		}
 
 		@Override
 		public void showNews(List<News> news) {
+			if(news == null || news.size() <= 0) {
+				hideList();
+			}
 			if (mNewsAdapter != null) {
 				mNewsAdapter.addAll(news);
 			}
@@ -84,6 +89,15 @@ public class UniversityNewsFragment extends AbsFragment {
 		}
 	};
 
+	private void hideList() {
+		if(mNewsAdapter != null) {
+			if(mNewsAdapter.getCount() > 1) {
+				return;
+			}
+		}
+		getView().findViewById(R.id.no_data).setVisibility(View.VISIBLE);
+		getView().findViewById(R.id.list_view).setVisibility(View.GONE);
+	}
 
 	private NewsAdapter.OnLoadNextListener mOnLoadNextListener = new NewsAdapter.OnLoadNextListener() {
 		@Override

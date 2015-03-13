@@ -107,7 +107,7 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (error != null && mListener != null) {
 				mListener.onError(error);
 			}
-			if (mListener != null && result != null) {
+			if (mListener != null) {
 				mListener.populateBookmarks(result);
 			}
 			synchronized (lock) {
@@ -133,7 +133,7 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (error != null && mListener != null) {
 				mListener.onError(error);
 			}
-			if (mListener != null && result != null) {
+			if (mListener != null) {
 				mListener.populateLinks(result);
 			}
 			synchronized (lock) {
@@ -159,7 +159,7 @@ public class MyProfileDataModel extends AbsDataModel {
 			if (error != null && mListener != null) {
 				mListener.onError(error);
 			}
-			if (mListener != null && result != null) {
+			if (mListener != null) {
 
 				mListener.populateLibraries(result);
 				synchronized (lock) {

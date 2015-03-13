@@ -42,26 +42,31 @@ public class BookmarksListView extends RelativeLayout {
 		helper.loadFont((android.widget.TextView) findViewById(R.id.go_to_bookmarks_fragment), FontHelper.FONT.EXO_BOLD);
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
-		for (int i = 0; i < bookmarks.size() && i < maxCount; i++) {
-			BookmarkItemView item = new BookmarkItemView(getContext(), bookmarks.get(i).getPoiName());
+		if (bookmarks != null) {
+			l.setVisibility(View.VISIBLE);
+			for (int i = 0; i < bookmarks.size() && i < maxCount; i++) {
+				BookmarkItemView item = new BookmarkItemView(getContext(), bookmarks.get(i).getPoiName());
 
-			final Bookmark b = bookmarks.get(i);
-			item.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (onBookmarkClickListener != null) {
-						onBookmarkClickListener.onBookmarkClicked(b.getRootCategoryId(), b.getPoiId());
+				final Bookmark b = bookmarks.get(i);
+				item.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (onBookmarkClickListener != null) {
+							onBookmarkClickListener.onBookmarkClicked(b.getRootCategoryId(), b.getPoiId());
+						}
 					}
-				}
-			});
+				});
 
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			l.addView(item, params);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				l.addView(item, params);
+			}
+		}else {
+			l.setVisibility(View.GONE);
 		}
 
 
 		View v = findViewById(R.id.go_to_bookmarks_fragment);
-		if (listener == null) {
+		if (listener == null || bookmarks == null) {
 			v.setVisibility(View.GONE);
 		} else {
 			v.setOnClickListener(listener);

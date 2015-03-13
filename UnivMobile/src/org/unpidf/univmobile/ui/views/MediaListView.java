@@ -45,23 +45,30 @@ public class MediaListView extends RelativeLayout {
 
 		LinearLayout l = (LinearLayout) findViewById(R.id.items_container);
 
-		for(int i = 0; i < maxCount && i<links.size(); i++) {
-			MediaItemView item = new MediaItemView(getContext(), links.get(i).getLabel());
-			final String url = links.get(i).getUrl();
-			item.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					getContext().startActivity(i);
+		if (links != null) {
+			l.setVisibility(View.VISIBLE);
+			for (int i = 0; i < maxCount && i < links.size(); i++) {
+				MediaItemView item = new MediaItemView(getContext(), links.get(i).getLabel());
+				if (links.get(i).getId() != -1) {
+					final String url = links.get(i).getUrl();
+					item.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+							getContext().startActivity(i);
+						}
+					});
 				}
-			});
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-			l.addView(item, params);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				l.addView(item, params);
+			}
+		} else {
+			l.setVisibility(View.GONE);
 		}
 
 
 		View v = findViewById(R.id.go_to_media_fragment);
-		if(listener == null) {
+		if (listener == null || links == null) {
 			v.setVisibility(View.GONE);
 		} else {
 			v.setOnClickListener(listener);

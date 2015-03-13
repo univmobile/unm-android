@@ -61,7 +61,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GeoCampusFragment extends AbsFragment  {
+public class GeoCampusFragment extends AbsFragment {
 
 	private static final String ARG_TAB_ID = "tab_id";
 	private static final String ARG_IMAGE_MAP_ID = "arg_image_map_id";
@@ -89,11 +89,6 @@ public class GeoCampusFragment extends AbsFragment  {
 
 	private GeoDataModel mModel;
 
-	private List<String> mBitmapsDownloadingUrls = new ArrayList<String>();
-	private Map<String, BitmapDescriptor> mLoadedBitmaps = new HashMap<String, BitmapDescriptor>();
-	private Map<String, List<Poi>> mPoisToBoLoaded = new HashMap<String, List<Poi>>();
-
-	private final Object lock = new Object();
 
 	private boolean mAnimatedToMyPosition = false;
 
@@ -263,18 +258,6 @@ public class GeoCampusFragment extends AbsFragment  {
 		view.categorySelected(cat);
 	}
 
-	private void addMarkersWithUri(String uri) {
-
-
-		List<Poi> pois = mPoisToBoLoaded.get(uri);
-		if (pois != null) {
-			for (Poi p : pois) {
-				addMarker(p, mLoadedBitmaps.get(uri));
-			}
-		}
-		mPoisToBoLoaded.remove(uri);
-	}
-
 	private void addMarker(Poi p, BitmapDescriptor des) {
 		if (mMap != null) {
 			MarkerOptions options = new MarkerOptions();
@@ -440,7 +423,7 @@ public class GeoCampusFragment extends AbsFragment  {
 		@Override
 		public void populatePois(List<Poi> pois) {
 			if (mMap != null && pois != null) {
-				for (Poi p : pois) {
+				for (final Poi p : pois) {
 					if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
 
 						if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
@@ -449,67 +432,43 @@ public class GeoCampusFragment extends AbsFragment  {
 						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
 
 
-						synchronized (lock) {
-							if (!mBitmapsDownloadingUrls.contains(url)) {
+						Resources r = getResources();
+						int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+						Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
 
-								mBitmapsDownloadingUrls.add(url);
-								List<Poi> poi = mPoisToBoLoaded.get(url);
-								if (poi == null) {
-									poi = new ArrayList<Poi>();
-									mPoisToBoLoaded.put(url, poi);
-								}
-								poi.add(p);
-								Resources r = getResources();
-								int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-								Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
+							@Override
+							public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-									@Override
-									public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+								addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
 
-										synchronized (lock) {
-											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bitmap));
-											addMarkersWithUri(url);
-										}
 
-									}
-
-									@Override
-									public void onBitmapFailed(Drawable errorDrawable) {
-										synchronized (lock) {
-											Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
-											BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
-											Bitmap b = bd.getBitmap();
-
-											Resources r = getResources();
-											int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-											Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
-											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bhalfsize));
-											addMarkersWithUri(url);
-										}
-									}
-
-									@Override
-									public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-									}
-								});
-
-							} else {
-								if (mLoadedBitmaps.get(url) != null) {
-									addMarker(p, mLoadedBitmaps.get(url));
-								} else {
-									List<Poi> poi = mPoisToBoLoaded.get(url);
-									if (poi == null) {
-										poi = new ArrayList<Poi>();
-									}
-									poi.add(p);
-								}
 							}
 
-						}
-					}
+							@Override
+							public void onBitmapFailed(Drawable errorDrawable) {
 
+								Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
+								BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
+								Bitmap b = bd.getBitmap();
+
+								Resources r = getResources();
+								int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+								Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
+								addMarker(p, BitmapDescriptorFactory.fromBitmap(bhalfsize));
+
+							}
+
+							@Override
+							public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+							}
+						});
+
+
+					}
 				}
+
+
 			}
 		}
 

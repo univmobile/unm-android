@@ -12,7 +12,8 @@
 		android:textColor="@android:color/white"
 		android:text="@string/bookmarks"
 		android:paddingLeft="@dimen/horizontal"
-		android:paddingTop="@dimen/horizontal"/>
+		android:paddingTop="10dp"
+		android:paddingBottom="10dp"/>
 
 	<LinearLayout
 		android:layout_width="match_parent"

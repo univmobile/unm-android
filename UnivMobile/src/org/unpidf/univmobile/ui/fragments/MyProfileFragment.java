@@ -154,29 +154,25 @@ public class MyProfileFragment extends AbsFragment {
 	private MyProfileDataModel.MyProfileDataModelInterface mMyProfileDataModelInterface = new MyProfileDataModel.MyProfileDataModelInterface() {
 		@Override
 		public void populateLinks(List<Link> links) {
-			if (links != null && links.size() > 0) {
-				MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
-				mediaList.setVisibility(View.VISIBLE);
-				mediaList.init(links, 5, mOnAllMediaClickListener);
-			}
+			MediaListView mediaList = (MediaListView) getView().findViewById(R.id.media_list);
+			mediaList.setVisibility(View.VISIBLE);
+			mediaList.init(links, 5, mOnAllMediaClickListener);
 		}
 
 		@Override
 		public void populateLibraries(List<Library> libraries) {
-			if (libraries != null && libraries.size() > 0) {
-				LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
-				libraryList.setVisibility(View.VISIBLE);
-				libraryList.init(libraries, 5, mOnAllLibraryClickListener, mOnLibraryClickListener);
-			}
+			LibraryListView libraryList = (LibraryListView) getView().findViewById(R.id.library_list);
+			libraryList.setVisibility(View.VISIBLE);
+			libraryList.init(libraries, 5, mOnAllLibraryClickListener, mOnLibraryClickListener);
+
 		}
 
 		@Override
 		public void populateBookmarks(List<Bookmark> bookmarks) {
 			BookmarksListView bookmarksList = (BookmarksListView) getView().findViewById(R.id.bookmarks_list);
-			if (bookmarks != null && bookmarks.size() > 0) {
-				bookmarksList.setVisibility(View.VISIBLE);
-				bookmarksList.init(bookmarks, 5, mOnAllBookmarksClickListener, mOnBookmarkCLickListener);
-			}
+			bookmarksList.setVisibility(View.VISIBLE);
+			bookmarksList.init(bookmarks, 5, mOnAllBookmarksClickListener, mOnBookmarkCLickListener);
+
 		}
 
 		@Override

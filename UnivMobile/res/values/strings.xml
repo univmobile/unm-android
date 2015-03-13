@@ -5,6 +5,8 @@
     <string name="app_name">UnivMobile</string>
     <string name="ok">OK</string>
 	<string name="no_results">Pas de résultat</string>
+	<string name="no_libraries">Pas de bibliothèque</string>
+	<string name="no_media">Pas de lien</string>
 	<string name="need_to_login">besoin de vous connecter avant de poster un commentaire</string>
 	<string name="no_internet">Vous n\'êtes pas connecté à internet. Merci de vous connecter.</string>
 
