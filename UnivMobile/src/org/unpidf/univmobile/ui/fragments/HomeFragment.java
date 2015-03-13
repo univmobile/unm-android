@@ -122,6 +122,10 @@ public class HomeFragment extends AbsFragment {
 		if (mMapView != null) {
 			mMapView.onDestroy();
 		}
+		if (mMap != null) {
+			mMap.setOnMyLocationChangeListener(null);
+			mMap.setMyLocationEnabled(false);
+		}
 	}
 
 	@Override
@@ -250,31 +254,36 @@ public class HomeFragment extends AbsFragment {
 	}
 
 	private void addMarker(Poi p, BitmapDescriptor des) {
-		MarkerOptions options = new MarkerOptions();
-		options.icon(des);
-		options.anchor(0.5f, 0.5f);
-		options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
-		options.title(p.getName());
+		if (mMap != null) {
+			MarkerOptions options = new MarkerOptions();
+			options.icon(des);
+			options.anchor(0.5f, 0.5f);
+			options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
+			options.title(p.getName());
 
-		Marker m = mMap.addMarker(options);
+			Marker m = mMap.addMarker(options);
+		}
 	}
 
 	private void initMap() {
 
 		// Gets the MapView from the XML layout and creates it
 		mMapView = (MapView) getView().findViewById(R.id.mapview);
-		mMapView.onCreate(null);
 
-		mMapView.onResume();
 
 		// Gets to GoogleMap from the MapView and does initialization stuff
 		if (mMapView != null) {
+			mMapView.onCreate(null);
+			mMapView.onResume();
+
 			mMap = mMapView.getMap();
-			mMap.getUiSettings().setMyLocationButtonEnabled(false);
-			mMap.setMyLocationEnabled(true);
-			mMap.getUiSettings().setAllGesturesEnabled(false);
-			mMap.setOnMarkerClickListener(null);
-			mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
+			if (mMap != null) {
+				mMap.getUiSettings().setMyLocationButtonEnabled(false);
+				mMap.setMyLocationEnabled(true);
+				mMap.getUiSettings().setAllGesturesEnabled(false);
+				mMap.setOnMarkerClickListener(null);
+				mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
+			}
 		}
 
 		MapsInitializer.initialize(this.getActivity());
@@ -318,8 +327,8 @@ public class HomeFragment extends AbsFragment {
 			TextView description = (TextView) getView().findViewById(R.id.main_article_content);
 			description.setText(news.get(0).getDescription());
 
-			TextView button = (TextView)getView().findViewById(R.id.main_article_action_button);
-			if(news.get(0).getLink() != null) {
+			TextView button = (TextView) getView().findViewById(R.id.main_article_action_button);
+			if (news.get(0).getLink() != null) {
 				try {
 					URL url = new URL(news.get(0).getLink());
 
@@ -378,7 +387,7 @@ public class HomeFragment extends AbsFragment {
 	private GoogleMap.OnMyLocationChangeListener mOnMyLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
 		@Override
 		public void onMyLocationChange(Location location) {
-			if (!mAnimatedToMyPosition) {
+			if (!mAnimatedToMyPosition && mMap != null) {
 				CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16);
 				mMap.moveCamera(cameraUpdate);
 				mAnimatedToMyPosition = true;
