@@ -1,8 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				xmlns:tools="http://schemas.android.com/tools"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:background="@android:color/white">
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+											  android:id="@+id/swipe_container"
+											  android:layout_width="match_parent"
+											  android:layout_height="match_parent">
+
+	<ListView
+		android:id="@+id/list_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingLeft="10px"/>
 
 	<TextView
 		android:layout_width="match_parent"
@@ -16,24 +21,4 @@
 		android:paddingBottom="10dp"
 		android:visibility="gone"/>
 
-	<ListView
-		android:id="@+id/list_view"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:paddingLeft="10px"/>
-
-	<View
-		android:layout_width="10px"
-		android:layout_height="match_parent"
-		android:background="@color/yellow"
-		android:layout_alignBottom="@id/list_view"/>
-
-	<ProgressBar
-		android:id="@+id/progressBar1"
-		style="?android:attr/progressBarStyleLarge"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:visibility="gone"/>
-
-</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

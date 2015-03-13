@@ -27,6 +27,7 @@
 			android:layout_alignTop="@id/icon_act"
 			android:src="@drawable/ic_arrow_normal"
 			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
 			android:layout_marginRight="20dp"
 			android:layout_marginLeft="20dp"/>
 
@@ -37,7 +38,9 @@
 			android:layout_toLeftOf="@id/ic_arrow"
 			android:layout_toRightOf="@id/icon_act"
 			android:layout_alignTop="@id/icon_act"
-			android:gravity="center_vertical">
+			android:gravity="center_vertical"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp">
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -47,11 +50,11 @@
 				android:textColor="@android:color/black"
 				android:paddingBottom="2dp"/>
 
-			<!-- bold -->
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:id="@+id/title_act"
+				android:minLines="3"
 				android:textSize="@dimen/content_size"
 				android:textColor="@android:color/black"/>
 		</LinearLayout>
@@ -73,7 +76,6 @@
 			android:id="@+id/content_act"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text=""
 			android:textSize="@dimen/content_size"
 			android:textColor="@android:color/black"
 			android:paddingBottom="5dp"/>

@@ -16,6 +16,7 @@ public class News {
 	private int restoreID;
 	private String category;
 	private boolean expanded;
+	private String feedName;
 
 
 	public int getId() {
@@ -105,5 +106,13 @@ public class News {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
+	}
+
+	public String getFeedName() {
+		return feedName;
+	}
+
+	public void setFeedName(String feedName) {
+		this.feedName = feedName;
 	}
 }

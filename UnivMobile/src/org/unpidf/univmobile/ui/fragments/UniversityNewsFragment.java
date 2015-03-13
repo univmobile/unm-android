@@ -3,16 +3,22 @@ package org.unpidf.univmobile.ui.fragments;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.News;
 import org.unpidf.univmobile.data.models.NewsDataModel;
 import org.unpidf.univmobile.ui.adapters.NewsAdapter;
+import org.unpidf.univmobile.ui.views.NewsItemView;
 import org.unpidf.univmobile.ui.views.NewsListHeaderView;
 
 import java.util.ArrayList;
@@ -24,6 +30,7 @@ public class UniversityNewsFragment extends AbsFragment {
 	private NewsDataModel mNewsDataModel;
 	private NewsAdapter mNewsAdapter;
 	private ListView mListView;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public UniversityNewsFragment() {
 	}
@@ -49,13 +56,39 @@ public class UniversityNewsFragment extends AbsFragment {
 		super.onViewCreated(view, savedInstanceState);
 		mListView = ((ListView) view.findViewById(R.id.list_view));
 
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+		mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+
 		if (mNewsAdapter == null) {
-			mNewsAdapter = new NewsAdapter(getActivity(), new ArrayList<News>(), mOnLoadNextListener);
+			mNewsAdapter = new NewsAdapter(getActivity(), new ArrayList<News>(), mOnLoadNextListener, mExpandListener);
 			mListView.setAdapter(mNewsAdapter);
 		} else {
 			mNewsAdapter.notifyDataSetChanged();
 		}
 	}
+
+	private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+		@Override
+		public void onRefresh() {
+			if(mNewsAdapter != null) {
+				mNewsAdapter.clear();
+				mNewsAdapter.doNotShowFirstLoading();
+			}
+			mOnLoadNextListener.loadNextData();
+		}
+	};
+
+
+	private NewsItemView.OnExpandListener mExpandListener = new NewsItemView.OnExpandListener() {
+		@Override
+		public void expanding(View view, int duration, int position) {
+			final int scrollDistance = (int) (mListView.getScrollY() - view.getTop());
+
+			mListView.smoothScrollToPositionFromTop(position, 0, duration);
+		}
+	};
+
 
 	private NewsDataModel.NewsModelListener mNewsDataModelListener = new NewsDataModel.NewsModelListener() {
 		@Override
@@ -74,7 +107,9 @@ public class UniversityNewsFragment extends AbsFragment {
 
 		@Override
 		public void showNews(List<News> news) {
-			if(news == null || news.size() <= 0) {
+
+			mSwipeRefreshLayout.setRefreshing(false);
+			if (news == null || news.size() <= 0) {
 				hideList();
 			}
 			if (mNewsAdapter != null) {
@@ -90,8 +125,8 @@ public class UniversityNewsFragment extends AbsFragment {
 	};
 
 	private void hideList() {
-		if(mNewsAdapter != null) {
-			if(mNewsAdapter.getCount() > 1) {
+		if (mNewsAdapter != null) {
+			if (mNewsAdapter.getCount() > 1) {
 				return;
 			}
 		}

@@ -32,6 +32,8 @@ import java.util.Date;
 public class NewsItemView extends RelativeLayout {
 
 	private News mNews;
+	private OnExpandListener mOnExpandListener;
+	private int mPosition;
 
 	public NewsItemView(Context context) {
 		super(context);
@@ -62,8 +64,13 @@ public class NewsItemView extends RelativeLayout {
 		}
 	}
 
-	public void populate(News news, SimpleDateFormat format) {
+	public void setOnExpandListener(OnExpandListener listener) {
+		mOnExpandListener = listener;
+	}
+
+	public void populate(News news, SimpleDateFormat format, int position) {
 		mNews = news;
+		mPosition = position;
 
 		ImageView image = (ImageView) findViewById(R.id.icon_act);
 		image.setImageDrawable(null);
@@ -75,7 +82,7 @@ public class NewsItemView extends RelativeLayout {
 			Date dateValue = format.parse(news.getPublishedDate());
 
 			SimpleDateFormat formatNew = new SimpleDateFormat("dd/MM/yyyy");
-			String dateString = formatNew.format(dateValue);
+			String dateString = news.getFeedName() + " " + formatNew.format(dateValue);
 
 			((TextView) findViewById(R.id.time_act)).setText(dateString);
 
@@ -136,7 +143,6 @@ public class NewsItemView extends RelativeLayout {
 	};
 
 	private void expand(final LinearLayout v) {
-
 		v.setVisibility(View.VISIBLE);
 		measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(LayoutParams.WRAP_CONTENT, MeasureSpec.EXACTLY));
 
@@ -160,9 +166,15 @@ public class NewsItemView extends RelativeLayout {
 				return true;
 			}
 		};
-
 		// 0.25dp/ms
-		a.setDuration((int) (targetHeight * 4 / v.getContext().getResources().getDisplayMetrics().density));
+		int duration = (int) (targetHeight * 4 / v.getContext().getResources().getDisplayMetrics().density);
+
+		if (mOnExpandListener != null) {
+			mOnExpandListener.expanding(this, duration, mPosition);
+		}
+
+
+		a.setDuration(duration);
 		v.startAnimation(a);
 	}
 
@@ -195,4 +207,7 @@ public class NewsItemView extends RelativeLayout {
 		v.startAnimation(a);
 	}
 
+	public interface OnExpandListener {
+		void expanding(View view, int duration, int position);
+	}
 }

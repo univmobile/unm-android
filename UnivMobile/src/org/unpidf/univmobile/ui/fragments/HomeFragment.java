@@ -351,7 +351,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news1 = (NewsItemView) getView().findViewById(R.id.news1);
 			if (news.size() > 1) {
-				news1.populate(news.get(1), mDateFormat);
+				news1.populate(news.get(1), mDateFormat, 0);
 				news1.setVisibility(View.VISIBLE);
 			} else {
 				news1.setVisibility(View.GONE);
@@ -359,7 +359,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news2 = (NewsItemView) getView().findViewById(R.id.news2);
 			if (news.size() > 2) {
-				news2.populate(news.get(2), mDateFormat);
+				news2.populate(news.get(2), mDateFormat, 0);
 				news2.setVisibility(View.VISIBLE);
 			} else {
 				news2.setVisibility(View.GONE);
@@ -367,7 +367,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news3 = (NewsItemView) getView().findViewById(R.id.news3);
 			if (news.size() > 3) {
-				news3.populate(news.get(3), mDateFormat);
+				news3.populate(news.get(3), mDateFormat, 0);
 				news3.setVisibility(View.VISIBLE);
 			} else {
 				news3.setVisibility(View.GONE);
@@ -375,7 +375,7 @@ public class HomeFragment extends AbsFragment {
 
 			NewsItemView news4 = (NewsItemView) getView().findViewById(R.id.news4);
 			if (news.size() > 4) {
-				news4.populate(news.get(4), mDateFormat);
+				news4.populate(news.get(4), mDateFormat, 0);
 				news4.setVisibility(View.VISIBLE);
 			} else {
 				news4.setVisibility(View.GONE);

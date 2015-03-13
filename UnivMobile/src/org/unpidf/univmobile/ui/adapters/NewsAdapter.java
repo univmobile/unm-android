@@ -21,21 +21,23 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
 	private SimpleDateFormat mDateFormat;
 	private OnLoadNextListener mLoadNextListener;
+	private NewsItemView.OnExpandListener mExpandListener;
 	private View pendingView = null;
 	private AtomicBoolean keepOnAppending = new AtomicBoolean(true);
 	private boolean mLoading = false;
 	private int pendingResource = R.layout.view_list_item_loading;
 	protected int mLastItemID = -1;
+	private boolean mFirstLoadingVisible = true;
 
 	/**
 	 * Constructor wrapping a supplied ListAdapter and providing a id for a pending view.
 	 *
 	 * @param context
 	 */
-	public NewsAdapter(Context context, List<News> list, OnLoadNextListener listener) {
+	public NewsAdapter(Context context, List<News> list, OnLoadNextListener listener, NewsItemView.OnExpandListener expandListener) {
 		super(context, 0, list);
 		this.mLoadNextListener = listener;
-
+		this.mExpandListener = expandListener;
 		mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	}
 
@@ -51,6 +53,10 @@ public class NewsAdapter extends ArrayAdapter<News> {
 	public void clear() {
 		keepOnAppending.set(true);
 		super.clear();
+	}
+
+	public void doNotShowFirstLoading() {
+		mFirstLoadingVisible = false;
 	}
 
 	@Override
@@ -123,17 +129,24 @@ public class NewsAdapter extends ArrayAdapter<News> {
 			if (pendingView == null) {
 				pendingView = getPendingView(parent);
 
+
 			}
 			if (mLoadNextListener != null && !mLoading) {
 				mLoading = true;
 				mLoadNextListener.loadNextData();
 			}
 
+			if (!mFirstLoadingVisible && getCount() < 2) {
+				pendingView.setVisibility(View.INVISIBLE);
+			} else {
+				pendingView.setVisibility(View.VISIBLE);
+			}
 			return (pendingView);
 		} else if (convertView == null) {
 			convertView = new NewsItemView(getContext());
+			((NewsItemView) convertView).setOnExpandListener(mExpandListener);
 		}
-		((NewsItemView) convertView).populate(getItem(position), mDateFormat);
+		((NewsItemView) convertView).populate(getItem(position), mDateFormat, position);
 		return convertView;
 
 	}
