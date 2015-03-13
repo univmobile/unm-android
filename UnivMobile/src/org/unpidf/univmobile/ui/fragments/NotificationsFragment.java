@@ -121,8 +121,12 @@ public class NotificationsFragment extends AbsFragment {
 				ListView list = (ListView) getView().findViewById(R.id.listView);
 				list.setVisibility(View.VISIBLE);
 
-				NotificationsAdapter adapter = new NotificationsAdapter(getActivity(), notifications);
-				list.setAdapter(adapter);
+				if (mAdapter == null) {
+					mAdapter = new NotificationsAdapter(getActivity(), notifications);
+					list.setAdapter(mAdapter);
+				} else {
+					mAdapter.addAll(notifications);
+				}
 			} else {
 				getView().findViewById(R.id.no_data).setVisibility(View.VISIBLE);
 			}

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,9 +69,9 @@ public class HomeFragment extends AbsFragment {
 	private boolean mAnimatedToMyPosition = false;
 
 
-	private List<String> mBitmapsDownloadingUrls = new ArrayList<String>();
-	private Map<String, BitmapDescriptor> mLoadedBitmaps = new HashMap<String, BitmapDescriptor>();
-	private Map<String, List<Poi>> mPoisToBoLoaded = new HashMap<String, List<Poi>>();
+	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private boolean mShowLoading = true;
+
 
 	private final Object lock = new Object();
 
@@ -164,94 +165,58 @@ public class HomeFragment extends AbsFragment {
 
 		initMap();
 
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+		mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_purple_light);
 	}
 
 	private void populatePois(List<Poi> pois) {
 		if (mMap != null && pois != null) {
-			for (Poi p : pois) {
-				if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0) {
+			for (final Poi p : pois) {
+				if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
 
-					Category cat = mUniversityDataModel.getCategoryById(p.getCategoryId());
-
-					if (cat != null && cat.getMarkerIconUrl() != null && cat.getMarkerIconUrl().length() > 0) {
-						final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + cat.getMarkerIconUrl();
-
-						synchronized (lock) {
-							if (!mBitmapsDownloadingUrls.contains(url)) {
-
-								mBitmapsDownloadingUrls.add(url);
-								List<Poi> poi = mPoisToBoLoaded.get(url);
-								if (poi == null) {
-									poi = new ArrayList<Poi>();
-									mPoisToBoLoaded.put(url, poi);
-								}
-								poi.add(p);
-								Resources r = getResources();
-								int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-								Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
-
-									@Override
-									public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-										synchronized (lock) {
-											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bitmap));
-											addMarkersWithUri(url);
-										}
-
-									}
-
-									@Override
-									public void onBitmapFailed(Drawable errorDrawable) {
-										synchronized (lock) {
-											Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
-											BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
-											Bitmap b = bd.getBitmap();
-
-											Resources r = getResources();
-											int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-											Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
-											mLoadedBitmaps.put(url, BitmapDescriptorFactory.fromBitmap(bhalfsize));
-											addMarkersWithUri(url);
-										}
-									}
-
-									@Override
-									public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-									}
-								});
-
-							} else {
-
-								if (mLoadedBitmaps.get(url) != null) {
-									addMarker(p, mLoadedBitmaps.get(url));
-								} else {
-									List<Poi> poi = mPoisToBoLoaded.get(url);
-									if (poi == null) {
-										poi = new ArrayList<Poi>();
-									}
-									poi.add(p);
-								}
-							}
-						}
+					if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
+						p.setCategoryMarkerIcon("cat_marker_7__biblio_big_jaune_marker.png");
 					}
+					final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
+
+
+					Resources r = getResources();
+					int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+					Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
+
+						@Override
+						public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+							addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
+
+
+						}
+
+						@Override
+						public void onBitmapFailed(Drawable errorDrawable) {
+
+							Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
+							BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
+							Bitmap b = bd.getBitmap();
+
+							Resources r = getResources();
+							int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+							Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
+							addMarker(p, BitmapDescriptorFactory.fromBitmap(bhalfsize));
+
+						}
+
+						@Override
+						public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+						}
+					});
 				}
-
 			}
 		}
 	}
 
-	private void addMarkersWithUri(String uri) {
-
-
-		List<Poi> pois = mPoisToBoLoaded.get(uri);
-		if (pois != null) {
-			for (Poi p : pois) {
-				addMarker(p, mLoadedBitmaps.get(uri));
-			}
-		}
-		mPoisToBoLoaded.remove(uri);
-	}
 
 	private void addMarker(Poi p, BitmapDescriptor des) {
 		if (mMap != null) {
@@ -396,6 +361,18 @@ public class HomeFragment extends AbsFragment {
 		}
 	};
 
+	private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+		@Override
+		public void onRefresh() {
+
+			mShowLoading = false;
+			if (mUniversityDataModel != null) {
+				mUniversityDataModel.getNews();
+			}
+		}
+	};
+
+
 	private View.OnClickListener mOnCategoryClickListener = new View.OnClickListener() {
 
 		@Override
@@ -429,6 +406,7 @@ public class HomeFragment extends AbsFragment {
 
 		@Override
 		public void updateNews(List<News> news) {
+			mSwipeRefreshLayout.setRefreshing(false);
 			getView().findViewById(R.id.news_container).setVisibility(View.VISIBLE);
 			populateNews(news);
 		}

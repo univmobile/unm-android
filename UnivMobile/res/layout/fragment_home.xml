@@ -1,235 +1,241 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+											  android:id="@+id/swipe_container"
+											  android:layout_width="match_parent"
+											  android:layout_height="match_parent">
+
+	<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@android:color/white">
+
+		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@android:color/white">
-
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:id="@+id/news_container"
-			android:visibility="visible">
-
-			<ImageView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:adjustViewBounds="true"
-				android:scaleType="centerCrop"
-				android:id="@+id/main_article_image"
-				android:src="@drawable/ic_home_header"/>
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:textColor="@android:color/black"
-				android:textSize="@dimen/date_size"
-				android:id="@+id/main_article_time"
-				android:layout_marginRight="@dimen/horizontal"
-				android:layout_marginLeft="@dimen/horizontal"/>
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/main_article_title"
-				android:textColor="@color/yellow"
-				android:textSize="@dimen/title_size"
-				android:layout_marginRight="@dimen/horizontal"
-				android:layout_marginLeft="@dimen/horizontal"
-				android:paddingBottom="3dp"/>
+			android:layout_height="match_parent">
 
 			<LinearLayout
-				android:orientation="vertical"
-				android:id="@+id/main_article_content_container"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="@dimen/horizontal"
-				android:layout_marginLeft="@dimen/horizontal"
-				android:paddingTop="5dp"
-				android:paddingBottom="5dp">
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:id="@+id/news_container"
+				android:visibility="visible">
 
-				<TextView
-					android:id="@+id/main_article_content"
+				<ImageView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text=""
-					android:textSize="@dimen/content_size"
-					android:textColor="@android:color/black"
-					android:paddingBottom="5dp"/>
+					android:adjustViewBounds="true"
+					android:scaleType="centerCrop"
+					android:id="@+id/main_article_image"
+					android:src="@drawable/ic_home_header"/>
 
 				<TextView
-					android:clickable="true"
-					android:id="@+id/main_article_action_button"
-					android:layout_width="wrap_content"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textSize="@dimen/button_size"
-					android:background="@drawable/selector_button_yellow"
+					android:textColor="@android:color/black"
+					android:textSize="@dimen/date_size"
+					android:id="@+id/main_article_time"
+					android:layout_marginRight="@dimen/horizontal"
+					android:layout_marginLeft="@dimen/horizontal"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/main_article_title"
+					android:textColor="@color/yellow"
+					android:textSize="@dimen/title_size"
+					android:layout_marginRight="@dimen/horizontal"
+					android:layout_marginLeft="@dimen/horizontal"
+					android:paddingBottom="3dp"/>
+
+				<LinearLayout
+					android:orientation="vertical"
+					android:id="@+id/main_article_content_container"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="@dimen/horizontal"
+					android:layout_marginLeft="@dimen/horizontal"
+					android:paddingTop="5dp"
+					android:paddingBottom="5dp">
+
+					<TextView
+						android:id="@+id/main_article_content"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text=""
+						android:textSize="@dimen/content_size"
+						android:textColor="@android:color/black"
+						android:paddingBottom="5dp"/>
+
+					<TextView
+						android:clickable="true"
+						android:id="@+id/main_article_action_button"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="@dimen/button_size"
+						android:background="@drawable/selector_button_yellow"
+						android:textColor="@android:color/white"
+						android:text="Aller plus loin "
+						android:layout_gravity="right"
+						android:padding="5dp"/>
+				</LinearLayout>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/latest_news_title"
+					android:layout_marginTop="7dp"
+					android:paddingTop="5dp"
+					android:paddingBottom="3dp"
+					android:paddingLeft="@dimen/horizontal"
+					android:paddingRight="@dimen/horizontal"
 					android:textColor="@android:color/white"
-					android:text="Aller plus loin "
-					android:layout_gravity="right"
-					android:padding="5dp"/>
+					android:background="@color/yellow"
+					android:text="@string/latest_news"
+					android:textSize="@dimen/title_size"/>
+
+				<org.unpidf.univmobile.ui.views.NewsItemView
+					android:id="@+id/news1"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"/>
+
+				<org.unpidf.univmobile.ui.views.NewsItemView
+					android:id="@+id/news2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"/>
+
+				<org.unpidf.univmobile.ui.views.NewsItemView
+					android:id="@+id/news3"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"/>
+
+				<org.unpidf.univmobile.ui.views.NewsItemView
+					android:id="@+id/news4"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:visibility="gone"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/view_all_news"
+					android:textSize="@dimen/title_size"
+					android:textColor="@android:color/black"
+					android:text="@string/view_all_news"
+					android:gravity="right"/>
 			</LinearLayout>
-
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/latest_news_title"
-				android:layout_marginTop="7dp"
-				android:paddingTop="5dp"
-				android:paddingBottom="3dp"
-				android:paddingLeft="@dimen/horizontal"
-				android:paddingRight="@dimen/horizontal"
-				android:textColor="@android:color/white"
-				android:background="@color/yellow"
-				android:text="@string/latest_news"
-				android:textSize="@dimen/title_size"/>
-
-			<org.unpidf.univmobile.ui.views.NewsItemView
-				android:id="@+id/news1"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"/>
-
-			<org.unpidf.univmobile.ui.views.NewsItemView
-				android:id="@+id/news2"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"/>
-
-			<org.unpidf.univmobile.ui.views.NewsItemView
-				android:id="@+id/news3"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"/>
-
-			<org.unpidf.univmobile.ui.views.NewsItemView
-				android:id="@+id/news4"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:visibility="gone"/>
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/view_all_news"
-				android:textSize="@dimen/title_size"
-				android:textColor="@android:color/black"
-				android:text="@string/view_all_news"
-				android:gravity="right"/>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_below="@id/news_container"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:id="@+id/map_container">
-
-			<TextView
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/map_title"
-				android:layout_marginTop="7dp"
-				android:paddingTop="5dp"
-				android:paddingBottom="3dp"
-				android:paddingLeft="@dimen/horizontal"
-				android:paddingRight="@dimen/horizontal"
-				android:textColor="@android:color/white"
-				android:background="@color/yellow"
-				android:text="@string/geo_campus_title"
-				android:textSize="@dimen/title_size"/>
-
-			<com.google.android.gms.maps.MapView
-				android:id="@+id/mapview"
-				android:layout_width="match_parent"
-				android:layout_height="400dp"
-				android:clickable="false"/>
-
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:background="@color/geo_gray_dark"/>
 
 			<LinearLayout
+				android:layout_below="@id/news_container"
 				android:layout_width="match_parent"
-				android:layout_height="55dp"
-				android:id="@+id/tabs"
-				android:orientation="horizontal"
-				android:layout_alignParentBottom="true">
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:id="@+id/map_container">
 
-				<RelativeLayout
-					android:id="@+id/cat_1"
-					android:layout_width="0dp"
-					android:layout_height="match_parent"
-					android:layout_weight="1"
-					android:padding="10dp"
-					android:background="@drawable/selector_color_orange">
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/map_title"
+					android:layout_marginTop="7dp"
+					android:paddingTop="5dp"
+					android:paddingBottom="3dp"
+					android:paddingLeft="@dimen/horizontal"
+					android:paddingRight="@dimen/horizontal"
+					android:textColor="@android:color/white"
+					android:background="@color/yellow"
+					android:text="@string/geo_campus_title"
+					android:textSize="@dimen/title_size"/>
 
-					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerInParent="true"
-						android:src="@drawable/ic_geo_category_1"
-						android:scaleType="fitCenter"/>
-				</RelativeLayout>
-
-				<View
-					android:layout_width="2dp"
-					android:layout_height="match_parent"
-					android:background="@color/geo_gray_dark"/>
-
-				<RelativeLayout
-					android:id="@+id/cat_2"
-					android:layout_width="0dp"
-					android:layout_height="match_parent"
-					android:layout_weight="1"
-					android:padding="10dp"
-					android:background="@drawable/selector_color_purple">
-
-					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerInParent="true"
-						android:src="@drawable/ic_geo_category_2"
-						android:scaleType="fitCenter"/>
-				</RelativeLayout>
+				<com.google.android.gms.maps.MapView
+					android:id="@+id/mapview"
+					android:layout_width="match_parent"
+					android:layout_height="400dp"
+					android:clickable="false"/>
 
 				<View
-					android:layout_width="2dp"
-					android:layout_height="match_parent"
+					android:layout_width="match_parent"
+					android:layout_height="2dp"
 					android:background="@color/geo_gray_dark"/>
 
-				<RelativeLayout
-					android:id="@+id/cat_3"
-					android:layout_width="0dp"
-					android:layout_height="match_parent"
-					android:layout_weight="1"
-					android:padding="10dp"
-					android:background="@drawable/selector_color_green">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="55dp"
+					android:id="@+id/tabs"
+					android:orientation="horizontal"
+					android:layout_alignParentBottom="true">
 
-					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_centerInParent="true"
-						android:src="@drawable/ic_geo_category_3"
-						android:scaleType="fitCenter"/>
-				</RelativeLayout>
+					<RelativeLayout
+						android:id="@+id/cat_1"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="1"
+						android:padding="10dp"
+						android:background="@drawable/selector_color_orange">
+
+						<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_centerInParent="true"
+							android:src="@drawable/ic_geo_category_1"
+							android:scaleType="fitCenter"/>
+					</RelativeLayout>
+
+					<View
+						android:layout_width="2dp"
+						android:layout_height="match_parent"
+						android:background="@color/geo_gray_dark"/>
+
+					<RelativeLayout
+						android:id="@+id/cat_2"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="1"
+						android:padding="10dp"
+						android:background="@drawable/selector_color_purple">
+
+						<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_centerInParent="true"
+							android:src="@drawable/ic_geo_category_2"
+							android:scaleType="fitCenter"/>
+					</RelativeLayout>
+
+					<View
+						android:layout_width="2dp"
+						android:layout_height="match_parent"
+						android:background="@color/geo_gray_dark"/>
+
+					<RelativeLayout
+						android:id="@+id/cat_3"
+						android:layout_width="0dp"
+						android:layout_height="match_parent"
+						android:layout_weight="1"
+						android:padding="10dp"
+						android:background="@drawable/selector_color_green">
+
+						<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_centerInParent="true"
+							android:src="@drawable/ic_geo_category_3"
+							android:scaleType="fitCenter"/>
+					</RelativeLayout>
+				</LinearLayout>
+
 			</LinearLayout>
 
-		</LinearLayout>
+			<ProgressBar
+				android:id="@+id/progressBar1"
+				style="?android:attr/progressBarStyleLarge"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:visibility="visible"/>
 
-		<ProgressBar
-			android:id="@+id/progressBar1"
-			style="?android:attr/progressBarStyleLarge"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			android:visibility="visible"/>
+		</RelativeLayout>
+	</ScrollView>
 
-	</RelativeLayout>
-</ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
