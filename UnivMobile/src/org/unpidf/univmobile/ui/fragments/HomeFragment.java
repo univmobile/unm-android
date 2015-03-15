@@ -398,7 +398,7 @@ public class HomeFragment extends AbsFragment {
 		@Override
 		public void onClick(View v) {
 			HomeActivity a = (HomeActivity) getActivity();
-			a.showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), true);
+			a.showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), false);
 		}
 	};
 

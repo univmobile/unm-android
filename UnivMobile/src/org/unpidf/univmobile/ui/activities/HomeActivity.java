@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -72,6 +73,7 @@ public class HomeActivity extends AbsActivity {
 	private NotificationsDataModel mNotificationsDataModel;
 	private MenusDataModel mMenusDataModel;
 
+	private boolean mOnBackClicked = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -404,6 +406,7 @@ public class HomeActivity extends AbsActivity {
 	@Override
 	public void onBackPressed() {
 		if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+			mOnBackClicked = false;
 			mDrawerLayout.closeDrawer(Gravity.LEFT);
 		} else {
 			Object f = getFragmentManager().findFragmentById(R.id.main_content);
@@ -416,7 +419,12 @@ public class HomeActivity extends AbsActivity {
 			if (getFragmentManager().getBackStackEntryCount() > 0) {
 				getFragmentManager().popBackStack();
 			} else {
-				super.onBackPressed();
+				if(!mOnBackClicked) {
+					mOnBackClicked = true;
+					Toast.makeText(this,getString(R.string.click_to_close),Toast.LENGTH_LONG).show();
+				} else {
+					super.onBackPressed();
+				}
 			}
 		}
 	}
@@ -457,7 +465,7 @@ public class HomeActivity extends AbsActivity {
 	}
 
 	public void categorySelected(Category cat) {
-		onBackPressed();
+		super.onBackPressed();
 		FragmentManager manager = getFragmentManager();
 		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
 		if (f != null) {
@@ -506,6 +514,7 @@ public class HomeActivity extends AbsActivity {
 	}
 
 	public void showFragment(Fragment fragment, String tag, boolean add) {
+		mOnBackClicked = false;
 		FragmentManager manager = getFragmentManager();
 		Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
 		if (currentFragment == null || !currentFragment.getTag().equals(tag)) {

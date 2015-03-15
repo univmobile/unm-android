@@ -9,6 +9,7 @@
 	<string name="no_media">Pas de lien</string>
 	<string name="need_to_login">besoin de vous connecter avant de poster un commentaire</string>
 	<string name="no_internet">Vous n\'êtes pas connecté à internet. Merci de vous connecter.</string>
+	<string name="click_to_close">Click back button one more time to close application.</string>
 
     <!-- Select region and university -->
     <string name="select_region">Choisir sa région</string>
