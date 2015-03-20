@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,10 +54,12 @@ import org.unpidf.univmobile.ui.views.AddNewPoiView;
 import org.unpidf.univmobile.ui.views.GeoCampusCategoriesView;
 import org.unpidf.univmobile.ui.views.PoiDetailsView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -81,6 +85,7 @@ public class GeoCampusFragment extends AbsFragment {
 	private Map<Marker, Poi> mMarkers;
 
 	private Location mLocation;
+	private String mCity;
 
 	private int mTabPosition;
 	private int mImageMapId = -1;
@@ -250,6 +255,7 @@ public class GeoCampusFragment extends AbsFragment {
 
 	private void addNewPoi() {
 		AddNewPoiView view = (AddNewPoiView) getView().findViewById(R.id.new_poi_view);
+		view.setCity(mCity);
 		view.show(mAddNewPoiViewInterface);
 	}
 
@@ -296,8 +302,8 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 
 		@Override
-		public void postPoi(Category cat, String name, String address, String phone, String mail, String description) {
-			mModel.postPoi(cat, name, address, phone, mail, description);
+		public void postPoi(Category cat, String name, String address, String city, String phone, String mail, String description) {
+			mModel.postPoi(cat, name, address, city, phone, mail, description);
 		}
 	};
 
@@ -663,6 +669,18 @@ public class GeoCampusFragment extends AbsFragment {
 				mAnimatedToMyPosition = true;
 				mMap.setOnMyLocationChangeListener(null);
 			}
+			if (location != null) {
+				try {
+					Geocoder geocoder;
+					List<Address> addresses;
+					geocoder = new Geocoder(getActivity(), Locale.getDefault());
+					addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+					mCity = addresses.get(0).getLocality();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
 		}
 	};
 

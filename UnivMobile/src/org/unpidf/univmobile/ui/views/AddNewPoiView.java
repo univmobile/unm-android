@@ -53,6 +53,7 @@ public class AddNewPoiView extends RelativeLayout {
 			helper.loadFont((TextView) findViewById(R.id.categories_select_text), FontHelper.FONT.EXO_ITALIC);
 			helper.loadFont((EditText) findViewById(R.id.name_edit), FontHelper.FONT.EXO_ITALIC);
 			helper.loadFont((EditText) findViewById(R.id.address), FontHelper.FONT.EXO_ITALIC);
+			helper.loadFont((EditText) findViewById(R.id.city), FontHelper.FONT.EXO_ITALIC);
 			helper.loadFont((EditText) findViewById(R.id.phone), FontHelper.FONT.EXO_ITALIC);
 			helper.loadFont((EditText) findViewById(R.id.mail), FontHelper.FONT.EXO_ITALIC);
 			helper.loadFont((EditText) findViewById(R.id.description_edit), FontHelper.FONT.EXO_ITALIC);
@@ -123,6 +124,9 @@ public class AddNewPoiView extends RelativeLayout {
 					return;
 				}
 
+				String city = ((EditText) findViewById(R.id.city)).getText().toString();
+
+
 				String phone = ((EditText) findViewById(R.id.phone)).getText().toString();
 				String mail = ((EditText) findViewById(R.id.mail)).getText().toString();
 
@@ -134,7 +138,7 @@ public class AddNewPoiView extends RelativeLayout {
 				}
 
 				findViewById(R.id.loading).setVisibility(View.VISIBLE);
-				mAddNewPoiViewInterface.postPoi(mCat, name, address, phone, mail, description);
+				mAddNewPoiViewInterface.postPoi(mCat, name, address, city, phone, mail, description);
 			}
 		}
 	};
@@ -193,6 +197,12 @@ public class AddNewPoiView extends RelativeLayout {
 		startAnimation(a);
 	}
 
+	public void setCity(String city) {
+		if (city != null) {
+			((EditText) findViewById(R.id.city)).setText(city);
+		}
+	}
+
 	public void show(AddNewPoiViewInterface addNewPoiViewInterface) {
 		mAddNewPoiViewInterface = addNewPoiViewInterface;
 		setVisibility(View.VISIBLE);
@@ -220,6 +230,6 @@ public class AddNewPoiView extends RelativeLayout {
 
 		public void notAllFieldFilled();
 
-		public void postPoi(Category cat, String name, String address, String phone, String mail, String description);
+		public void postPoi(Category cat, String name, String address, String city, String phone, String mail, String description);
 	}
 }

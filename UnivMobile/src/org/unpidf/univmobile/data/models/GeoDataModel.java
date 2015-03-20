@@ -251,7 +251,7 @@ public class GeoDataModel extends AbsDataModel {
 		}
 	}
 
-	public void postPoi(final Category cat, final String name, final String address, final String phone, final String mail, final String description) {
+	public void postPoi(final Category cat, final String name, final String address, final String city, final String phone, final String mail, final String description) {
 
 		clearOperation(mReadUserUniversityOperation);
 		mReadUserUniversityOperation = null;
@@ -285,7 +285,7 @@ public class GeoDataModel extends AbsDataModel {
 							Geocoder geocoder = new Geocoder(mContext);
 							List<Address> addresses;
 
-							addresses = geocoder.getFromLocationName(address, 1);
+							addresses = geocoder.getFromLocationName(address + " " + city, 1);
 
 							String lat = null;
 							String lng = null;
@@ -295,7 +295,7 @@ public class GeoDataModel extends AbsDataModel {
 							}
 
 							String date = mPoiDateFormat.format(new Date());
-							mPostPoiOperation = new PostPoiOperation(mContext, mPostPoiOperationListener, cat, result, name, date, address, phone, mail, description, lat, lng);
+							mPostPoiOperation = new PostPoiOperation(mContext, mPostPoiOperationListener, cat, result, name, date, address, city, phone, mail, description, lat, lng);
 							mPostPoiOperation.startOperation();
 						} catch (IOException e) {
 							e.printStackTrace();

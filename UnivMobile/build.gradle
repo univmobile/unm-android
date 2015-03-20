@@ -25,8 +25,18 @@ repositories {
 }
 
 android {
-    compileSdkVersion 19
+
+    compileSdkVersion 21
     buildToolsVersion '20.0.0'
+
+    signingConfigs {
+        config {
+            keyAlias "univmobile"
+            keyPassword "mobiluniv@1"
+            storeFile file("key/UniveMobile.jks")
+            storePassword "mobiluniv@1"
+        }
+    }
 
     defaultConfig {
         applicationId 'org.unpidf.univmobile'
@@ -34,8 +44,6 @@ android {
         targetSdkVersion 21
         versionName = "0.5.14"
     }
-
-
 
     sourceSets {
         main {
@@ -48,11 +56,8 @@ android {
             assets.srcDirs = ['assets']
         }
     }
-
     buildTypes {
-
         applicationVariants.all { variant ->
-
             variant.outputs.each { output ->
                 def file = output.outputFile
                 output.outputFile = new File(file.parent, "UnivMobile_v" + "${variant.versionName}" +
@@ -60,9 +65,13 @@ android {
 
             }
         }
-
+        debug {
+            signingConfig signingConfigs.config
+        }
+        release {
+            signingConfig signingConfigs.config
+        }
     }
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -72,6 +81,8 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
+    }
+    productFlavors {
     }
 }
 

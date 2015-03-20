@@ -25,6 +25,7 @@ public class PostPoiOperation extends AbsOperation<Boolean> {
 	private static final String POI_CREATEDON = "createdon";
 	private static final String POI_UPDATEDON = "updatedon";
 	private static final String POI_ADDRESS = "address";
+	private static final String POI_CITY = "city";
 	private static final String POI_PHONES = "phones";
 	private static final String POI_EMAIL = "email";
 	private static final String POI_DESCRIPTION = "description";
@@ -42,13 +43,14 @@ public class PostPoiOperation extends AbsOperation<Boolean> {
 	private String mName;
 	private String mDate;
 	private String mAddress;
+	private String mCity;
 	private String mPhone;
 	private String mMail;
 	private String mDescription;
 	private String mLat;
 	private String mLng;
 
-	public PostPoiOperation(Context c, OperationListener listener, Category cat, University univ, String name, String date, String address, String phone, String mail, String description, String lat, String lng) {
+	public PostPoiOperation(Context c, OperationListener listener, Category cat, University univ, String name, String date, String address, String city, String phone, String mail, String description, String lat, String lng) {
 		super(c, listener);
 
 		this.mCat = cat;
@@ -56,6 +58,7 @@ public class PostPoiOperation extends AbsOperation<Boolean> {
 		this.mName = name;
 		this.mDate = date;
 		this.mAddress = address;
+		this.mCity = city;
 		this.mPhone = phone;
 		this.mMail = mail;
 		this.mDescription = description;
@@ -91,6 +94,7 @@ public class PostPoiOperation extends AbsOperation<Boolean> {
 			json.put(POI_UNIVERSITY, mUniv.getSelf());
 			json.put(POI_CREATEDON, mDate);
 			json.put(POI_ADDRESS, mAddress);
+			json.put(POI_CITY, mCity);
 			json.put(POI_PHONES, mPhone);
 			json.put(POI_EMAIL, mMail);
 			json.put(POI_DESCRIPTION, mDescription);

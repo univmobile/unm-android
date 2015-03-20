@@ -9,7 +9,7 @@
 	<string name="no_media">Pas de lien</string>
 	<string name="need_to_login">besoin de vous connecter avant de poster un commentaire</string>
 	<string name="no_internet">Vous n\'êtes pas connecté à internet. Merci de vous connecter.</string>
-	<string name="click_to_close">Click back button one more time to close application.</string>
+	<string name="click_to_close">Etes-vous sûr de vouloir fermer l\'application Univmobile ?</string>
 
     <!-- Select region and university -->
     <string name="select_region">Choisir sa région</string>
@@ -82,6 +82,7 @@
 	<string name="select_poi_category">Séléctionnez une catégorie*</string>
 	<string name="poi_name_hint">Nom du bon plan *</string>
 	<string name="address_hint">Adresse *</string>
+	<string name="city_hint">Ville</string>
 	<string name="phone_hint">Numéro de téléphone</string>
 	<string name="email_hint">Adresse email</string>
 	<string name="poi_description_hint">Entrez une déscription du lieux, des services proposés et des infos pratiques pouvant être utiles à la communauté*</string>

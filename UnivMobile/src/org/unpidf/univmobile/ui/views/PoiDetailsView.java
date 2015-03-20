@@ -179,7 +179,6 @@ public class PoiDetailsView extends LinearLayout {
 		CommentsAdapter adapter = new CommentsAdapter(getContext(), comments, mSelectedCategoryTab);
 
 
-
 		if (comments.size() == 0) {
 			if (mCommentsHeader == null) {
 				mCommentsHeader = new TextView(getContext());
@@ -261,7 +260,7 @@ public class PoiDetailsView extends LinearLayout {
 		name.setText(poi.getName());
 
 		TextView pin = (TextView) findViewById(R.id.pin);
-		pin.setText(poi.getAddress());
+		pin.setText(poi.getAddress() + ", " + poi.getCity() != null ? poi.getCity() : "");
 
 		TextView phone = (TextView) findViewById(R.id.phone);
 		phone.setText(poi.getPhones());
