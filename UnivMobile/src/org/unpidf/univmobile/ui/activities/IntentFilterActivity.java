@@ -24,10 +24,12 @@ public class IntentFilterActivity extends Activity {
 
 		Uri data = getIntent().getData();
 		String id = data.getQueryParameter("ID");
+		String poiID = data.getQueryParameter("poiID");
 
 		if(id != null && id.length() > 0) {
 			Intent intent = new Intent(this, HomeActivity.class);
-			intent.putExtra(HomeActivity.EXTRA_POI_ID, Integer.parseInt(id));
+			intent.putExtra(HomeActivity.EXTRA_IMAGE_MAP_ID, Integer.parseInt(id));
+			intent.putExtra(HomeActivity.EXTRA_POI_ID, Integer.parseInt(poiID));
 			startActivity(intent);
 		}
 

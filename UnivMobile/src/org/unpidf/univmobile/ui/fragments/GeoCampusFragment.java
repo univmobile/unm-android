@@ -97,12 +97,12 @@ public class GeoCampusFragment extends AbsFragment {
 
 	private boolean mAnimatedToMyPosition = false;
 
-	public static GeoCampusFragment newInstance(int tabPosition, int imageMpaId, int poiId, int category) {
+	public static GeoCampusFragment newInstance(int tabPosition, int imageMapId, int poiId, int category) {
 
 		GeoCampusFragment fragment = new GeoCampusFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_TAB_ID, tabPosition);
-		args.putInt(ARG_IMAGE_MAP_ID, imageMpaId);
+		args.putInt(ARG_IMAGE_MAP_ID, imageMapId);
 		args.putInt(ARG_POI_ID, poiId);
 		args.putInt(ARG_CATEGORY_ID, category);
 		fragment.setArguments(args);

@@ -2,6 +2,7 @@ package org.unpidf.univmobile.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -45,6 +46,13 @@ public class SplashScreenActivity extends AbsActivity {
 		FontHelper helper = ((UnivMobileApp) getApplicationContext()).getFontHelper();
 		helper.loadFont((android.widget.TextView) findViewById(R.id.title), FontHelper.FONT.EXO_REGULAR);
 		helper.loadFont((android.widget.TextView) findViewById(R.id.accept_button), FontHelper.FONT.EXO_REGULAR);
+
+		try {
+			String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			((TextView) findViewById(R.id.version)).setText("v_" + versionName);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
 
 		boolean ignoreSaved = getIntent().getBooleanExtra("ignore_saved", false);
 		if (UniversitiesDataModel.isUniversitySaved(this) && !ignoreSaved) {

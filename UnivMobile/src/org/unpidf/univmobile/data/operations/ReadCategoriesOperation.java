@@ -16,8 +16,7 @@ import java.util.List;
  * Created by rviewniverse on 2015-02-09.
  */
 public class ReadCategoriesOperation extends AbsOperation<List<Category>> {
-
-    public static final String CATEGORIES_IMAGE_URL = BASE_URL_API + "files/categoriesicons/";
+	public static final String CATEGORIES_IMAGE_URL = BASE_URL + "files/categoriesicons/";
 	private static final String CATEGORIES = "categories/";
 	private static final String CATEGORIES_CHILDREN = "categories/%d/children/";
 	private int mCategoryID;
@@ -39,11 +38,13 @@ public class ReadCategoriesOperation extends AbsOperation<List<Category>> {
 			JSONObject categoryJson = categoriesJson.getJSONObject(i);
 			Category cat = new Gson().fromJson(categoryJson.toString(), Category.class);
 
-			JSONObject links = categoryJson.getJSONObject("_links");
-			JSONObject self = links.getJSONObject("self");
-			cat.setSelf(self.getString("href"));
+			if (cat.isActive()) {
+				JSONObject links = categoryJson.getJSONObject("_links");
+				JSONObject self = links.getJSONObject("self");
+				cat.setSelf(self.getString("href"));
 
-			categoriesList.add(cat);
+				categoriesList.add(cat);
+			}
 		}
 		return categoriesList;
 	}
@@ -51,7 +52,7 @@ public class ReadCategoriesOperation extends AbsOperation<List<Category>> {
 	@Override
 	protected String getOperationUrl(int page) {
 		String url = BASE_URL_API;
-		if(mCategoryID != -1) {
+		if (mCategoryID != -1) {
 			url += String.format(CATEGORIES_CHILDREN, mCategoryID);
 		} else {
 			url += CATEGORIES;

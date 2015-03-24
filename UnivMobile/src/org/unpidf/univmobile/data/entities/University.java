@@ -15,23 +15,26 @@ public class University implements Parcelable {
 	private String self;
 	private String regionName;
 	private String mobileShibbolethUrl;
+	private String logoUrl;
 
 	public University() {
 
 	}
 
-	public University(int id, String title, String self, String regionName, String shibboleth) {
+	public University(int id, String title, String self, String regionName, String shibboleth, String logoUrl) {
 		this.id = id;
 		this.title = title;
 		this.self = self;
 		this.regionName = regionName;
 		mobileShibbolethUrl = shibboleth;
+		this.logoUrl = logoUrl;
 	}
 
 	public University(Parcel in) {
 		id = in.readInt();
 		title = in.readString();
 		self = in.readString();
+		logoUrl = in.readString();
 	}
 
 	@Override
@@ -44,6 +47,7 @@ public class University implements Parcelable {
 		dest.writeInt(id);
 		dest.writeString(title);
 		dest.writeString(self);
+		dest.writeString(logoUrl);
 	}
 
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -94,5 +98,13 @@ public class University implements Parcelable {
 
 	public void setMobileShibbolethUrl(String mobileShibbolethUrl) {
 		this.mobileShibbolethUrl = mobileShibbolethUrl;
+	}
+
+	public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
 	}
 }

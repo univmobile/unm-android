@@ -1,64 +1,80 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- The main content view -->
-    <LinearLayout
-        android:id="@+id/drawer_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+										android:id="@+id/drawer_layout"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent">
+	<!-- The main content view -->
+	<LinearLayout
+		android:id="@+id/drawer_content"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-    </LinearLayout>
+	</LinearLayout>
 
-    <!-- The navigation drawer -->
+	<!-- The navigation drawer -->
 
-    <RelativeLayout
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:id="@+id/drawer"
-        android:layout_gravity="start">
+	<RelativeLayout
+		android:layout_width="240dp"
+		android:layout_height="match_parent"
+		android:id="@+id/drawer"
+		android:layout_gravity="start">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_height="match_parent"
-            android:background="@drawable/drawer_shadow"
-            android:id="@+id/shadow"
-            android:adjustViewBounds="true"/>
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:layout_height="match_parent"
+			android:background="@drawable/drawer_shadow"
+			android:id="@+id/shadow"
+			android:adjustViewBounds="true"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/menu_background"
-            android:layout_toLeftOf="@+id/shadow"
-            android:layout_toStartOf="@+id/shadow"
-            android:background="@drawable/menu_background"/>
+		<ImageView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/menu_background"
+			android:layout_toLeftOf="@+id/shadow"
+			android:layout_toStartOf="@+id/shadow"
+			android:background="@drawable/menu_background"/>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/university_image"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_toLeftOf="@+id/shadow"
-            android:layout_toStartOf="@+id/shadow"
-            android:src="@drawable/ic_university"/>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_toLeftOf="@+id/shadow"
+			android:layout_toStartOf="@+id/shadow"
+			android:id="@+id/university_container_actionbar">
 
-        <org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView
-            android:id="@+id/listView"
-            android:layout_width="240dip"
-            android:layout_height="match_parent"
-            android:dividerHeight="0px"
-            android:divider="@null"
-            android:layout_below="@+id/university_image"
-            android:layout_toLeftOf="@+id/shadow"
-            android:layout_toStartOf="@+id/shadow"
-            android:groupIndicator="@null"
-            android:listSelector="#0fff"
-            android:scrollbars="none"/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="60dp"
+				android:layout_centerInParent="true"
+				android:text="Accueil"
+				android:gravity="center"
+				android:background="@android:color/white"
+				android:textColor="@android:color/black"
+				android:textSize="@dimen/title_size"
+				android:id="@+id/home"/>
+
+			<ImageView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/university_image"
+				android:adjustViewBounds="true"
+				android:scaleType="centerCrop"
+				android:visibility="invisible"/>
+		</RelativeLayout>
+
+		<org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView
+			android:id="@+id/listView"
+			android:layout_width="240dip"
+			android:layout_height="match_parent"
+			android:dividerHeight="0px"
+			android:divider="@null"
+			android:layout_below="@+id/university_container_actionbar"
+			android:layout_toLeftOf="@+id/shadow"
+			android:layout_toStartOf="@+id/shadow"
+			android:groupIndicator="@null"
+			android:listSelector="#0fff"
+			android:scrollbars="none"/>
 
 		<ProgressBar
 			android:id="@+id/navigation_progress"
@@ -68,7 +84,6 @@
 			android:layout_centerInParent="true"
 			android:visibility="visible"/>
 
-    </RelativeLayout>
-
+	</RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

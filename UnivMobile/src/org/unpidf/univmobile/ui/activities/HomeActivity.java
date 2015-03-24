@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.picasso.Picasso;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
@@ -65,6 +67,7 @@ public class HomeActivity extends AbsActivity {
 	private static final int GEO_UNIV_MENU_ID = 21;
 	private static final int BONPLAN_MENU_ID = 22;
 
+	public static final String EXTRA_IMAGE_MAP_ID = "extra_image_map_id";
 	public static final String EXTRA_POI_ID = "extra_poi_id";
 	private ActionBar actionBar;
 	private DrawerLayout mDrawerLayout;
@@ -74,6 +77,7 @@ public class HomeActivity extends AbsActivity {
 	private MenusDataModel mMenusDataModel;
 
 	private boolean mOnBackClicked = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -266,7 +270,24 @@ public class HomeActivity extends AbsActivity {
 	private void initDrawer() {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-		mDrawerLayout.findViewById(R.id.university_image).setOnClickListener(new View.OnClickListener() {
+		University u = UniversitiesDataModel.getSavedUniversity(this);
+
+		TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
+		ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
+
+		if (u.getLogoUrl() != null) {
+			home.setVisibility(View.INVISIBLE);
+			logo.setVisibility(View.VISIBLE);
+			Picasso.with(this).load(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl()).into(logo);
+		} else {
+			home.setVisibility(View.VISIBLE);
+			logo.setVisibility(View.INVISIBLE);
+
+			((UnivMobileApp) getApplicationContext()).getFontHelper().loadFont(home, FontHelper.FONT.EXO_BOLD);
+		}
+
+
+		mDrawerLayout.findViewById(R.id.university_container_actionbar).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showFragment(new HomeFragment(), HomeFragment.class.getName(), false);
@@ -345,9 +366,10 @@ public class HomeActivity extends AbsActivity {
 
 
 	private void showFirstFragment() {
-		int id = getIntent().getIntExtra(EXTRA_POI_ID, -1);
-		if (id != -1) {
-			GeoCampusFragment f = GeoCampusFragment.newInstance(0, id, -1, -1);
+		int imageMapId = getIntent().getIntExtra(EXTRA_IMAGE_MAP_ID, -1);
+		int poiId = getIntent().getIntExtra(EXTRA_POI_ID, -1);
+		if (imageMapId != -1) {
+			GeoCampusFragment f = GeoCampusFragment.newInstance(0, imageMapId, poiId, -1);
 			showFragment(f, GeoCampusFragment.class.getName(), false);
 		} else {
 			showFragment(HomeFragment.newInstance(), HomeFragment.class.getName(), false);
@@ -419,9 +441,9 @@ public class HomeActivity extends AbsActivity {
 			if (getFragmentManager().getBackStackEntryCount() > 0) {
 				getFragmentManager().popBackStack();
 			} else {
-				if(!mOnBackClicked) {
+				if (!mOnBackClicked) {
 					mOnBackClicked = true;
-					Toast.makeText(this,getString(R.string.click_to_close),Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getString(R.string.click_to_close), Toast.LENGTH_LONG).show();
 				} else {
 					super.onBackPressed();
 				}

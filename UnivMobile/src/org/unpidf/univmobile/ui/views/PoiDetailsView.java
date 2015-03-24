@@ -260,13 +260,28 @@ public class PoiDetailsView extends LinearLayout {
 		name.setText(poi.getName());
 
 		TextView pin = (TextView) findViewById(R.id.pin);
-		pin.setText(poi.getAddress() + ", " + poi.getCity() != null ? poi.getCity() : "");
+		if ((poi.getAddress() != null && poi.getAddress().length() > 0) || poi.getCity() != null) {
+			pin.setText(poi.getAddress() + ", " + (poi.getCity() != null ? poi.getCity() : ""));
+			pin.setVisibility(View.VISIBLE);
+		} else {
+			pin.setVisibility(View.INVISIBLE);
+		}
 
 		TextView phone = (TextView) findViewById(R.id.phone);
-		phone.setText(poi.getPhones());
+		if (poi.getPhones() != null && poi.getPhones().length() > 0) {
+			phone.setText(poi.getPhones());
+			phone.setVisibility(View.VISIBLE);
+		} else {
+			phone.setVisibility(View.INVISIBLE);
+		}
 
-		TextView mail = (TextView) findViewById(R.id.phone);
-		mail.setText(poi.getEmail());
+		TextView mail = (TextView) findViewById(R.id.mail);
+		if (poi.getEmail() != null && poi.getEmail().length() > 0) {
+			mail.setText(poi.getEmail());
+			mail.setVisibility(View.VISIBLE);
+		} else {
+			mail.setVisibility(View.INVISIBLE);
+		}
 
 
 		//init description

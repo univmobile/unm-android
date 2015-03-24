@@ -9,6 +9,15 @@
 		android:src="@drawable/splash_screen_bg"
 		android:scaleType="centerCrop"/>
 
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:textColor="#9000"
+		android:id="@+id/version"
+		android:padding="20dp"/>
+
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

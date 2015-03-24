@@ -21,20 +21,22 @@ import java.util.List;
  * This data model is responsible for receiving and storing information related with regions and universities list.
  * Also handles selected university.
  */
-public class UniversitiesDataModel  extends AbsDataModel{
+public class UniversitiesDataModel extends AbsDataModel {
 
+	public static final String UNIVERSITY_IMAGE_URL = "http://univmobile-dev.univ-paris1.fr/testSP/files/universitieslogos/";
 	public static final String FRANCE_REGION = "Île de France";
 	private static final String PREF_UNIVERSITY_NAME = "pref_university_name";
 	private static final String PREF_UNIVERSITY_ID = "pref_university_id";
 	private static final String PREF_UNIVERSITY_SELF = "pref_university_self";
 	private static final String PREF_REGION_NAME = "pref_region_name";
 	private static final String PREF_SHIBBOLETH = "pref_shibboleth";
+	private static final String PREF_URL = "pref_url";
+
 
 	private Context mContext;
 	private UniversitiesDataModelListener mListener;
 	private ReadRegionsOperation mReadRegionsOperation;
 	private ReadUniversitiesOperation mReadUniversitiesOperation;
-
 
 
 	private List<University> mUniversities;
@@ -58,7 +60,6 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		mUniversities = null;
 		mRegions = null;
 	}
-
 
 
 	public void getRegions(UniversitiesDataModelListener listener) {
@@ -100,7 +101,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 			mReadRegionsOperation = null;
 
 			if (mListener != null) {
-				if(error == null) {
+				if (error == null) {
 					mListener.showRegions(result);
 				} else {
 					mListener.showErrorMessage(error);
@@ -133,7 +134,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 			mReadUniversitiesOperation = null;
 
 			if (mListener != null) {
-				if(error == null) {
+				if (error == null) {
 					mListener.showUniversities(result);
 				} else {
 					mListener.showErrorMessage(error);
@@ -162,10 +163,10 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		String self = SharedPreferencesRepo.getString(c, PREF_UNIVERSITY_SELF);
 		String regionName = SharedPreferencesRepo.getString(c, PREF_REGION_NAME);
 		String shibboleth = SharedPreferencesRepo.getString(c, PREF_SHIBBOLETH);
-		University univ = new University(id, name, self, regionName, shibboleth);
+		String url = SharedPreferencesRepo.getString(c, PREF_URL);
+		University univ = new University(id, name, self, regionName, shibboleth, url);
 		return univ;
 	}
-
 
 
 	public void saveUniversity(University university) {
@@ -174,6 +175,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		SharedPreferencesRepo.saveString(mContext, PREF_UNIVERSITY_SELF, university.getSelf());
 		SharedPreferencesRepo.saveString(mContext, PREF_REGION_NAME, university.getRegionName());
 		SharedPreferencesRepo.saveString(mContext, PREF_SHIBBOLETH, university.getMobileShibbolethUrl());
+		SharedPreferencesRepo.saveString(mContext, PREF_URL, university.getLogoUrl());
 	}
 
 
@@ -189,7 +191,7 @@ public class UniversitiesDataModel  extends AbsDataModel{
 		this.mUniversities = mUniversities;
 	}
 
-	public interface UniversitiesDataModelListener extends ModelListener{
+	public interface UniversitiesDataModelListener extends ModelListener {
 		public void showLoadingIndicator();
 
 		public void showRegions(List<Region> regionsList);

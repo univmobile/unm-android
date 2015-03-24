@@ -49,6 +49,8 @@ public class MyWebViewFragment extends WebViewFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		WebView webView = getWebView();
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		webView.setWebViewClient(mWebViewClient);
 
 		if (mUrl != null && mUrl.length() > 0) {
