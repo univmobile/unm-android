@@ -7,9 +7,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +24,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 import com.flurry.android.FlurryAgent;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
@@ -272,13 +281,30 @@ public class HomeActivity extends AbsActivity {
 
 		University u = UniversitiesDataModel.getSavedUniversity(this);
 
-		TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
-		ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
+		final TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
+		final ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
 
 		if (u.getLogoUrl() != null) {
 			home.setVisibility(View.INVISIBLE);
 			logo.setVisibility(View.VISIBLE);
-			Picasso.with(this).load(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl()).into(logo);
+
+			ImageRequest ir = new ImageRequest(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl(), new Response.Listener<Bitmap>() {
+
+				@Override
+				public void onResponse(Bitmap response) {
+					logo.setImageBitmap(response);
+
+				}
+			}, 0, 0, null, new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError volleyError) {
+					home.setVisibility(View.VISIBLE);
+					logo.setVisibility(View.INVISIBLE);
+				}
+			});
+			RequestQueue rq = Volley.newRequestQueue(this);
+			rq.add(ir);
+			rq.start();
 		} else {
 			home.setVisibility(View.VISIBLE);
 			logo.setVisibility(View.INVISIBLE);
@@ -309,22 +335,12 @@ public class HomeActivity extends AbsActivity {
 				mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
 				List<NavigationMenu> menuGroups = new ArrayList<NavigationMenu>();
 //				//first menu
-//				List<NavigationMenu> menuChild = new ArrayList<NavigationMenu>();
-//				menuChild.add(new NavigationMenu(11, getString(R.string.menu_group_profile)));
-//				menuChild.add(new NavigationMenu(12, getString(R.string.menu_group_library)));
-//				menuChild.add(new NavigationMenu(13, getString(R.string.menu_group_ent)));
-//				menuChild.add(new NavigationMenu(14, getString(R.string.menu_group_workspace)));
-//				menuChild.add(new NavigationMenu(15, getString(R.string.menu_group_students)));
 				menuGroups.add(new NavigationMenu(1, getString(R.string.menu_services), R.drawable.ic_menu_first, msMenus));
 
 				//second menu
 				menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
 
 //				//third menu
-//				menuChild = new ArrayList<NavigationMenu>();
-//				menuChild.add(new NavigationMenu(31, getString(R.string.menu_group_geo)));
-//				menuChild.add(new NavigationMenu(32, getString(R.string.menu_group_paris)));
-//				menuChild.add(new NavigationMenu(33, getString(R.string.menu_group_bonplans)));
 				List<org.unpidf.univmobile.data.entities.NavigationMenu> menus = new ArrayList<NavigationMenu>();
 				if (!UniversitiesDataModel.getSavedUniversity(HomeActivity.this).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
 					for (org.unpidf.univmobile.data.entities.NavigationMenu m : ttMenus) {
@@ -338,12 +354,6 @@ public class HomeActivity extends AbsActivity {
 				menuGroups.add(new NavigationMenu(3, getString(R.string.menu_interests), R.drawable.ic_menu_third, menus));
 
 //				//forth menu
-//				menuChild = new ArrayList<NavigationMenu>();
-//				menuChild.add(new NavigationMenu(41, "menu 1"));
-//				menuChild.add(new NavigationMenu(42, "menu 2"));
-//				menuChild.add(new NavigationMenu(43, "menu 3"));
-//				menuChild.add(new NavigationMenu(44, "menu 4"));
-//				menuChild.add(new NavigationMenu(45, "menu 5"));
 				menuGroups.add(new NavigationMenu(4, getString(R.string.menu_my), R.drawable.ic_menu_forth, muMenus));
 
 				NavigationDrawerAdapter a = new NavigationDrawerAdapter(HomeActivity.this, menuGroups);
