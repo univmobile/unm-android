@@ -11,6 +11,9 @@
 	<string name="no_internet">Vous n\'êtes pas connecté à internet. Merci de vous connecter.</string>
 	<string name="click_to_close">Etes-vous sûr de vouloir fermer l\'application Univmobile ?</string>
 	<string name="home">Accueil</string>
+    <string name="yes">Oui</string>
+    <string name="no">Annuler</string>
+
 	<!-- Select region and university -->
 	<string name="select_region">Choisir sa région</string>
 	<string name="select_university">Choisir son université</string>
@@ -97,4 +100,7 @@
 	<string name="poi_floor">Emplacement</string>
 	<string name="poi_acces">Accès</string>
 
+    <!-- change university dialog fragment info -->
+    <string name="please_confirm">Veuillez confirmer</string>
+    <string name="do_you_want_to_change_unviersity">Etes-vous sûr de vouloir sélectionner une autre Université ?</string>
 </resources>
