@@ -16,6 +16,7 @@ public class University implements Parcelable {
 	private String regionName;
 	private String mobileShibbolethUrl;
 	private String logoUrl;
+    private boolean crous;
 
 	public University() {
 
@@ -107,4 +108,12 @@ public class University implements Parcelable {
 	public void setLogoUrl(String logoUrl) {
 		this.logoUrl = logoUrl;
 	}
+
+    public boolean isCrous() {
+        return crous;
+    }
+
+    public void setCrous(boolean crous) {
+        this.crous = crous;
+    }
 }

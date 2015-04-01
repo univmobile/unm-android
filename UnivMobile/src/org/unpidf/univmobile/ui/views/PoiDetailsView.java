@@ -1,6 +1,8 @@
 package org.unpidf.univmobile.ui.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.Html;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -255,13 +257,14 @@ public class PoiDetailsView extends LinearLayout {
 
 	}
 
-	private void initHeader(Poi poi, int tab) {
+	private void initHeader(final Poi poi, int tab) {
 		TextView name = (TextView) findViewById(R.id.poi_name);
 		name.setText(poi.getName());
 
 		TextView pin = (TextView) findViewById(R.id.pin);
-		if ((poi.getAddress() != null && poi.getAddress().length() > 0) || poi.getCity() != null) {
-			pin.setText(poi.getAddress() + ", " + (poi.getCity() != null ? poi.getCity() : ""));
+
+		if ((poi.getAddress() != null && poi.getAddress().length() > 0) || (poi.getCity() != null && poi.getCity().length() > 0)) {
+			pin.setText(poi.getAddress() + (poi.getCity() != null &&  poi.getCity().length() > 0 ? ", " + poi.getCity() : ""));
 			pin.setVisibility(View.VISIBLE);
 		} else {
 			pin.setVisibility(View.INVISIBLE);
@@ -271,6 +274,14 @@ public class PoiDetailsView extends LinearLayout {
 		if (poi.getPhones() != null && poi.getPhones().length() > 0) {
 			phone.setText(poi.getPhones());
 			phone.setVisibility(View.VISIBLE);
+            phone.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + poi.getPhones()));
+                    getContext().startActivity(intent);
+                }
+            });
 		} else {
 			phone.setVisibility(View.INVISIBLE);
 		}
@@ -279,6 +290,14 @@ public class PoiDetailsView extends LinearLayout {
 		if (poi.getEmail() != null && poi.getEmail().length() > 0) {
 			mail.setText(poi.getEmail());
 			mail.setVisibility(View.VISIBLE);
+            mail.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                            "mailto",poi.getEmail(), null));
+                    getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }
+            });
 		} else {
 			mail.setVisibility(View.INVISIBLE);
 		}

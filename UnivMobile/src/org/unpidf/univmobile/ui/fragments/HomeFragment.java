@@ -122,10 +122,12 @@ public class HomeFragment extends AbsFragment {
 		super.onDestroy();
 		if (mMapView != null) {
 			mMapView.onDestroy();
+            mMapView = null;
 		}
 		if (mMap != null) {
 			mMap.setOnMyLocationChangeListener(null);
 			mMap.setMyLocationEnabled(false);
+            mMap = null;
 		}
 	}
 
@@ -236,11 +238,9 @@ public class HomeFragment extends AbsFragment {
 		// Gets the MapView from the XML layout and creates it
 		mMapView = (MapView) getView().findViewById(R.id.mapview);
 
-
 		// Gets to GoogleMap from the MapView and does initialization stuff
 		if (mMapView != null) {
 			mMapView.onCreate(null);
-			mMapView.onResume();
 
 			mMap = mMapView.getMap();
 			if (mMap != null) {
@@ -253,7 +253,6 @@ public class HomeFragment extends AbsFragment {
 		}
 
 		MapsInitializer.initialize(this.getActivity());
-
 
 		if (!UniversitiesDataModel.getSavedUniversity(getActivity()).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
 			getView().findViewById(R.id.cat_2).setVisibility(View.GONE);
@@ -415,7 +414,7 @@ public class HomeFragment extends AbsFragment {
 		@Override
 		public void updatePois(List<Poi> pois) {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			populatePois(pois);
+			//populatePois(pois);
 
 		}
 
