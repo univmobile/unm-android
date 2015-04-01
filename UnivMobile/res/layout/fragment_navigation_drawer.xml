@@ -46,7 +46,6 @@
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="60dp"
-				android:layout_centerInParent="true"
 				android:text="Accueil"
 				android:gravity="center"
 				android:background="@android:color/white"
@@ -59,8 +58,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/university_image"
 				android:adjustViewBounds="true"
-				android:scaleType="centerCrop"
-				android:visibility="invisible"/>
+				android:scaleType="centerCrop"/>
 		</RelativeLayout>
 
 		<org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView
