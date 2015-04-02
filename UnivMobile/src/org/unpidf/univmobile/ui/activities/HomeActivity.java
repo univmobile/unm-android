@@ -7,12 +7,16 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +69,11 @@ import org.unpidf.univmobile.ui.fragments.UniversityNewsFragment;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -289,23 +298,33 @@ public class HomeActivity extends AbsActivity {
 
         final TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
         final ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
+        final View loading = mDrawerLayout.findViewById(R.id.university_image_progress);
 
         if (u.getLogoUrl() != null) {
             home.setVisibility(View.INVISIBLE);
-            logo.setVisibility(View.VISIBLE);
+            //logo.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.VISIBLE);
+
+
+            Resources r = getResources();
+            int pxWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, r.getDisplayMetrics());
+            int pxHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, r.getDisplayMetrics());
 
             ImageRequest ir = new ImageRequest(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl(), new Response.Listener<Bitmap>() {
 
                 @Override
                 public void onResponse(Bitmap response) {
+                    logo.setVisibility(View.VISIBLE);
                     logo.setImageBitmap(response);
+                    loading.setVisibility(View.INVISIBLE);
 
                 }
-            }, 0, 0, null, new Response.ErrorListener() {
+            }, pxWidth, pxHeight, null, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     home.setVisibility(View.VISIBLE);
                     logo.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
                 }
             });
             RequestQueue rq = Volley.newRequestQueue(this);
@@ -314,6 +333,7 @@ public class HomeActivity extends AbsActivity {
         } else {
             home.setVisibility(View.VISIBLE);
             logo.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.INVISIBLE);
 
             ((UnivMobileApp) getApplicationContext()).getFontHelper().loadFont(home, FontHelper.FONT.EXO_BOLD);
         }

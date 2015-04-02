@@ -136,10 +136,7 @@ public class PoiDetailsView extends LinearLayout {
 		initTabs();
 		initCategoryIcon();
 		show();
-
 		initBookmark(isBookmarked);
-
-
 	}
 
 	public Poi getPoi() {
@@ -307,6 +304,7 @@ public class PoiDetailsView extends LinearLayout {
 		TextView description = (TextView) findViewById(R.id.poi_description_value);
 		if (poi.getDescription() != null && poi.getDescription().length() > 0) {
 			description.setText(Html.fromHtml(poi.getDescription()));
+            description.setVisibility(View.VISIBLE);
 		} else {
 			description.setVisibility(View.GONE);
 		}
@@ -315,6 +313,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView siteValue = (TextView) findViewById(R.id.poi_site_value);
 		if (poi.getUrl() != null && poi.getUrl().length() > 0) {
 			siteValue.setText(Html.fromHtml(poi.getUrl()));
+            siteTitle.setVisibility(View.VISIBLE);
+            siteValue.setVisibility(View.VISIBLE);
 		} else {
 			siteTitle.setVisibility(View.GONE);
 			siteValue.setVisibility(View.GONE);
@@ -324,8 +324,10 @@ public class PoiDetailsView extends LinearLayout {
 		TextView welcomeValue = (TextView) findViewById(R.id.poi_welcome_value);
 		if (poi.getPublicWelcome() != null && poi.getPublicWelcome().length() > 0) {
 			welcomeValue.setText(Html.fromHtml(poi.getPublicWelcome()));
+            welcomeValue.setVisibility(View.VISIBLE);
+            welcomeTitle.setVisibility(View.VISIBLE);
 		} else {
-			welcomeTitle.setVisibility(View.GONE);
+		    welcomeTitle.setVisibility(View.GONE);
 			welcomeValue.setVisibility(View.GONE);
 		}
 
@@ -333,6 +335,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView disciplinesValue = (TextView) findViewById(R.id.poi_disciplines_value);
 		if (poi.getDisciplines() != null && poi.getDisciplines().length() > 0) {
 			disciplinesValue.setText(Html.fromHtml(poi.getDisciplines()));
+            disciplinesValue.setVisibility(View.VISIBLE);
+            disciplinesTitle.setVisibility(View.VISIBLE);
 		} else {
 			disciplinesTitle.setVisibility(View.GONE);
 			disciplinesValue.setVisibility(View.GONE);
@@ -342,6 +346,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView workHoursValue = (TextView) findViewById(R.id.poi_work_hours_value);
 		if (poi.getOpeningHours() != null && poi.getOpeningHours().length() > 0) {
 			workHoursValue.setText(Html.fromHtml(poi.getOpeningHours()));
+            workHoursValue.setVisibility(View.VISIBLE);
+            workHoursTitle.setVisibility(View.VISIBLE);
 		} else {
 			workHoursTitle.setVisibility(View.GONE);
 			workHoursValue.setVisibility(View.GONE);
@@ -351,6 +357,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView closeHoursValue = (TextView) findViewById(R.id.poi_close_hours_value);
 		if (poi.getClosingHours() != null && poi.getClosingHours().length() > 0) {
 			closeHoursValue.setText(Html.fromHtml(poi.getClosingHours()));
+            closeHoursValue.setVisibility(View.VISIBLE);
+            closeHoursTitle.setVisibility(View.VISIBLE);
 		} else {
 			closeHoursTitle.setVisibility(View.GONE);
 			closeHoursValue.setVisibility(View.GONE);
@@ -360,6 +368,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView floorValue = (TextView) findViewById(R.id.poi_floor_value);
 		if (poi.getFloor() != null && poi.getFloor().length() > 0) {
 			floorValue.setText(Html.fromHtml(poi.getFloor()));
+            floorValue.setVisibility(View.VISIBLE);
+            floorTitle.setVisibility(View.VISIBLE);
 		} else {
 			floorTitle.setVisibility(View.GONE);
 			floorValue.setVisibility(View.GONE);
@@ -369,6 +379,8 @@ public class PoiDetailsView extends LinearLayout {
 		TextView accessValue = (TextView) findViewById(R.id.poi_acces_value);
 		if (poi.getItinerary() != null && poi.getItinerary().length() > 0) {
 			accessValue.setText(Html.fromHtml(poi.getItinerary()));
+            accessValue.setVisibility(View.VISIBLE);
+            accessTitle.setVisibility(View.VISIBLE);
 		} else {
 			accessTitle.setVisibility(View.GONE);
 			accessValue.setVisibility(View.GONE);

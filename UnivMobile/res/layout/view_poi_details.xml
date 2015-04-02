@@ -291,7 +291,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_description_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -301,7 +301,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_site_title"
                         android:text="@string/poi_site"
                         android:paddingLeft="@dimen/horizontal"
@@ -311,7 +311,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_site_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -321,7 +321,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_welcome_title"
                         android:text="@string/poi_welcome"
                         android:paddingLeft="@dimen/horizontal"
@@ -331,7 +331,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_welcome_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -341,7 +341,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_disciplines_title"
                         android:text="@string/poi_disciplines"
                         android:paddingLeft="@dimen/horizontal"
@@ -351,7 +351,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_disciplines_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -361,7 +361,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_work_hours_title"
                         android:text="@string/poi_work_hours"
                         android:paddingLeft="@dimen/horizontal"
@@ -371,7 +371,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_work_hours_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -381,7 +381,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_close_hours_title"
                         android:text="@string/poi_close_hours"
                         android:paddingLeft="@dimen/horizontal"
@@ -391,7 +391,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_close_hours_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -401,7 +401,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_floor_title"
                         android:text="@string/poi_floor"
                         android:paddingLeft="@dimen/horizontal"
@@ -411,7 +411,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_floor_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"
@@ -421,7 +421,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_acces_title"
                         android:text="@string/poi_acces"
                         android:paddingLeft="@dimen/horizontal"
@@ -431,7 +431,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/poi_acces_value"
                         android:paddingLeft="@dimen/horizontal"
                         android:paddingRight="@dimen/horizontal"

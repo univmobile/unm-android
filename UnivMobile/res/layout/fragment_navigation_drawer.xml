@@ -57,8 +57,14 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/university_image"
-				android:adjustViewBounds="true"
 				android:scaleType="centerCrop"/>
+
+            <ProgressBar
+                android:id="@+id/university_image_progress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
 		</RelativeLayout>
 
 		<org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView
