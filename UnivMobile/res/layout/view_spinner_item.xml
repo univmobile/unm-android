@@ -8,5 +8,5 @@
           android:paddingTop="4dp"
           android:paddingBottom="4dp"
           android:gravity="start"
-          android:ellipsize="none"
+		  android:singleLine="false"
 		  android:textSize="13dp"/>

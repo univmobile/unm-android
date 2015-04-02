@@ -57,6 +57,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
 	public void doNotShowFirstLoading() {
 		mFirstLoadingVisible = false;
+		mLoading = true;
 	}
 
 	@Override
@@ -131,7 +132,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
 
 			}
-			if (mLoadNextListener != null && !mLoading) {
+			if (mLoadNextListener != null && !mLoading && mFirstLoadingVisible) {
 				mLoading = true;
 				mLoadNextListener.loadNextData();
 			}
@@ -168,6 +169,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
 
 	public interface OnLoadNextListener {
+
+		public void reload();
 		public void loadNextData();
 
 		public boolean hasNextPage();

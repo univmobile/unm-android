@@ -75,7 +75,7 @@ public class UniversityNewsFragment extends AbsFragment {
 				mNewsAdapter.clear();
 				mNewsAdapter.doNotShowFirstLoading();
 			}
-			mOnLoadNextListener.loadNextData();
+			mOnLoadNextListener.reload();
 		}
 	};
 
@@ -136,6 +136,15 @@ public class UniversityNewsFragment extends AbsFragment {
 	}
 
 	private NewsAdapter.OnLoadNextListener mOnLoadNextListener = new NewsAdapter.OnLoadNextListener() {
+		@Override
+		public void reload() {
+			if (mNewsDataModel == null) {
+				mNewsDataModel = new NewsDataModel(getActivity());
+				mNewsDataModel.setListener(mNewsDataModelListener);
+			}
+			mNewsDataModel.loadData();
+		}
+
 		@Override
 		public void loadNextData() {
 			if (mNewsDataModel == null) {

@@ -25,7 +25,7 @@ public class SimpleDialogFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		String title = getArguments().getString("title");
 
-		return new AlertDialog.Builder(getActivity()).setTitle(title).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		return new AlertDialog.Builder(getActivity()).setMessage(title).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				dismiss();
 			}

@@ -42,7 +42,7 @@ android {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
         targetSdkVersion 21
-        versionName = "0.5.21"
+        versionName = "0.5.22"
     }
 
     sourceSets {
@@ -97,4 +97,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'com.crashlytics.android:crashlytics:1.+'
     compile 'com.segment.analytics.android:analytics-integration-flurry:3.0.1'
+    compile 'com.google.maps.android:android-maps-utils:0.3+'
 }

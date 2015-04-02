@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -35,6 +34,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.maps.android.clustering.ClusterManager;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -160,6 +160,8 @@ public class GeoCampusFragment extends AbsFragment {
 				mMap.setMyLocationEnabled(true);
 
 				mMap.setOnMarkerClickListener(mOnMarkerClickListener);
+
+
 				mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
 				MapsInitializer.initialize(this.getActivity());
 			}
@@ -540,7 +542,7 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 
 		@Override
-		public void showAuthorizationError() {
+		public void showAuthorizationError(String error) {
 			// DialogFragment.show() will take care of adding the fragment
 			// in a transaction.  We also want to remove any currently showing
 			// dialog, so make our own transaction and take care of that here.
@@ -552,7 +554,7 @@ public class GeoCampusFragment extends AbsFragment {
 			ft.addToBackStack(null);
 
 			// Create and show the dialog.
-			SimpleDialogFragment newFragment = SimpleDialogFragment.newInstance(getString(R.string.need_to_login));
+			SimpleDialogFragment newFragment = SimpleDialogFragment.newInstance(error);
 			newFragment.show(ft, "dialog");
 
 			PoiDetailsView poiView = (PoiDetailsView) getView().findViewById(R.id.poi_details_container);

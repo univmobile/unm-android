@@ -31,7 +31,6 @@ public class UniversityListAdapter extends ArrayAdapter<String> {
 		}
 
 		((TextView) convertView).setText(getItem(position));
-
 		((UnivMobileApp) getContext().getApplicationContext()).getFontHelper().loadFont(((TextView) convertView), FontHelper.FONT.EXO_REGULAR);
 
 		return convertView;
@@ -43,9 +42,15 @@ public class UniversityListAdapter extends ArrayAdapter<String> {
 			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.view_spinner_item, null);
 		}
+		final TextView finalItem = (TextView) convertView;
+		convertView.post(new Runnable() {
+			@Override
+			public void run() {
+				finalItem.setSingleLine(false);
+			}
+		});
 
 		((TextView) convertView).setText(getItem(position));
-
 		((UnivMobileApp) getContext().getApplicationContext()).getFontHelper().loadFont(((TextView) convertView), FontHelper.FONT.EXO_REGULAR);
 
 		return convertView;

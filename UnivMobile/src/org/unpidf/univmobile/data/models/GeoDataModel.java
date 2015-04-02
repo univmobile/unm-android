@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 
+import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.Bookmark;
 import org.unpidf.univmobile.data.entities.Category;
@@ -244,7 +245,7 @@ public class GeoDataModel extends AbsDataModel {
 
 		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		if (login == null) {
-			mListener.showAuthorizationError();
+			mListener.showAuthorizationError(mContext.getString(R.string.need_to_login_to_bookmark_poi));
 		} else {
 			mPostBookmarkOperation = new PostBookmarkOperation(mContext, mPostBookmarkOperationListener, login.getId(), poi);
 			mPostBookmarkOperation.startOperation();
@@ -262,7 +263,7 @@ public class GeoDataModel extends AbsDataModel {
 		Login l = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		if (l == null) {
 			if (mListener != null) {
-				mListener.showAuthorizationError();
+				mListener.showAuthorizationError(mContext.getString(R.string.need_to_login_to_post_poi));
 			}
 		} else {
 			mReadUserUniversityOperation = new ReadUserUniversityOperation(mContext, new OperationListener<University>() {
@@ -427,7 +428,7 @@ public class GeoDataModel extends AbsDataModel {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					getBookmarks(true);
 				} else if (error != null && error.getmErrorType() == ErrorEntity.ERROR_TYPE.UNAUTHORIZED) {
-					mListener.showAuthorizationError();
+					mListener.showAuthorizationError(mContext.getString(R.string.need_to_login_to_bookmark_poi));
 				}
 			}
 		}
@@ -506,7 +507,7 @@ public class GeoDataModel extends AbsDataModel {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					mListener.poiPosted();
 				} else if (error != null && error.getmErrorType() == ErrorEntity.ERROR_TYPE.UNAUTHORIZED) {
-					mListener.showAuthorizationError();
+					mListener.showAuthorizationError(mContext.getString(R.string.need_to_login_to_post_poi));
 				}
 			}
 		}
@@ -532,7 +533,7 @@ public class GeoDataModel extends AbsDataModel {
 				if (error == null || error.getmErrorType() == ErrorEntity.ERROR_TYPE.JSON_ERROR) {
 					mListener.commentPosted(result);
 				} else if (error != null && error.getmErrorType() == ErrorEntity.ERROR_TYPE.UNAUTHORIZED) {
-					mListener.showAuthorizationError();
+					mListener.showAuthorizationError(mContext.getString(R.string.need_to_login_to_post_comment));
 				}
 			}
 		}
@@ -871,7 +872,7 @@ public class GeoDataModel extends AbsDataModel {
 
 		public void bookmarkPosted();
 
-		public void showAuthorizationError();
+		public void showAuthorizationError(String error);
 
 	}
 }

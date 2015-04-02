@@ -39,6 +39,12 @@ public class NewsDataModel extends AbsDataModel {
 		mListener = listener;
 	}
 
+	public void loadData() {
+		int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
+		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 0);
+		mReadNewsOperation.startOperation();
+	}
+
 	public void loadNextPage() {
 		if (mReadNewsOperation != null && mReadNewsOperation.hasNextPage()) {
 			int nextPage = mReadNewsOperation.getNextPage();
@@ -49,9 +55,7 @@ public class NewsDataModel extends AbsDataModel {
 			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, nextPage, 0);
 			mReadNewsOperation.startOperation();
 		} else {
-			int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 0);
-			mReadNewsOperation.startOperation();
+			loadData();
 		}
 	}
 

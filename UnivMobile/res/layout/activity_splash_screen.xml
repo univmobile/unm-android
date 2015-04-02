@@ -82,6 +82,7 @@
 				android:background="@drawable/spinner_background"
 				android:popupBackground="@drawable/spinner_popup_background"
 				android:spinnerMode="dropdown"
+
 				android:dropDownVerticalOffset="-4dp"
 				android:dropDownWidth="match_parent"
 				android:layout_toLeftOf="@id/accept_button"
