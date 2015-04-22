@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.unpidf.univmobile.data.entities.Poi;
@@ -29,8 +30,11 @@ public class ReadPoiOperation extends AbsOperation<Poi> {
 
 		Poi poi = new Gson().fromJson(json.toString(), Poi.class);
 		JSONObject links = json.getJSONObject("_links");
-		JSONObject comments = links.getJSONObject("comments");
-		poi.setCommentsUrl(comments.getString("href"));
+		JSONArray comments = links.getJSONArray("comments");
+		if(comments.length() > 1) {
+			JSONObject comment = comments.getJSONObject(1);
+			poi.setCommentsUrl(comment.getString("href"));
+		}
 		return poi;
 	}
 
