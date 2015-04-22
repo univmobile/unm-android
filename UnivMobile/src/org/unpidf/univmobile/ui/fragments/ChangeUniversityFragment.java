@@ -78,7 +78,7 @@ public class ChangeUniversityFragment extends AbsFragment {
 		helper.loadFont((android.widget.TextView) view.findViewById(R.id.choose_univ), FontHelper.FONT.EXO_ITALIC);
 		helper.loadFont(current, FontHelper.FONT.EXO_REGULAR);
 
-		mReadUniversitiesOperation = new ReadUniversitiesOperation(getActivity(), mReadUniversitiesOperationListemer, null);
+		mReadUniversitiesOperation = new ReadUniversitiesOperation(getActivity(), mReadUniversitiesOperationListemer, -1);
 		mReadUniversitiesOperation.startOperation();
 	}
 

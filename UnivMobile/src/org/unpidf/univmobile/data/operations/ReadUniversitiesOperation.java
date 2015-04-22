@@ -18,61 +18,64 @@ import java.util.List;
  */
 public class ReadUniversitiesOperation extends AbsOperation<List<University>> {
 
-    private static final String UNIVERSITIES = "universities/";
-    private String mUrl;
+	private static final String UNIVERSITIES = "universities/search/findAllActiveWithoutCrous/";
+	private static final String UNIVERSITIES_REGION = "universities/search/findAllActiveWithoutCrousByRegion?regionId=%d";
+	private int mRegionId;
 
-    public ReadUniversitiesOperation(Context c, OperationListener listener, String url) {
-        super(c, listener);
-        mUrl = url;
-    }
+	public ReadUniversitiesOperation(Context c, OperationListener listener, int regionID) {
+		super(c, listener);
+		mRegionId = regionID;
+	}
 
-    @Override
-    protected List<University> parse(JSONObject json) throws JSONException {
+	@Override
+	protected List<University> parse(JSONObject json) throws JSONException {
 
-        JSONObject _embedded = json.getJSONObject("_embedded");
-        JSONArray universitiesJson = _embedded.getJSONArray("universities");
+		JSONObject _embedded = json.getJSONObject("_embedded");
+		JSONArray universitiesJson = _embedded.getJSONArray("universities");
 
-        List<University> universitiesList = new ArrayList<University>();
-
-
-        for (int i = 0; i < universitiesJson.length(); i++) {
-            JSONObject universityJson = universitiesJson.getJSONObject(i);
-            University u = new Gson().fromJson(universityJson.toString(), University.class);
-            if (!u.isCrous()) {
-
-                JSONObject links = universityJson.getJSONObject("_links");
-                JSONObject self = links.getJSONObject("self");
-                u.setSelf(self.getString("href"));
-
-                universitiesList.add(u);
-            }
-        }
-
-        return universitiesList;
-
-    }
-
-    @Override
-    protected String getOperationUrl(int page) {
-        String url = mUrl;
-        if (mUrl == null) {
-            url = BASE_URL_API + UNIVERSITIES;
-        }
-        if (page != 0) {
-            url += "?page=" + page;
-        }
-        return url;
-    }
+		List<University> universitiesList = new ArrayList<University>();
 
 
-    @Override
-    protected List<University> combine(List<University> newData, List<University> oldData) {
-        oldData.addAll(newData);
-        return oldData;
-    }
+		for (int i = 0; i < universitiesJson.length(); i++) {
+			JSONObject universityJson = universitiesJson.getJSONObject(i);
+			University u = new Gson().fromJson(universityJson.toString(), University.class);
+			if (!u.isCrous() && u.isActive()) {
 
-    @Override
-    protected boolean shouldBePaged() {
-        return true;
-    }
+				JSONObject links = universityJson.getJSONObject("_links");
+				JSONObject self = links.getJSONObject("self");
+				u.setSelf(self.getString("href"));
+
+				universitiesList.add(u);
+			}
+		}
+
+		return universitiesList;
+
+	}
+
+	@Override
+	protected String getOperationUrl(int page) {
+		String url = "";
+		if (mRegionId == -1) {
+			url = BASE_URL_API + UNIVERSITIES;
+		} else {
+			url = BASE_URL_API + String.format(UNIVERSITIES_REGION, mRegionId);
+		}
+		if (page != 0) {
+			url += "?page=" + page;
+		}
+		return url;
+	}
+
+
+	@Override
+	protected List<University> combine(List<University> newData, List<University> oldData) {
+		oldData.addAll(newData);
+		return oldData;
+	}
+
+	@Override
+	protected boolean shouldBePaged() {
+		return true;
+	}
 }

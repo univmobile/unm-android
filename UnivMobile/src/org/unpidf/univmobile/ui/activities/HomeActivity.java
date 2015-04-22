@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -256,15 +257,6 @@ public class HomeActivity extends AbsActivity {
 		});
 
 
-//		actionBarView.findViewById(R.id.login_container).setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				((UnivMobileApp) getApplicationContext()).logout();
-//				restart();
-//				//showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
-//			}
-//		});
-
 		University u = UniversitiesDataModel.getSavedUniversity(this);
 		TextView universityText = (TextView) actionBarView.findViewById(R.id.university_name);
 		universityText.setText(u.getTitle());
@@ -279,6 +271,15 @@ public class HomeActivity extends AbsActivity {
 		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.user_name), FontHelper.FONT.EXO2_LIGHT);
 		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.login_button), FontHelper.FONT.EXO_MEDIUM);
 
+	}
+
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
+			if (mDrawerLayout != null) {
+				mDrawerLayout.openDrawer(Gravity.LEFT);
+			}
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 
 	public void initUser() {

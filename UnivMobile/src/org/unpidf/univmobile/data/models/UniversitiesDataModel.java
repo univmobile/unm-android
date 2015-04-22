@@ -76,7 +76,7 @@ public class UniversitiesDataModel extends AbsDataModel {
 		mReadRegionsOperation = null;
 
 		mListener = listener;
-		mReadUniversitiesOperation = new ReadUniversitiesOperation(mContext, mUniversitiesListener, r.getUniversityUrl());
+		mReadUniversitiesOperation = new ReadUniversitiesOperation(mContext, mUniversitiesListener, r.getId());
 		mReadUniversitiesOperation.startOperation();
 	}
 
