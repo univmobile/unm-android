@@ -279,7 +279,7 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/loading"
+		android:id="@+id/loading_newPoi"
 		android:background="#a000"
 		android:visibility="gone"
 		android:clickable="true">

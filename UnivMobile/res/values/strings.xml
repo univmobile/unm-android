@@ -15,6 +15,8 @@
 	<string name="home">Accueil</string>
     <string name="yes">Oui</string>
     <string name="no">Annuler</string>
+	<string name="do_you_want_to_post_poi">Êtes vous sûr de vouloir poster le bon plan ?</string>
+	<string name="do_you_want_to_post_comment">Êtes vous sûr de vouloir poster le commentaire ?</string>
 
 	<!-- Select region and university -->
 	<string name="select_region">Choisir sa région</string>

@@ -149,9 +149,15 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 		url = url.replaceAll("\\s", "");
 		Log.d(TAG, "Operations " + this.getClass().getSimpleName() + " request url: " + url);
 		HttpUriRequest request = null;
+
+		Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 		switch (getRequestType()) {
 			case GET:
 				request = new HttpGet(url);
+				((HttpGet) request).setHeader("Content-type", "application/json");
+				if (login != null) {
+					((HttpGet) request).setHeader("Authentication-Token", login.getToken());
+				}
 				break;
 			case POST:
 				request = new HttpPost(url);
@@ -159,7 +165,6 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 				if (body != null) {
 					((HttpPost) request).setEntity(new StringEntity(body));
 					((HttpPost) request).setHeader("Content-type", "application/json");
-					Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 					if (login != null) {
 						((HttpPost) request).setHeader("Authentication-Token", login.getToken());
 					}
@@ -168,7 +173,6 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 			case DELETE:
 				request = new HttpDelete(url);
 				((HttpDelete) request).setHeader("Content-type", "application/json");
-				Login login = ((UnivMobileApp) mContext.getApplicationContext()).getLogin();
 				if (login != null) {
 					((HttpDelete) request).setHeader("Authentication-Token", login.getToken());
 				}

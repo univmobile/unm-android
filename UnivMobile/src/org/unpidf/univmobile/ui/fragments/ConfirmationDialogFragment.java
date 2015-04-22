@@ -47,7 +47,7 @@ public class ConfirmationDialogFragment extends DialogFragment {
         public void onClick(DialogInterface dialog, int which) {
             dismiss();
             if (getActivity() instanceof HomeActivity) {
-                ((HomeActivity) getActivity()).showSplashScreen();
+                ((HomeActivity) getActivity()).onPositiveButtonClicked();
             }
         }
     };

@@ -3,6 +3,7 @@ package org.unpidf.univmobile.ui.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -304,8 +305,16 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 
 		@Override
-		public void postPoi(Category cat, String name, String address, String city, String phone, String mail, String description) {
-			mModel.postPoi(cat, name, address, city, phone, mail, description);
+		public void postPoi(final Category cat, final  String name, final  String address, final  String city, final  String phone, final  String mail, final String description) {
+
+			Runnable r = new Runnable() {
+				@Override
+				public void run() {
+					getView().findViewById(R.id.loading_newPoi).setVisibility(View.VISIBLE);
+					mModel.postPoi(cat, name, address, city, phone, mail, description);
+				}
+			};
+			showConfirmDialog(getString(R.string.do_you_want_to_post_poi), r);
 		}
 	};
 
@@ -364,8 +373,19 @@ public class GeoCampusFragment extends AbsFragment {
 
 	private PoiDetailsView.PoiDetailsInterface mPoiDetailsInterface = new PoiDetailsView.PoiDetailsInterface() {
 		@Override
-		public void postComment(String comment, Poi poi) {
-			mModel.postComment(comment, poi);
+		public void postComment(final String comment, final Poi poi) {
+
+
+			Runnable r = new Runnable() {
+				@Override
+				public void run() {
+
+					getView().findViewById(R.id.loading_poi_details).setVisibility(View.VISIBLE);
+					mModel.postComment(comment, poi);
+				}
+			};
+			showConfirmDialog(getString(R.string.do_you_want_to_post_comment), r);
+
 		}
 
 		@Override
@@ -533,6 +553,21 @@ public class GeoCampusFragment extends AbsFragment {
 		public void poiPosted() {
 			AddNewPoiView view = (AddNewPoiView) getView().findViewById(R.id.new_poi_view);
 			view.hide();
+
+			int root = 1;
+			switch (mTabPosition) {
+				case 0:
+					root = mModel.ROOT_CAT_1;
+					break;
+				case 1:
+					root = mModel.ROOT_CAT_2;
+					break;
+				case 2:
+					root = mModel.ROOT_CAT_3;
+					break;
+			}
+
+			refreshPois(null, root);
 		}
 
 		@Override
@@ -543,9 +578,6 @@ public class GeoCampusFragment extends AbsFragment {
 
 		@Override
 		public void showAuthorizationError(String error) {
-			// DialogFragment.show() will take care of adding the fragment
-			// in a transaction.  We also want to remove any currently showing
-			// dialog, so make our own transaction and take care of that here.
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 			if (prev != null) {
@@ -570,6 +602,21 @@ public class GeoCampusFragment extends AbsFragment {
 		}
 	};
 
+
+	private void showConfirmDialog(String message, Runnable runnable) {
+
+		((HomeActivity) getActivity()).setPositiveButtonRunnable(runnable);
+
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			ft.remove(prev);
+		}
+		ft.addToBackStack(null);
+
+		ConfirmationDialogFragment  dialogFragment = ConfirmationDialogFragment.newInstance("", message);
+		dialogFragment.show(ft, "dialog");
+	}
 
 	@Override
 	public void onPause() {

@@ -145,7 +145,7 @@ public class PoiDetailsView extends LinearLayout {
 
 	public void loadFinished(boolean isBookmarked) {
 		initBookmark(isBookmarked);
-		findViewById(R.id.loading).setVisibility(View.GONE);
+		findViewById(R.id.loading_poi_details).setVisibility(View.GONE);
 	}
 
 	private void initBookmark(boolean isBookmarked) {
@@ -604,7 +604,7 @@ public class PoiDetailsView extends LinearLayout {
 		@Override
 		public void onClick(View v) {
 			if (mPoiDetailsInterface != null) {
-				findViewById(R.id.loading).setVisibility(View.VISIBLE);
+				findViewById(R.id.loading_poi_details).setVisibility(View.VISIBLE);
 				mPoiDetailsInterface.removeBookmark(mPoi);
 			}
 		}
@@ -613,7 +613,7 @@ public class PoiDetailsView extends LinearLayout {
 		@Override
 		public void onClick(View v) {
 			if (mPoiDetailsInterface != null) {
-				findViewById(R.id.loading).setVisibility(View.VISIBLE);
+				findViewById(R.id.loading_poi_details).setVisibility(View.VISIBLE);
 				mPoiDetailsInterface.postBookmark(mPoi);
 			}
 		}
@@ -624,7 +624,6 @@ public class PoiDetailsView extends LinearLayout {
 			if (mSelectedTab == 2) {
 				if (mPoiDetailsInterface != null) {
 					if (mCommentsFooter != null && mCommentsFooter.getText().length() > 3) {
-						findViewById(R.id.loading).setVisibility(View.VISIBLE);
 						mPoiDetailsInterface.postComment(mCommentsFooter.getText().toString(), mPoi);
 					}
 				}

@@ -137,7 +137,7 @@ public class AddNewPoiView extends RelativeLayout {
 					return;
 				}
 
-				findViewById(R.id.loading).setVisibility(View.VISIBLE);
+
 				mAddNewPoiViewInterface.postPoi(mCat, name, address, city, phone, mail, description);
 			}
 		}
@@ -155,7 +155,7 @@ public class AddNewPoiView extends RelativeLayout {
 
 	public void loadFinished() {
 
-		findViewById(R.id.loading).setVisibility(View.GONE);
+		findViewById(R.id.loading_newPoi).setVisibility(View.GONE);
 	}
 
 	private void clearViews() {
