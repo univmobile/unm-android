@@ -626,7 +626,7 @@ public class HomeActivity extends AbsActivity {
 			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 			if (scanResult != null && scanResult.getContents() != null) {
 				Uri data = Uri.parse(scanResult.getContents());
-				String id = data.getQueryParameter("ID");
+				String id = data.getQueryParameter("im");
 				if (id != null) {
 					id = id.replaceAll("\\s", "");
 					id = id.replaceAll("\\n", "");
