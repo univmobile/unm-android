@@ -1,5 +1,7 @@
 package org.unpidf.univmobile.ui.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -65,9 +67,10 @@ public class MyWebViewFragment extends WebViewFragment {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			view.loadUrl(url);
+			if (url.endsWith(".pdf")) {
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+			}
 			return true;
 		}
-
-
 	};
 }
