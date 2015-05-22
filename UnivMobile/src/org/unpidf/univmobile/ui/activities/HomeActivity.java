@@ -110,6 +110,10 @@ public class HomeActivity extends AbsActivity {
 		initNotifications();
 	}
 
+	public void logout() {
+		((UnivMobileApp)getApplication()).logout();
+		restart();
+	}
 	public void restart() {
 		Intent i = new Intent(HomeActivity.this, HomeActivity.class);
 		startActivity(i);

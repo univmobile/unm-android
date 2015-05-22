@@ -45,6 +45,21 @@
 			android:drawablePadding="5dp"
 			android:layout_marginBottom="20dp"/>
 
+		<!-- exo regular -->
+		<TextView
+			android:id="@+id/logout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="#4Dffffff"
+			android:text="Se déconnecter"
+			android:paddingLeft="@dimen/horizontal"
+			android:paddingRight="@dimen/horizontal"
+			android:textSize="@dimen/content_size"
+			android:gravity="right"
+			android:drawableRight="@drawable/ic_dissconnect"
+			android:drawablePadding="5dp"
+			android:layout_marginBottom="20dp"/>
+
 		<org.unpidf.univmobile.ui.views.MediaListView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

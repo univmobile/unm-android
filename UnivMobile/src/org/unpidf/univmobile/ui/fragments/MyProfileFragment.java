@@ -75,6 +75,7 @@ public class MyProfileFragment extends AbsFragment {
 		laodData();
 
 		view.findViewById(R.id.edit).setOnClickListener(mChangeUnivListener);
+		view.findViewById(R.id.logout).setOnClickListener(mOnLogoutClickLisnter);
 		//init fonts
 		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
 		helper.loadFont((android.widget.TextView) view.findViewById(R.id.name), FontHelper.FONT.EXO_REGULAR);
@@ -84,12 +85,15 @@ public class MyProfileFragment extends AbsFragment {
 
 	private void laodData() {
 		UnivMobileApp ap = (UnivMobileApp) getActivity().getApplication();
-		TextView name = (TextView) getView().findViewById(R.id.name);
+		TextView name = (TextView) getView().findViewById(R.id.logout);
+		View logout = getView().findViewById(R.id.name);
 		if (ap.getLogin() != null) {
 			name.setVisibility(View.VISIBLE);
 			name.setText(ap.getLogin().getName());
+			logout.setVisibility(View.VISIBLE);
 		} else {
 			name.setVisibility(View.GONE);
+			logout.setVisibility(View.GONE);
 		}
 
 		mModel = new MyProfileDataModel(getActivity(), mMyProfileDataModelInterface);
@@ -117,6 +121,13 @@ public class MyProfileFragment extends AbsFragment {
 		laodData();
 
 	}
+
+	private View.OnClickListener mOnLogoutClickLisnter = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			((HomeActivity) getActivity()).logout();
+		}
+	};
 
 	private View.OnClickListener mChangeUnivListener = new View.OnClickListener() {
 		@Override
