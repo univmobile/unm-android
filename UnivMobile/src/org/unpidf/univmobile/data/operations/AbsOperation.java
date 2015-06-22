@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
+import org.unpidf.univmobile.data.ssl.SslHackUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 
 	public static final String TAG = "UnivMobile";
 
-	protected static final String BASE_URL = "https://univmobile-dev.univ-paris1.fr/testSP/";
+	protected static final String BASE_URL = "https://univmobile-dev.univ-paris1.fr/admin/";
 	protected static final String BASE_URL_API = BASE_URL + "api/";
 
 	protected enum REQUEST {POST, GET, DELETE}
@@ -47,6 +48,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 	public AbsOperation(Context c, OperationListener listener) {
 		mContext = c;
 		mListener = listener;
+		SslHackUtils.trustAllHosts();
 	}
 
 	public void startOperation() {
