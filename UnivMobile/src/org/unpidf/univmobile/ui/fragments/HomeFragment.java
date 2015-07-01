@@ -408,13 +408,14 @@ public class HomeFragment extends AbsFragment {
 		public void updateNews(List<News> news) {
 			mSwipeRefreshLayout.setRefreshing(false);
 			getView().findViewById(R.id.news_container).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
 			populateNews(news);
 		}
 
 		@Override
 		public void updatePois(List<Poi> pois) {
 			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			//populatePois(pois);
+			populatePois(pois);
 
 		}
 

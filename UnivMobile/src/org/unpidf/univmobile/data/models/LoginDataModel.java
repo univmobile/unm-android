@@ -23,7 +23,7 @@ public class LoginDataModel extends AbsDataModel {
 	public static final String API_KEY = "toto";
 
 	public static final String TEST_URL_SHIBBOLETH = "https://univmobile-dev.univ-paris1.fr/";
-	public static String TEST_URL_SHIBBOLETH_SUCCESS = TEST_URL_SHIBBOLETH  + "testSP/success";
+	public static String TEST_URL_SHIBBOLETH_SUCCESS = TEST_URL_SHIBBOLETH  + "admin/success";
 	private Context mContext;
 
 	private StandardLoginDataModelListener mLoginDataModelListener;
@@ -88,7 +88,7 @@ public class LoginDataModel extends AbsDataModel {
 			University u = UniversitiesDataModel.getSavedUniversity(mContext);
 
 
-			String target = TEST_URL_SHIBBOLETH + "testSP/?loginToken=" + token + "&callback=" + URLEncoder.encode(TEST_URL_SHIBBOLETH_SUCCESS, "UTF-8") + ".sso";
+			String target = TEST_URL_SHIBBOLETH + "admin/?loginToken=" + token + "&callback=" + URLEncoder.encode(TEST_URL_SHIBBOLETH_SUCCESS, "UTF-8") + ".sso";
 
 			//String provider = "https://idp-test.univ-paris1.fr";
 			return TEST_URL_SHIBBOLETH + "Shibboleth.sso/Login?target=" + URLEncoder.encode(target, "UTF-8") + "&entityID=" + URLEncoder.encode(u.getMobileShibbolethUrl(), "UTF-8");
