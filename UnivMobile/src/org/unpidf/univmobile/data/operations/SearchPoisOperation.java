@@ -47,8 +47,8 @@ public class SearchPoisOperation extends AbsOperation<List<Poi>> {
 			Poi poi = new Gson().fromJson(poiJson.toString(), Poi.class);
 
 			JSONObject links = poiJson.getJSONObject("_links");
-			JSONObject comments = links.getJSONObject("comments");
-			poi.setCommentsUrl(comments.getString("href"));
+			//JSONObject comments = links.getJSONObject("comments");
+			//poi.setCommentsUrl(comments.getString("href"));
 			pois.add(poi);
 		}
 		return pois;
