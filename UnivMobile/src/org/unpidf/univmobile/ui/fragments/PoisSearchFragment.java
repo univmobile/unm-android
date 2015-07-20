@@ -33,141 +33,145 @@ import java.util.List;
  */
 public class PoisSearchFragment extends AbsFragment {
 
-	private SearchPoisDataModel mModel;
-	private SearchResultsAdapter mAdapter;
+    private SearchPoisDataModel mModel;
+    private SearchResultsAdapter mAdapter;
 
-	private int mSelectedTab;
+    private int mSelectedTab;
 
-	public static PoisSearchFragment newInstance(int selectedTab) {
+    public static PoisSearchFragment newInstance(int selectedTab) {
 
-		MediaFragment fragment = new MediaFragment();
-		Bundle args = new Bundle();
-		args.putInt("Root", selectedTab);
-		fragment.setArguments(args);
-		return new PoisSearchFragment();
-	}
+        MediaFragment fragment = new MediaFragment();
+        Bundle args = new Bundle();
+        args.putInt("Root", selectedTab);
+        fragment.setArguments(args);
+        return new PoisSearchFragment();
+    }
 
-	public PoisSearchFragment() {
-		// Required empty public constructor
-	}
+    public PoisSearchFragment() {
+        // Required empty public constructor
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			mSelectedTab = getArguments().getInt("Root");
-		}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mSelectedTab = getArguments().getInt("Root");
+        }
 
-		int cat = getCatByTab(mSelectedTab);
-		boolean needUniv = mSelectedTab == 1 ? true : false;
-		mModel = new SearchPoisDataModel(getActivity(), mDataModelListener, needUniv, cat);
-	}
+        int cat = getCatByTab(mSelectedTab);
+        boolean needUniv = mSelectedTab == 1 ? true : false;
+        mModel = new SearchPoisDataModel(getActivity(), mDataModelListener, needUniv, cat);
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_pois_search, container, false);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_pois_search, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-		EditText search_value = (EditText) view.findViewById(R.id.search_value);
-		search_value.addTextChangedListener(mTextWatcher);
-		//init fonts
-		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
-		helper.loadFont(search_value, FontHelper.FONT.EXO2_REGULAR);
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.title), FontHelper.FONT.EXO2_LIGHT);
+        EditText search_value = (EditText) view.findViewById(R.id.search_value);
+        search_value.addTextChangedListener(mTextWatcher);
+        //init fonts
+        FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
+        helper.loadFont(search_value, FontHelper.FONT.EXO2_REGULAR);
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.title), FontHelper.FONT.EXO2_LIGHT);
 
-		ListView list = (ListView) view.findViewById(R.id.list);
+        ListView list = (ListView) view.findViewById(R.id.list);
 
-		mAdapter = new SearchResultsAdapter(getActivity(), mModel.getPois());
-		list.setAdapter(mAdapter);
-		list.setOnItemClickListener(mOnItemClickListener);
+        mAdapter = new SearchResultsAdapter(getActivity(), mModel.getPois());
+        list.setAdapter(mAdapter);
+        list.setOnItemClickListener(mOnItemClickListener);
 
-		view.findViewById(R.id.clear).setOnClickListener(mClearClickListener);
-		view.findViewById(R.id.back).setOnClickListener(mBackClickListener);
-	}
+        view.findViewById(R.id.clear).setOnClickListener(mClearClickListener);
+        view.findViewById(R.id.back).setOnClickListener(mBackClickListener);
+    }
 
-	private TextWatcher mTextWatcher = new TextWatcher() {
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-		}
+        }
 
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			mModel.searchPois(s.toString());
-		}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mModel.searchPois(s.toString());
+        }
 
-		@Override
-		public void afterTextChanged(Editable s) {
+        @Override
+        public void afterTextChanged(Editable s) {
 
-		}
-	};
+        }
+    };
 
-	private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-			HomeActivity a = (HomeActivity) getActivity();
-			int cat = getCatByTab(mSelectedTab);
-			a.showPoi(mAdapter.getItem(position), cat, true);
-		}
-	};
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-	private int getCatByTab(int tab) {
-		int cat = 1;
-		switch (mSelectedTab) {
-			case 0:
-				cat = GeoDataModel.ROOT_CAT_1;
-				break;
-			case 1:
-				cat = GeoDataModel.ROOT_CAT_2;
-				break;
-			case 2:
-				cat = GeoDataModel.ROOT_CAT_3;
-				break;
-		}
-		return cat;
-	}
+            HomeActivity a = (HomeActivity) getActivity();
+            int cat = getCatByTab(mSelectedTab);
+            a.showPoi(mAdapter.getItem(position), cat, true);
+        }
+    };
 
-	private View.OnClickListener mClearClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			EditText edit = (EditText) getView().findViewById(R.id.search_value);
-			edit.setText("");
-		}
-	};
+    private int getCatByTab(int tab) {
+        int cat = 1;
+        switch (mSelectedTab) {
+            case 0:
+                cat = GeoDataModel.ROOT_CAT_1;
+                break;
+            case 1:
+                cat = GeoDataModel.ROOT_CAT_2;
+                break;
+            case 2:
+                cat = GeoDataModel.ROOT_CAT_3;
+                break;
+        }
+        return cat;
+    }
 
-	private View.OnClickListener mBackClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			EditText myEditText = (EditText) getView().findViewById(R.id.search_value);
-			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
+    private View.OnClickListener mClearClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            EditText edit = (EditText) getView().findViewById(R.id.search_value);
+            edit.setText("");
+        }
+    };
 
-			getActivity().onBackPressed();
-		}
-	};
+    private View.OnClickListener mBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            EditText myEditText = (EditText) getView().findViewById(R.id.search_value);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(myEditText.getWindowToken(), 0);
 
-	private SearchPoisDataModel.SearchPoisModelListener mDataModelListener = new SearchPoisDataModel.SearchPoisModelListener() {
-		@Override
-		public void showSearchResults(List<Poi> pois) {
+            getActivity().onBackPressed();
+        }
+    };
 
-			mAdapter.clear();
-			if (pois != null) {
+    private SearchPoisDataModel.SearchPoisModelListener mDataModelListener = new SearchPoisDataModel.SearchPoisModelListener() {
+        @Override
+        public void showSearchResults(List<Poi> pois) {
 
-				mAdapter.addAll(pois);
-			}
-			mAdapter.notifyDataSetChanged();
-		}
+            mAdapter.clear();
+            if (pois != null) {
+
+                mAdapter.addAll(pois);
+            }
+            mAdapter.notifyDataSetChanged();
+        }
 
 
-		@Override
-		public void onError(ErrorEntity mError) {
-			handleError(mError);
-		}
-	};
+        @Override
+        public void onError(ErrorEntity mError) {
+            handleError(mError);
+        }
+    };
 }

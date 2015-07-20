@@ -402,7 +402,7 @@ public class GeoDataModel extends AbsDataModel {
 			}
 			mCommentsPoiId = poi.getId();
 
-			mCommentsOperation = new ReadCommentsOperation(mContext, mCommentsListener, poi.getCommentsUrl());
+			mCommentsOperation = new ReadCommentsOperation(mContext, mCommentsListener, poi.getId());
 			//mCommentsOperation = new ReadCommentsOperation(mContext, mCommentsListener, "http://vps111534.ovh.net/unm-backend/api/comments/search/findByPoiOrderByCreatedOnDesc?poiId=15");
 			mCommentsOperation.startOperation();
 		}

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.unpidf.univmobile.data.entities.Comment;
 import org.unpidf.univmobile.data.entities.Poi;
+import org.unpidf.univmobile.data.models.GeoDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +18,13 @@ import java.util.List;
  * Created by rviewniverse on 2015-02-09.
  */
 public class ReadCommentsOperation extends AbsOperation<List<Comment>> {
-	private String mUrl;
 
-	public ReadCommentsOperation(Context c, OperationListener listener, String url) {
+    private static final String URL = BASE_URL_API + "comments/search/findByPoiOrderByCreatedOnDesc?poiId=";
+	private int mPoiID;
+
+	public ReadCommentsOperation(Context c, OperationListener listener, int id) {
 		super(c, listener);
-		mUrl = url;
+        mPoiID = id;
 	}
 
 	@Override
@@ -43,7 +46,7 @@ public class ReadCommentsOperation extends AbsOperation<List<Comment>> {
 	@Override
 	protected String getOperationUrl(int page) {
 		//String url = "http://vps111534.ovh.net/unm-backend/api/comments";
-		String url = mUrl;
+		String url = URL + mPoiID;
 
 		if (page != 0) {
 			url += "&page=" + page;
