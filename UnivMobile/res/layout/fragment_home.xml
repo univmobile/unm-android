@@ -183,6 +183,7 @@
 					</RelativeLayout>
 
 					<View
+                        android:id="@+id/separator1"
 						android:layout_width="2dp"
 						android:layout_height="match_parent"
 						android:background="@color/geo_gray_dark"/>
@@ -204,6 +205,7 @@
 					</RelativeLayout>
 
 					<View
+                        android:id="@+id/separator2"
 						android:layout_width="2dp"
 						android:layout_height="match_parent"
 						android:background="@color/geo_gray_dark"/>

@@ -71,7 +71,7 @@ public class GeoCampusFragment extends AbsFragment {
 	private static final String ARG_TAB_ID = "tab_id";
 	private static final String ARG_IMAGE_MAP_ID = "arg_image_map_id";
 	private static final String ARG_POI_ID = "arg_poi_id";
-	private static final String ARG_CATEGORY_ID = "arg_category_id";
+    private static final String ARG_CATEGORY_ID = "arg_category_id";
 	private MapView mMapView;
 	private GoogleMap mMap;
 
@@ -426,10 +426,11 @@ public class GeoCampusFragment extends AbsFragment {
 					root = mModel.ROOT_CAT_3;
 					break;
 			}
+
 			GeoCampusCategoriesView v = (GeoCampusCategoriesView) getView().findViewById(R.id.categories);
-			if (!UniversitiesDataModel.getSavedUniversity(getActivity()).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
-				v.setTabsCount(1);
-			}
+			//if (!UniversitiesDataModel.getSavedUniversity(getActivity()).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
+				v.setTabs(((HomeActivity)getActivity()).mGeoTabs);
+			//}
 
 			v.populate(mModel.getCategories1(), mModel.getCategories2(), mModel.getCategories3(), mModel.ROOT_CAT_1, mModel.ROOT_CAT_2, mModel.ROOT_CAT_3, mTabPosition);
 

@@ -8,6 +8,7 @@ import android.os.Handler;
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 
+import io.fabric.sdk.android.Fabric;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
 import org.unpidf.univmobile.data.repositories.SharedPreferencesRepo;
@@ -32,7 +33,7 @@ public class UnivMobileApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		FlurryAgent.init(this, getString(R.string.flurry_key));
-		Crashlytics.start(this);
+		Fabric.with(this, new Crashlytics());
 		initLogin();
 	}
 
