@@ -32,8 +32,8 @@ public class UnivMobileApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		FlurryAgent.init(this, getString(R.string.flurry_key));
 		Fabric.with(this, new Crashlytics());
+		FlurryAgent.init(this, getString(R.string.flurry_key));
 		initLogin();
 	}
 

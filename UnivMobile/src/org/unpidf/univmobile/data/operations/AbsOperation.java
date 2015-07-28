@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.Login;
+import org.unpidf.univmobile.data.ssl.SslHackUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 	public AbsOperation(Context c, OperationListener listener) {
 		mContext = c;
 		mListener = listener;
+		SslHackUtils.trustAllHosts();
 	}
 
 	public void startOperation() {
