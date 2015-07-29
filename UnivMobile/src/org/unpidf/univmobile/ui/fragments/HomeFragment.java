@@ -256,19 +256,21 @@ public class HomeFragment extends AbsFragment {
                 getView().findViewById(R.id.cat_3).setVisibility(View.GONE);
             }
         } else {
-            mMapView.setVisibility(View.GONE);
+            getView().findViewById(R.id.mapview).setVisibility(View.GONE);
             getView().findViewById(R.id.tabs).setVisibility(View.GONE);
+            getView().findViewById(R.id.map_title).setVisibility(View.GONE);
+
         }
 
-        if((geoTabs & 1) != 1) {
+        if ((geoTabs & 1) != 1) {
             getView().findViewById(R.id.cat_1).setVisibility(View.GONE);
             getView().findViewById(R.id.separator1).setVisibility(View.GONE);
         }
-        if((geoTabs & 2) != 2) {
+        if ((geoTabs & 2) != 2) {
             getView().findViewById(R.id.cat_2).setVisibility(View.GONE);
             getView().findViewById(R.id.separator2).setVisibility(View.GONE);
         }
-        if((geoTabs & 4) != 4) {
+        if ((geoTabs & 4) != 4) {
             getView().findViewById(R.id.cat_3).setVisibility(View.GONE);
             getView().findViewById(R.id.separator2).setVisibility(View.GONE);
         }
@@ -282,7 +284,7 @@ public class HomeFragment extends AbsFragment {
             getView().findViewById(R.id.news_container).setVisibility(View.GONE);
         } else {
             ImageView mainArticleImage = (ImageView) getView().findViewById(R.id.main_article_image);
-            mainArticleImage.setImageResource(R.drawable.ic_launcher);
+            //mainArticleImage.setImageResource(R.drawable.ic_launcher);
             if (news.get(0).getImageUrl() != null) {
                 Picasso.with(getActivity()).load(news.get(0).getImageUrl()).into(mainArticleImage);
             }
@@ -428,6 +430,7 @@ public class HomeFragment extends AbsFragment {
 
         @Override
         public void updatePois(List<Poi> pois) {
+            mSwipeRefreshLayout.setRefreshing(false);
             getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
             populatePois(pois);
 
@@ -435,6 +438,7 @@ public class HomeFragment extends AbsFragment {
 
         @Override
         public void showErrorMessage(ErrorEntity error) {
+            mSwipeRefreshLayout.setRefreshing(false);
             getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
             getView().findViewById(R.id.news_container).setVisibility(View.GONE);
 
@@ -442,7 +446,9 @@ public class HomeFragment extends AbsFragment {
 
         @Override
         public void onError(ErrorEntity mError) {
+            mSwipeRefreshLayout.setRefreshing(false);
             getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+            getView().findViewById(R.id.news_container).setVisibility(View.GONE);
             handleError(mError);
         }
     };

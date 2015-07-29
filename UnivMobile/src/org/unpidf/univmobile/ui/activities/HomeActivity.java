@@ -600,7 +600,7 @@ public class HomeActivity extends AbsActivity {
         mOnBackClicked = false;
         FragmentManager manager = getFragmentManager();
         Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
-        if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
+       // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
             FragmentTransaction transaction = manager.beginTransaction();
             if (add) {
                 transaction.add(R.id.main_content, fragment, tag);
@@ -611,7 +611,7 @@ public class HomeActivity extends AbsActivity {
             }
 
             transaction.commit();
-        }
+      //  }
 
         if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
