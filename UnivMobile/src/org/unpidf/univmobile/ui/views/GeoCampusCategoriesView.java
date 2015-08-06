@@ -81,13 +81,21 @@ public class GeoCampusCategoriesView extends RelativeLayout {
 		mCategoriesInterface = listener;
 	}
 
-	public void setTabsCount(int tabsCount) {
-		if (tabsCount == 1) {
-			findViewById(R.id.cat_2).setVisibility(View.GONE);
-			findViewById(R.id.cat_3).setVisibility(View.GONE);
-			findViewById(R.id.separator1).setVisibility(View.GONE);
-			findViewById(R.id.separator2).setVisibility(View.GONE);
-		}
+	public void setTabs(int geoTabs) {
+
+        if((geoTabs & 1) != 1) {
+            findViewById(R.id.cat_1).setVisibility(View.GONE);
+            findViewById(R.id.separator1).setVisibility(View.GONE);
+        }
+        if((geoTabs & 2) != 2) {
+            findViewById(R.id.cat_2).setVisibility(View.GONE);
+            findViewById(R.id.separator2).setVisibility(View.GONE);
+        }
+        if((geoTabs & 4) != 4) {
+            findViewById(R.id.cat_3).setVisibility(View.GONE);
+            findViewById(R.id.separator2).setVisibility(View.GONE);
+        }
+
 	}
 
 

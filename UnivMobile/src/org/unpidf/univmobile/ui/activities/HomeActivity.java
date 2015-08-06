@@ -1,7 +1,6 @@
 package org.unpidf.univmobile.ui.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,20 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,8 +31,6 @@ import com.android.volley.toolbox.Volley;
 import com.flurry.android.FlurryAgent;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
@@ -64,444 +56,465 @@ import org.unpidf.univmobile.ui.fragments.MyProfileFragment;
 import org.unpidf.univmobile.ui.fragments.MyWebViewFragment;
 import org.unpidf.univmobile.ui.fragments.NotificationsFragment;
 import org.unpidf.univmobile.ui.fragments.ShibbolethLoginFragment;
-import org.unpidf.univmobile.ui.fragments.SimpleDialogFragment;
 import org.unpidf.univmobile.ui.fragments.StandartLoginFragment;
 import org.unpidf.univmobile.ui.fragments.UniversityNewsFragment;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.widgets.AnimatedExpandableListView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AbsActivity {
 
-	private static final int MY_PROFILE_MENU_ID = 15;
-	private static final int MY_LIBRARY_MENU_ID = 16;
-	private static final int MY_MEDIA_MENU_ID = 17;
+    private static final int MY_PROFILE_MENU_ID = 15;
+    private static final int MY_LIBRARY_MENU_ID = 16;
+    private static final int MY_MEDIA_MENU_ID = 17;
 
-	private static final int GEO_MENU_ID = 20;
-	private static final int GEO_UNIV_MENU_ID = 21;
-	private static final int BONPLAN_MENU_ID = 22;
+    private static final int GEO_MENU_ID = 20;
+    private static final int GEO_UNIV_MENU_ID = 21;
+    private static final int BONPLAN_MENU_ID = 22;
 
-	public static final String EXTRA_IMAGE_MAP_ID = "extra_image_map_id";
-	public static final String EXTRA_POI_ID = "extra_poi_id";
-	private ActionBar actionBar;
-	private DrawerLayout mDrawerLayout;
-	private AnimatedExpandableListView mDrawerList;
+    public static final String EXTRA_IMAGE_MAP_ID = "extra_image_map_id";
+    public static final String EXTRA_POI_ID = "extra_poi_id";
+    private ActionBar actionBar;
+    private DrawerLayout mDrawerLayout;
+    private AnimatedExpandableListView mDrawerList;
+    private NavigationDrawerAdapter mNavigationDrawerAdapter;
 
-	private NotificationsDataModel mNotificationsDataModel;
-	private MenusDataModel mMenusDataModel;
+    private NotificationsDataModel mNotificationsDataModel;
+    private MenusDataModel mMenusDataModel;
 
-	private Runnable mDialogPositiveRunnable;
-	private boolean mOnBackClicked = false;
+    private Runnable mDialogPositiveRunnable;
+    private boolean mOnBackClicked = false;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_home);
-		moveDrawerToTop();
-		initActionBar();
-		initDrawer();
-		initNotifications();
-	}
+    public int mGeoTabs = 0; //used to identicate which tabs should be shown. 1 - first tab. 2 - second tab. 4 - third tab
 
-	public void logout() {
-		((UnivMobileApp)getApplication()).logout();
-		restart();
-	}
-	public void restart() {
-		Intent i = new Intent(HomeActivity.this, HomeActivity.class);
-		startActivity(i);
-		finish();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        moveDrawerToTop();
+        initActionBar();
+        initDrawer();
+        initNotifications();
+    }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (mNotificationsDataModel != null) {
-			mNotificationsDataModel.clear();
-			mNotificationsDataModel = null;
-		}
+    public void logout() {
+        ((UnivMobileApp) getApplication()).logout();
+        restart();
+    }
 
+    public void restart() {
+        Intent i = new Intent(HomeActivity.this, HomeActivity.class);
+        startActivity(i);
+        finish();
+    }
 
-		if (mMenusDataModel != null) {
-			mMenusDataModel.clear();
-			mMenusDataModel = null;
-		}
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		FlurryAgent.onStartSession(this, getString(R.string.flurry_key));
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-	}
-
-	private void moveDrawerToTop() {
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.fragment_navigation_drawer, null); // "null" is important.
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mNotificationsDataModel != null) {
+            mNotificationsDataModel.clear();
+            mNotificationsDataModel = null;
+        }
 
 
-		// HACK: "steal" the first child of decor view
-		ViewGroup decor = (ViewGroup) getWindow().getDecorView();
-		View child = decor.getChildAt(0);
-		decor.removeView(child);
-		LinearLayout container = (LinearLayout) drawer.findViewById(R.id.drawer_content); // This is the container we defined just now.
-		container.addView(child, 0);
-		drawer.findViewById(R.id.drawer).setPadding(0, getStatusBarHeight(), 0, 0);
+        if (mMenusDataModel != null) {
+            mMenusDataModel.clear();
+            mMenusDataModel = null;
+        }
+    }
 
-		// Make the drawer replace the first child
-		decor.addView(drawer);
-		showFirstFragment();
-	}
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FlurryAgent.onStartSession(this, getString(R.string.flurry_key));
+    }
 
-	public int getStatusBarHeight() {
-		int result = 0;
-		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if (resourceId > 0) {
-			result = getResources().getDimensionPixelSize(resourceId);
-		}
-		return result;
-	}
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
 
-	private void initNotifications() {
-		mNotificationsDataModel = new NotificationsDataModel(this);
-		mNotificationsDataModel.getNotifications(new NotificationsDataModel.NotificationsModelListener() {
-			@Override
-			public void showLoadingIndicator() {
-			}
-
-			@Override
-			public void notificationsReceived(int newNotificationsCount, List<NotificationEntity> notifications) {
-				TextView countView = (TextView) getActionBar().getCustomView().findViewById(R.id.notifications_count);
-				if (countView != null) {
-					if (newNotificationsCount == 0) {
-						countView.setVisibility(View.GONE);
-					} else {
-						countView.setVisibility(View.VISIBLE);
-						countView.setText(Integer.toString(newNotificationsCount));
-					}
-				}
-			}
-
-			@Override
-			public void onError(ErrorEntity mError) {
-				handleError(mError);
-			}
-		});
-	}
-
-	public void resetNewNotificationsCount() {
-		TextView countView = (TextView) getActionBar().getCustomView().findViewById(R.id.notifications_count);
-		countView.setText("");
-		countView.setVisibility(View.GONE);
-	}
-
-	private void initActionBar() {
-		actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(false);
-		actionBar.setDisplayShowHomeEnabled(false);
-		actionBar.setHomeButtonEnabled(false);
-		actionBar.setDisplayShowCustomEnabled(true);
-		actionBar.setCustomView(R.layout.view_action_bar);
-		actionBar.setDisplayShowTitleEnabled(false);
+    private void moveDrawerToTop() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.fragment_navigation_drawer, null); // "null" is important.
 
 
-		View actionBarView = actionBar.getCustomView();
-		actionBarView.findViewById(R.id.ic_menu).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mDrawerLayout.openDrawer(Gravity.LEFT);
-			}
-		});
+        // HACK: "steal" the first child of decor view
+        ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+        View child = decor.getChildAt(0);
+        decor.removeView(child);
+        LinearLayout container = (LinearLayout) drawer.findViewById(R.id.drawer_content); // This is the container we defined just now.
+        container.addView(child, 0);
+        drawer.findViewById(R.id.drawer).setPadding(0, getStatusBarHeight(), 0, 0);
 
-		actionBarView.findViewById(R.id.ic_notifications).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showFragment(NotificationsFragment.newInstance(), NotificationsFragment.class.getName(), true);
-			}
-		});
+        // Make the drawer replace the first child
+        decor.addView(drawer);
+    }
 
-		actionBarView.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				University univ = UniversitiesDataModel.getSavedUniversity(HomeActivity.this);
-				if (univ.getMobileShibbolethUrl() == null) {
-					showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
-				} else {
-					showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
-				}
-			}
-		});
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
-		actionBarView.findViewById(R.id.university_container).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+    private void initNotifications() {
+        mNotificationsDataModel = new NotificationsDataModel(this);
+        mNotificationsDataModel.getNotifications(new NotificationsDataModel.NotificationsModelListener() {
+            @Override
+            public void showLoadingIndicator() {
+            }
 
-				mDialogPositiveRunnable = new Runnable() {
-					@Override
-					public void run() {
-						showSplashScreen();
-					}
-				};
-				FragmentTransaction ft = getFragmentManager().beginTransaction();
-				ConfirmationDialogFragment dialogFragment = ConfirmationDialogFragment.newInstance(getString(R.string.please_confirm), getString(R.string.do_you_want_to_change_unviersity));
-				dialogFragment.setCancelable(false);
-				dialogFragment.show(ft, "dialog");
-			}
-		});
+            @Override
+            public void notificationsReceived(int newNotificationsCount, List<NotificationEntity> notifications) {
+                TextView countView = (TextView) getActionBar().getCustomView().findViewById(R.id.notifications_count);
+                if (countView != null) {
+                    if (newNotificationsCount == 0) {
+                        countView.setVisibility(View.GONE);
+                    } else {
+                        countView.setVisibility(View.VISIBLE);
+                        countView.setText(Integer.toString(newNotificationsCount));
+                    }
+                }
+            }
 
+            @Override
+            public void onError(ErrorEntity mError) {
+                handleError(mError);
+            }
+        });
+    }
 
-		University u = UniversitiesDataModel.getSavedUniversity(this);
-		TextView universityText = (TextView) actionBarView.findViewById(R.id.university_name);
-		universityText.setText(u.getTitle());
+    public void resetNewNotificationsCount() {
+        TextView countView = (TextView) getActionBar().getCustomView().findViewById(R.id.notifications_count);
+        countView.setText("");
+        countView.setVisibility(View.GONE);
+    }
 
-		initUser();
-
-		//init fonts
-		FontHelper helper = ((UnivMobileApp) getApplicationContext()).getFontHelper();
-		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.notifications_count), FontHelper.FONT.EXO_BOLD);
-		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.university_name), FontHelper.FONT.EXO2_REGULAR);
-		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.greetings), FontHelper.FONT.EXO2_REGULAR);
-		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.user_name), FontHelper.FONT.EXO2_LIGHT);
-		helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.login_button), FontHelper.FONT.EXO_MEDIUM);
-
-	}
-
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			if (mDrawerLayout != null) {
-				mDrawerLayout.openDrawer(Gravity.LEFT);
-			}
-		}
-		return super.onKeyUp(keyCode, event);
-	}
-
-	public void initUser() {
-		View actionBarView = actionBar.getCustomView();
-		View loginContainer = actionBarView.findViewById(R.id.login_container);
-		View loginButton = actionBarView.findViewById(R.id.login_button);
-		Login login = ((UnivMobileApp) getApplicationContext()).getLogin();
-		if (login == null) {
-			loginButton.setVisibility(View.VISIBLE);
-			loginContainer.setVisibility(View.GONE);
-		} else {
-			loginButton.setVisibility(View.GONE);
-			loginContainer.setVisibility(View.VISIBLE);
-
-			TextView name = (TextView) actionBarView.findViewById(R.id.user_name);
-			name.setText(login.getName());
-		}
-	}
-
-	private void initDrawer() {
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-		University u = UniversitiesDataModel.getSavedUniversity(this);
-
-		final TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
-		final ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
-		final View loading = mDrawerLayout.findViewById(R.id.university_image_progress);
-
-		if (u.getLogoUrl() != null) {
-			home.setVisibility(View.INVISIBLE);
-			//logo.setVisibility(View.INVISIBLE);
-			loading.setVisibility(View.VISIBLE);
+    private void initActionBar() {
+        actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.view_action_bar);
+        actionBar.setDisplayShowTitleEnabled(false);
 
 
-			Resources r = getResources();
-			int pxWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, r.getDisplayMetrics());
-			int pxHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, r.getDisplayMetrics());
+        View actionBarView = actionBar.getCustomView();
+        actionBarView.findViewById(R.id.ic_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
 
-			ImageRequest ir = new ImageRequest(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl(), new Response.Listener<Bitmap>() {
+        actionBarView.findViewById(R.id.ic_notifications).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(NotificationsFragment.newInstance(), NotificationsFragment.class.getName(), true);
+            }
+        });
 
-				@Override
-				public void onResponse(Bitmap response) {
-					logo.setVisibility(View.VISIBLE);
-					logo.setImageBitmap(response);
-					loading.setVisibility(View.INVISIBLE);
+        actionBarView.findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                University univ = UniversitiesDataModel.getSavedUniversity(HomeActivity.this);
+                if (univ.getMobileShibbolethUrl() == null) {
+                    showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
+                } else {
+                    showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);
+                }
+            }
+        });
 
-				}
-			}, pxWidth, pxHeight, null, new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError volleyError) {
-					home.setVisibility(View.VISIBLE);
-					logo.setVisibility(View.INVISIBLE);
-					loading.setVisibility(View.INVISIBLE);
-				}
-			});
-			RequestQueue rq = Volley.newRequestQueue(this);
-			rq.add(ir);
-			rq.start();
-		} else {
-			home.setVisibility(View.VISIBLE);
-			logo.setVisibility(View.INVISIBLE);
-			loading.setVisibility(View.INVISIBLE);
+        actionBarView.findViewById(R.id.university_container).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-			((UnivMobileApp) getApplicationContext()).getFontHelper().loadFont(home, FontHelper.FONT.EXO_BOLD);
-		}
+                mDialogPositiveRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        showSplashScreen();
+                    }
+                };
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ConfirmationDialogFragment dialogFragment = ConfirmationDialogFragment.newInstance(getString(R.string.please_confirm), getString(R.string.do_you_want_to_change_unviersity));
+                dialogFragment.setCancelable(false);
+                dialogFragment.show(ft, "dialog");
+            }
+        });
 
 
-		mDrawerLayout.findViewById(R.id.university_container_actionbar).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showFragment(new HomeFragment(), HomeFragment.class.getName(), false);
-			}
-		});
+        University u = UniversitiesDataModel.getSavedUniversity(this);
+        TextView universityText = (TextView) actionBarView.findViewById(R.id.university_name);
+        universityText.setText(u.getTitle());
 
-		mDrawerList = (AnimatedExpandableListView) findViewById(R.id.listView);
+        initUser();
 
-		initMenu();
-	}
+        //init fonts
+        FontHelper helper = ((UnivMobileApp) getApplicationContext()).getFontHelper();
+        helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.notifications_count), FontHelper.FONT.EXO_BOLD);
+        helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.university_name), FontHelper.FONT.EXO2_REGULAR);
+        helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.greetings), FontHelper.FONT.EXO2_REGULAR);
+        helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.user_name), FontHelper.FONT.EXO2_LIGHT);
+        helper.loadFont((android.widget.TextView) actionBarView.findViewById(R.id.login_button), FontHelper.FONT.EXO_MEDIUM);
 
-	private void initMenu() {
+    }
 
-		mMenusDataModel = new MenusDataModel(this);
-		mMenusDataModel.getMenus(new MenusDataModel.MenusModelListener() {
-			@Override
-			public void menusReceived(List<org.unpidf.univmobile.data.entities.NavigationMenu> msMenus, List<org.unpidf.univmobile.data.entities.NavigationMenu> muMenus, List<org.unpidf.univmobile.data.entities.NavigationMenu> ttMenus) {
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (mDrawerLayout != null) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 
-				mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
-				List<NavigationMenu> menuGroups = new ArrayList<NavigationMenu>();
+    public void initUser() {
+        View actionBarView = actionBar.getCustomView();
+        View loginContainer = actionBarView.findViewById(R.id.login_container);
+        View loginButton = actionBarView.findViewById(R.id.login_button);
+        Login login = ((UnivMobileApp) getApplicationContext()).getLogin();
+        if (login == null) {
+            loginButton.setVisibility(View.VISIBLE);
+            loginContainer.setVisibility(View.GONE);
+        } else {
+            loginButton.setVisibility(View.GONE);
+            loginContainer.setVisibility(View.VISIBLE);
+
+            TextView name = (TextView) actionBarView.findViewById(R.id.user_name);
+            name.setText(login.getName());
+        }
+    }
+
+    private void initDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        University u = UniversitiesDataModel.getSavedUniversity(this);
+
+        final TextView home = (TextView) mDrawerLayout.findViewById(R.id.home);
+        final ImageView logo = (ImageView) mDrawerLayout.findViewById(R.id.university_image);
+        final View loading = mDrawerLayout.findViewById(R.id.university_image_progress);
+
+        if (u.getLogoUrl() != null) {
+            home.setVisibility(View.INVISIBLE);
+            //logo.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.VISIBLE);
+
+
+            Resources r = getResources();
+            int pxWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, r.getDisplayMetrics());
+            int pxHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, r.getDisplayMetrics());
+
+            ImageRequest ir = new ImageRequest(UniversitiesDataModel.UNIVERSITY_IMAGE_URL + u.getLogoUrl(), new Response.Listener<Bitmap>() {
+
+                @Override
+                public void onResponse(Bitmap response) {
+                    logo.setVisibility(View.VISIBLE);
+                    logo.setImageBitmap(response);
+                    loading.setVisibility(View.INVISIBLE);
+
+                }
+            }, pxWidth, pxHeight, null, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    home.setVisibility(View.VISIBLE);
+                    logo.setVisibility(View.INVISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
+                }
+            });
+            RequestQueue rq = Volley.newRequestQueue(this);
+            rq.add(ir);
+            rq.start();
+        } else {
+            home.setVisibility(View.VISIBLE);
+            logo.setVisibility(View.INVISIBLE);
+            loading.setVisibility(View.INVISIBLE);
+
+            ((UnivMobileApp) getApplicationContext()).getFontHelper().loadFont(home, FontHelper.FONT.EXO_BOLD);
+        }
+
+
+        mDrawerLayout.findViewById(R.id.university_container_actionbar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(new HomeFragment(), HomeFragment.class.getName(), false);
+            }
+        });
+
+        mDrawerList = (AnimatedExpandableListView) findViewById(R.id.listView);
+
+        initMenu();
+    }
+
+    private void initMenu() {
+
+        mMenusDataModel = new MenusDataModel(this);
+        mMenusDataModel.getMenus(new MenusDataModel.MenusModelListener() {
+            @Override
+            public void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus) {
+
+                mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
+                List<NavigationMenu> menuGroups = new ArrayList<NavigationMenu>();
 //				//first menu
-				menuGroups.add(new NavigationMenu(1, getString(R.string.menu_services), R.drawable.ic_menu_first, msMenus));
+                if (msMenus != null && msMenus.size() > 0) {
+                    menuGroups.add(new NavigationMenu(1, getString(R.string.menu_services), R.drawable.ic_menu_first, msMenus));
+                }
 
-				//second menu
-				menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
+                //second menu
+                menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
 
 //				//third menu
-				List<org.unpidf.univmobile.data.entities.NavigationMenu> menus = new ArrayList<NavigationMenu>();
-				if (!UniversitiesDataModel.getSavedUniversity(HomeActivity.this).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
-					for (org.unpidf.univmobile.data.entities.NavigationMenu m : ttMenus) {
-						if (m.getId() != 21 && m.getId() != 22) {
-							menus.add(m);
-						}
-					}
-				} else {
-					menus = ttMenus;
-				}
-				menuGroups.add(new NavigationMenu(3, getString(R.string.menu_interests), R.drawable.ic_menu_third, menus));
+                if (ttMenus.size() > 0) {
+                    List<org.unpidf.univmobile.data.entities.NavigationMenu> menus = new ArrayList<NavigationMenu>();
+                    if (!UniversitiesDataModel.getSavedUniversity(HomeActivity.this).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
+                        for (org.unpidf.univmobile.data.entities.NavigationMenu m : ttMenus) {
+                            if (m.getId() != GEO_UNIV_MENU_ID && m.getId() != BONPLAN_MENU_ID) {
+                                menus.add(m);
+                            }
+                        }
+                    } else {
+                        menus = ttMenus;
+                    }
 
+                    menuGroups.add(new NavigationMenu(3, getString(R.string.menu_interests), R.drawable.ic_menu_third, menus));
+
+                    for(NavigationMenu menu : menus) {
+                        if(menu.getId() == GEO_MENU_ID ) {
+                            mGeoTabs = mGeoTabs | 1;
+                        }
+
+                        if(menu.getId() == GEO_UNIV_MENU_ID ) {
+                            mGeoTabs = mGeoTabs | 2;
+                        }
+
+                        if(menu.getId() == BONPLAN_MENU_ID ) {
+                            mGeoTabs = mGeoTabs | 4;
+                        }
+                    }
+                }
 //				//forth menu
-				menuGroups.add(new NavigationMenu(4, getString(R.string.menu_my), R.drawable.ic_menu_forth, muMenus));
+                if (muMenus.size() > 0) {
+                    menuGroups.add(new NavigationMenu(4, getString(R.string.menu_my), R.drawable.ic_menu_forth, muMenus));
+                }
 
-				NavigationDrawerAdapter a = new NavigationDrawerAdapter(HomeActivity.this, menuGroups);
-				mDrawerList.setAdapter(a);
-				mDrawerList.setOnGroupClickListener(mOnGroupClickListener);
+                mNavigationDrawerAdapter = new NavigationDrawerAdapter(HomeActivity.this, menuGroups);
+                mDrawerList.setAdapter(mNavigationDrawerAdapter);
+                mDrawerList.setOnGroupClickListener(mOnGroupClickListener);
 
-				mDrawerList.setOnChildClickListener(mtOnChildClickListener);
-			}
-
-
-			@Override
-			public void onError(ErrorEntity mError) {
-				mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
-				handleError(mError);
-			}
-		});
+                mDrawerList.setOnChildClickListener(mtOnChildClickListener);
 
 
-	}
+                showFirstFragment(msMenus.size() > 0);
+
+            }
 
 
-	private void showFirstFragment() {
-		int imageMapId = getIntent().getIntExtra(EXTRA_IMAGE_MAP_ID, -1);
-		int poiId = getIntent().getIntExtra(EXTRA_POI_ID, -1);
-		if (imageMapId != -1) {
-			GeoCampusFragment f = GeoCampusFragment.newInstance(0, imageMapId, poiId, -1);
-			showFragment(f, GeoCampusFragment.class.getName(), false);
-		} else {
-			showFragment(HomeFragment.newInstance(), HomeFragment.class.getName(), false);
-		}
-	}
-
-	private ExpandableListView.OnGroupClickListener mOnGroupClickListener = new ExpandableListView.OnGroupClickListener() {
-		@Override
-		public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-			if (groupPosition == 1) {
-				showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), false);
-			} else {
-				// We call collapseGroupWithAnimation(int) and
-				// expandGroupWithAnimation(int) to animate group
-				// expansion/collapse.
-				if (mDrawerList.isGroupExpanded(groupPosition)) {
-					mDrawerList.collapseGroupWithAnimation(groupPosition);
-				} else {
-					mDrawerList.expandGroupWithAnimation(groupPosition);
-				}
-			}
-			return true;
-		}
-	};
-
-	private ExpandableListView.OnChildClickListener mtOnChildClickListener = new ExpandableListView.OnChildClickListener() {
-		@Override
-		public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-			if (id == MY_PROFILE_MENU_ID) {
-				showFragment(MyProfileFragment.newInstance(), MyProfileFragment.class.getName(), false);
-			} else if (id == MY_LIBRARY_MENU_ID) {
-				showFragment(LibraryFragment.newInstance(), LibraryFragment.class.getName(), false);
-			} else if (id == MY_MEDIA_MENU_ID) {
-				showFragment(MediaFragment.newInstance(), MediaFragment.class.getName(), false);
-			} else if (id == GEO_MENU_ID) {
-				showFragment(GeoCampusFragment.newInstance(0, -1, -1, -1), GeoCampusFragment.class.getName(), false);
-			} else if (id == GEO_UNIV_MENU_ID) {
-				showFragment(GeoCampusFragment.newInstance(1, -1, -1, -1), GeoCampusFragment.class.getName(), false);
-			} else if (id == BONPLAN_MENU_ID) {
-				showFragment(GeoCampusFragment.newInstance(2, -1, -1, -1), GeoCampusFragment.class.getName(), false);
-			} else {
-				NavigationDrawerAdapter adapter = (NavigationDrawerAdapter) mDrawerList.getExpandableListAdapter();
-				NavigationMenu menu = adapter.getChild(groupPosition, childPosition);
-
-				showFragment(MyWebViewFragment.newInstance(menu.getUrl(), menu.getContent()), menu.getUrl() + menu.getContent(), false);
-
-			}
+            @Override
+            public void onError(ErrorEntity mError) {
+                mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
+                handleError(mError);
+            }
+        });
 
 
-			//showFragment(HomeFragment.newInstance(), HomeFragment.class.getName(), false);
-			return false;
-		}
-	};
+    }
 
-	@Override
-	public void onBackPressed() {
-		if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-			mOnBackClicked = false;
-			mDrawerLayout.closeDrawer(Gravity.LEFT);
-		} else {
-			Object f = getFragmentManager().findFragmentById(R.id.main_content);
-			if (f != null && f instanceof AbsFragment) {
-				if (((AbsFragment) f).onBackPressed()) {
-					return;
-				}
-			}
 
-			if (getFragmentManager().getBackStackEntryCount() > 0) {
-				getFragmentManager().popBackStack();
-			} else {
-				if (!mOnBackClicked) {
-					mOnBackClicked = true;
-					Toast.makeText(this, getString(R.string.click_to_close), Toast.LENGTH_LONG).show();
-				} else {
-					super.onBackPressed();
-				}
-			}
-		}
-	}
+    private void showFirstFragment(boolean showGeo) {
+        int imageMapId = getIntent().getIntExtra(EXTRA_IMAGE_MAP_ID, -1);
+        int poiId = getIntent().getIntExtra(EXTRA_POI_ID, -1);
+        if (imageMapId != -1) {
+            GeoCampusFragment f = GeoCampusFragment.newInstance(0, imageMapId, poiId, -1);
+            showFragment(f, GeoCampusFragment.class.getName(), false);
+        } else {
+            showFragment(HomeFragment.newInstance(), HomeFragment.class.getName(), false);
+        }
+    }
 
-	public void logedIn(Login login) {
-		((UnivMobileApp) getApplicationContext()).setLogin(login);
-		restart();
+    private ExpandableListView.OnGroupClickListener mOnGroupClickListener = new ExpandableListView.OnGroupClickListener() {
+        @Override
+        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+            if (mNavigationDrawerAdapter.getGroup(groupPosition).getName().equals(getString(R.string.menu_university))) {
+                showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), false);
+            } else {
+                // We call collapseGroupWithAnimation(int) and
+                // expandGroupWithAnimation(int) to animate group
+                // expansion/collapse.
+                if (mDrawerList.isGroupExpanded(groupPosition)) {
+                    mDrawerList.collapseGroupWithAnimation(groupPosition);
+                } else {
+                    mDrawerList.expandGroupWithAnimation(groupPosition);
+                }
+            }
+            return true;
+        }
+    };
+
+    private ExpandableListView.OnChildClickListener mtOnChildClickListener = new ExpandableListView.OnChildClickListener() {
+        @Override
+        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+            if (id == MY_PROFILE_MENU_ID) {
+                showFragment(MyProfileFragment.newInstance(), MyProfileFragment.class.getName(), false);
+            } else if (id == MY_LIBRARY_MENU_ID) {
+                showFragment(LibraryFragment.newInstance(), LibraryFragment.class.getName(), false);
+            } else if (id == MY_MEDIA_MENU_ID) {
+                showFragment(MediaFragment.newInstance(), MediaFragment.class.getName(), false);
+            } else if (id == GEO_MENU_ID) {
+                showFragment(GeoCampusFragment.newInstance(0, -1, -1, -1), GeoCampusFragment.class.getName(), false);
+            } else if (id == GEO_UNIV_MENU_ID) {
+                showFragment(GeoCampusFragment.newInstance(1, -1, -1, -1), GeoCampusFragment.class.getName(), false);
+            } else if (id == BONPLAN_MENU_ID) {
+                showFragment(GeoCampusFragment.newInstance(2, -1, -1, -1), GeoCampusFragment.class.getName(), false);
+            } else {
+                NavigationDrawerAdapter adapter = (NavigationDrawerAdapter) mDrawerList.getExpandableListAdapter();
+                NavigationMenu menu = adapter.getChild(groupPosition, childPosition);
+
+                showFragment(MyWebViewFragment.newInstance(menu.getUrl(), menu.getContent()), menu.getUrl() + menu.getContent(), false);
+
+            }
+
+
+            //showFragment(HomeFragment.newInstance(), HomeFragment.class.getName(), false);
+            return false;
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mOnBackClicked = false;
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else {
+            Object f = getFragmentManager().findFragmentById(R.id.main_content);
+            if (f != null && f instanceof AbsFragment) {
+                if (((AbsFragment) f).onBackPressed()) {
+                    return;
+                }
+            }
+
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            } else {
+                if (!mOnBackClicked) {
+                    mOnBackClicked = true;
+                    Toast.makeText(this, getString(R.string.click_to_close), Toast.LENGTH_LONG).show();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        }
+    }
+
+    public void logedIn(Login login) {
+        ((UnivMobileApp) getApplicationContext()).setLogin(login);
+        restart();
 //		;
 //		removeTopFragment();
 //		initUser();
@@ -512,136 +525,136 @@ public class HomeActivity extends AbsActivity {
 //			f.reload();
 //		}
 
-	}
+    }
 
-	public void showPoiByCategory(int categoryID, int root) {
-		FragmentManager manager = getFragmentManager();
-
-
-		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if (f == null) {
-			f = GeoCampusFragment.newInstance(0, -1, -1, categoryID);
-			showFragment(f, GeoCampusFragment.class.getName(), false);
-		} else {
-			Category c = new Category();
-			c.setId(categoryID);
-
-			List<Category> categories = new ArrayList<Category>();
-			categories.add(c);
-			f.refreshPois(categories, root);
-		}
+    public void showPoiByCategory(int categoryID, int root) {
+        FragmentManager manager = getFragmentManager();
 
 
-	}
+        GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+        if (f == null) {
+            f = GeoCampusFragment.newInstance(0, -1, -1, categoryID);
+            showFragment(f, GeoCampusFragment.class.getName(), false);
+        } else {
+            Category c = new Category();
+            c.setId(categoryID);
 
-	public void categorySelected(Category cat) {
-		super.onBackPressed();
-		FragmentManager manager = getFragmentManager();
-		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if (f != null) {
-			f.categorySelected(cat);
-		}
-	}
+            List<Category> categories = new ArrayList<Category>();
+            categories.add(c);
+            f.refreshPois(categories, root);
+        }
 
-	public void showPoi(int id, int categoryRoot) {
 
-		int tabPosition = 0;
-		if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
-			tabPosition = 1;
-		} else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
-			tabPosition = 2;
-		}
+    }
 
-		FragmentManager manager = getFragmentManager();
-		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if (f == null) {
-			f = GeoCampusFragment.newInstance(tabPosition, -1, id, -1);
-			showFragment(f, GeoCampusFragment.class.getName(), false);
-		} else {
-			f.showPoi(tabPosition, id);
-		}
-	}
+    public void categorySelected(Category cat) {
+        super.onBackPressed();
+        FragmentManager manager = getFragmentManager();
+        GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+        if (f != null) {
+            f.categorySelected(cat);
+        }
+    }
 
-	public void showPoi(Poi poi, int categoryRoot, boolean goBack) {
-		if (goBack) {
-			onBackPressed();
-		}
-		int tabPosition = 0;
-		if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
-			tabPosition = 1;
-		} else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
-			tabPosition = 2;
-		}
-		FragmentManager manager = getFragmentManager();
+    public void showPoi(int id, int categoryRoot) {
 
-		GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-		if (f == null) {
-			f = GeoCampusFragment.newInstance(tabPosition, -1, poi.getId(), -1);
-			showFragment(f, GeoCampusFragment.class.getName(), false);
-		} else {
-			f.showPoiDetails(tabPosition, poi, true);
-		}
-	}
+        int tabPosition = 0;
+        if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
+            tabPosition = 1;
+        } else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
+            tabPosition = 2;
+        }
 
-	public void showFragment(Fragment fragment, String tag, boolean add) {
-		mOnBackClicked = false;
-		FragmentManager manager = getFragmentManager();
-		Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
-		if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
-			FragmentTransaction transaction = manager.beginTransaction();
-			if (add) {
-				transaction.add(R.id.main_content, fragment, tag);
-				transaction.addToBackStack(tag);
-			} else {
-				manager.popBackStack();
-				transaction.replace(R.id.main_content, fragment, tag);
-			}
+        FragmentManager manager = getFragmentManager();
+        GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+        if (f == null) {
+            f = GeoCampusFragment.newInstance(tabPosition, -1, id, -1);
+            showFragment(f, GeoCampusFragment.class.getName(), false);
+        } else {
+            f.showPoi(tabPosition, id);
+        }
+    }
 
-			transaction.commit();
-		}
+    public void showPoi(Poi poi, int categoryRoot, boolean goBack) {
+        if (goBack) {
+            onBackPressed();
+        }
+        int tabPosition = 0;
+        if (categoryRoot == GeoDataModel.ROOT_CAT_2) {
+            tabPosition = 1;
+        } else if (categoryRoot == GeoDataModel.ROOT_CAT_3) {
+            tabPosition = 2;
+        }
+        FragmentManager manager = getFragmentManager();
 
-		if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-			mDrawerLayout.closeDrawer(Gravity.LEFT);
-		}
-	}
+        GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+        if (f == null) {
+            f = GeoCampusFragment.newInstance(tabPosition, -1, poi.getId(), -1);
+            showFragment(f, GeoCampusFragment.class.getName(), false);
+        } else {
+            f.showPoiDetails(tabPosition, poi, true);
+        }
+    }
 
-	public void setPositiveButtonRunnable(Runnable r) {
-		mDialogPositiveRunnable = r;
-	}
+    public void showFragment(Fragment fragment, String tag, boolean add) {
+        mOnBackClicked = false;
+        FragmentManager manager = getFragmentManager();
+        Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
+       // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
+            FragmentTransaction transaction = manager.beginTransaction();
+            if (add) {
+                transaction.add(R.id.main_content, fragment, tag);
+                transaction.addToBackStack(tag);
+            } else {
+                manager.popBackStack();
+                transaction.replace(R.id.main_content, fragment, tag);
+            }
 
-	public void onPositiveButtonClicked() {
-		if (mDialogPositiveRunnable != null) {
-			mDialogPositiveRunnable.run();
-		}
-	}
+            transaction.commit();
+      //  }
 
-	public void showSplashScreen() {
-		Intent i = new Intent(this, SplashScreenActivity.class);
-		i.putExtra("ignore_saved", true);
-		startActivityForResult(i, 111);
-	}
+        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        }
+    }
 
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (requestCode == 111) {
-			if (resultCode == 222) {
-				finish();
-			}
-		} else {
-			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-			if (scanResult != null && scanResult.getContents() != null) {
-				Uri data = Uri.parse(scanResult.getContents());
-				String id = data.getQueryParameter("im");
-				if (id != null) {
-					id = id.replaceAll("\\s", "");
-					id = id.replaceAll("\\n", "");
-					FragmentManager manager = getFragmentManager();
-					GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-					f.showImageMap(Integer.parseInt(id));
-				}
-			}
-		}
+    public void setPositiveButtonRunnable(Runnable r) {
+        mDialogPositiveRunnable = r;
+    }
 
-	}
+    public void onPositiveButtonClicked() {
+        if (mDialogPositiveRunnable != null) {
+            mDialogPositiveRunnable.run();
+        }
+    }
+
+    public void showSplashScreen() {
+        Intent i = new Intent(this, SplashScreenActivity.class);
+        i.putExtra("ignore_saved", true);
+        startActivityForResult(i, 111);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 111) {
+            if (resultCode == 222) {
+                finish();
+            }
+        } else {
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            if (scanResult != null && scanResult.getContents() != null) {
+                Uri data = Uri.parse(scanResult.getContents());
+                String id = data.getQueryParameter("im");
+                if (id != null) {
+                    id = id.replaceAll("\\s", "");
+                    id = id.replaceAll("\\n", "");
+                    FragmentManager manager = getFragmentManager();
+                    GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
+                    f.showImageMap(Integer.parseInt(id));
+                }
+            }
+        }
+
+    }
 
 
 }

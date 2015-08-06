@@ -33,7 +33,6 @@ import com.squareup.picasso.Target;
 
 import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
-import org.unpidf.univmobile.data.entities.Category;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.News;
 import org.unpidf.univmobile.data.entities.Poi;
@@ -43,16 +42,12 @@ import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.NewsItemView;
-import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,376 +55,401 @@ import java.util.Map;
 public class HomeFragment extends AbsFragment {
 
 
-	private UniversityDataModel mUniversityDataModel;
+    private UniversityDataModel mUniversityDataModel;
 
-	private SimpleDateFormat mDateFormat;
+    private SimpleDateFormat mDateFormat;
 
-	private MapView mMapView;
-	private GoogleMap mMap;
-	private boolean mAnimatedToMyPosition = false;
-
-
-	private SwipeRefreshLayout mSwipeRefreshLayout;
-	private boolean mShowLoading = true;
+    private MapView mMapView;
+    private GoogleMap mMap;
+    private boolean mAnimatedToMyPosition = false;
 
 
-	private final Object lock = new Object();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private boolean mShowLoading = true;
 
-	public static HomeFragment newInstance() {
-		HomeFragment fragment = new HomeFragment();
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
-		return fragment;
-	}
 
-	public HomeFragment() {
-	}
+    private final Object lock = new Object();
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-		}
-	}
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
+        Bundle args = new Bundle();
 
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		if (mUniversityDataModel != null) {
-			mUniversityDataModel.clear();
-			mUniversityDataModel = null;
-		}
-	}
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-	@Override
-	public void onPause() {
-		if (mMapView != null) {
-			mMapView.onPause();
-		}
-		super.onPause();
-	}
+    public HomeFragment() {
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (mMapView != null) {
-			mMapView.onResume();
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+        }
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (mMapView != null) {
-			mMapView.onDestroy();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mUniversityDataModel != null) {
+            mUniversityDataModel.clear();
+            mUniversityDataModel = null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (mMapView != null) {
+            mMapView.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMapView != null) {
+            mMapView.onResume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mMapView != null) {
+            mMapView.onDestroy();
             mMapView = null;
-		}
-		if (mMap != null) {
-			mMap.setOnMyLocationChangeListener(null);
-			mMap.setMyLocationEnabled(false);
+        }
+        if (mMap != null) {
+            mMap.setOnMyLocationChangeListener(null);
+            mMap.setMyLocationEnabled(false);
             mMap = null;
-		}
-	}
+        }
+    }
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		if (mMapView != null) {
-			mMapView.onLowMemory();
-		}
-	}
-
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_home, container, false);
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-		//init fonts
-		FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_time), FontHelper.FONT.EXO_ITALIC);
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_title), FontHelper.FONT.EXO_BOLD);
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_content), FontHelper.FONT.EXO_REGULAR);
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.latest_news_title), FontHelper.FONT.EXO_BOLD);
-		helper.loadFont((android.widget.TextView) view.findViewById(R.id.view_all_news), FontHelper.FONT.EXO_BOLD);
-
-		view.findViewById(R.id.view_all_news).setOnClickListener(mViewAllNewsClickListener);
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        if (mMapView != null) {
+            mMapView.onLowMemory();
+        }
+    }
 
 
-		mUniversityDataModel = new UniversityDataModel(getActivity(), mUniversityModelListener);
-		mUniversityDataModel.getNews();
-		mUniversityDataModel.getCategories();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
 
-		initMap();
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-		mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
-		mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_purple_light);
-	}
+        mDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        //init fonts
+        FontHelper helper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_time), FontHelper.FONT.EXO_ITALIC);
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_title), FontHelper.FONT.EXO_BOLD);
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.main_article_content), FontHelper.FONT.EXO_REGULAR);
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.latest_news_title), FontHelper.FONT.EXO_BOLD);
+        helper.loadFont((android.widget.TextView) view.findViewById(R.id.view_all_news), FontHelper.FONT.EXO_BOLD);
 
-	private void populatePois(List<Poi> pois) {
-		if (mMap != null && pois != null) {
-			for (final Poi p : pois) {
-				if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
-
-					if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
-						p.setCategoryMarkerIcon("cat_marker_7__biblio_big_jaune_marker.png");
-					}
-					final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
-
-
-					Resources r = getResources();
-					int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-					Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
-
-						@Override
-						public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-							addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
+        view.findViewById(R.id.view_all_news).setOnClickListener(mViewAllNewsClickListener);
 
 
-						}
+        mUniversityDataModel = new UniversityDataModel(getActivity(), mUniversityModelListener);
+        mUniversityDataModel.getNews();
+        mUniversityDataModel.getCategories();
 
-						@Override
-						public void onBitmapFailed(Drawable errorDrawable) {
+        initMap();
 
-							Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
-							BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
-							Bitmap b = bd.getBitmap();
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_purple_light);
+    }
 
-							Resources r = getResources();
-							int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
-							Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
-							addMarker(p, BitmapDescriptorFactory.fromBitmap(bhalfsize));
+    private void populatePois(List<Poi> pois) {
+        if (mMap != null && pois != null) {
+            for (final Poi p : pois) {
+                if (p.getLat() != null && p.getLat().length() > 0 && p.getLng() != null && p.getLng().length() > 0 && p.isActive()) {
 
-						}
-
-						@Override
-						public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-						}
-					});
-				}
-			}
-		}
-	}
+                    if (p.getCategoryMarkerIcon() == null || p.getCategoryMarkerIcon().length() == 0) {
+                        p.setCategoryMarkerIcon("cat_marker_7__biblio_big_jaune_marker.png");
+                    }
+                    final String url = ReadCategoriesOperation.CATEGORIES_IMAGE_URL + p.getCategoryMarkerIcon();
 
 
-	private void addMarker(Poi p, BitmapDescriptor des) {
-		if (mMap != null) {
-			MarkerOptions options = new MarkerOptions();
-			if (des != null) {
-				options.icon(des);
-			}
-			options.anchor(0.5f, 0.5f);
-			options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
-			options.title(p.getName());
-			Marker m = mMap.addMarker(options);
-		}
-	}
+                    Resources r = getResources();
+                    int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+                    Picasso.with(getActivity()).load(url).resize(px, px).into(new Target() {
 
-	private void initMap() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-		// Gets the MapView from the XML layout and creates it
-		mMapView = (MapView) getView().findViewById(R.id.mapview);
-
-		// Gets to GoogleMap from the MapView and does initialization stuff
-		if (mMapView != null) {
-			mMapView.onCreate(null);
-
-			mMap = mMapView.getMap();
-			if (mMap != null) {
-				mMap.getUiSettings().setMyLocationButtonEnabled(false);
-				mMap.setMyLocationEnabled(true);
-				mMap.getUiSettings().setAllGesturesEnabled(false);
-				mMap.setOnMarkerClickListener(null);
-				mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
-			}
-		}
-
-		MapsInitializer.initialize(this.getActivity());
-
-		if (!UniversitiesDataModel.getSavedUniversity(getActivity()).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
-			getView().findViewById(R.id.cat_2).setVisibility(View.GONE);
-			getView().findViewById(R.id.cat_3).setVisibility(View.GONE);
-		}
-		getView().findViewById(R.id.cat_1).setOnClickListener(mOnCategoryClickListener);
-		getView().findViewById(R.id.cat_2).setOnClickListener(mOnCategoryClickListener);
-		getView().findViewById(R.id.cat_3).setOnClickListener(mOnCategoryClickListener);
-	}
-
-	private void populateNews(List<News> news) {
-		if (news == null || news.size() == 0) {
-			getView().findViewById(R.id.news_container).setVisibility(View.GONE);
-		} else {
-			ImageView mainArticleImage = (ImageView) getView().findViewById(R.id.main_article_image);
-			mainArticleImage.setImageResource(R.drawable.ic_launcher);
-			if (news.get(0).getImageUrl() != null) {
-				Picasso.with(getActivity()).load(news.get(0).getImageUrl()).into(mainArticleImage);
-			}
-
-			try {
-				TextView dateView = (TextView) getView().findViewById(R.id.main_article_time);
-				Date dateValue = mDateFormat.parse(news.get(0).getPublishedDate());
-
-				SimpleDateFormat formatNew = new SimpleDateFormat("dd/MM/yyyy");
-				String dateString = formatNew.format(dateValue);
-
-				dateView.setText(dateString);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			TextView title = (TextView) getView().findViewById(R.id.main_article_title);
-			title.setText(news.get(0).getTitle());
-
-			TextView description = (TextView) getView().findViewById(R.id.main_article_content);
-			description.setText(news.get(0).getDescription());
-
-			TextView button = (TextView) getView().findViewById(R.id.main_article_action_button);
-			if (news.get(0).getLink() != null) {
-				try {
-					URL url = new URL(news.get(0).getLink());
-
-					final String urlString = news.get(0).getLink();
-					button.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
-							getActivity().startActivity(i);
-						}
-					});
-
-				} catch (MalformedURLException e) {
-					button.setVisibility(View.GONE);
-					e.printStackTrace();
-				}
-			} else {
-				button.setVisibility(View.GONE);
-			}
-
-			NewsItemView news1 = (NewsItemView) getView().findViewById(R.id.news1);
-			if (news.size() > 1) {
-				news1.populate(news.get(1), mDateFormat, 0);
-				news1.setVisibility(View.VISIBLE);
-			} else {
-				news1.setVisibility(View.GONE);
-			}
-
-			NewsItemView news2 = (NewsItemView) getView().findViewById(R.id.news2);
-			if (news.size() > 2) {
-				news2.populate(news.get(2), mDateFormat, 0);
-				news2.setVisibility(View.VISIBLE);
-			} else {
-				news2.setVisibility(View.GONE);
-			}
-
-			NewsItemView news3 = (NewsItemView) getView().findViewById(R.id.news3);
-			if (news.size() > 3) {
-				news3.populate(news.get(3), mDateFormat, 0);
-				news3.setVisibility(View.VISIBLE);
-			} else {
-				news3.setVisibility(View.GONE);
-			}
-
-			NewsItemView news4 = (NewsItemView) getView().findViewById(R.id.news4);
-			if (news.size() > 4) {
-				news4.populate(news.get(4), mDateFormat, 0);
-				news4.setVisibility(View.VISIBLE);
-			} else {
-				news4.setVisibility(View.GONE);
-			}
-
-		}
-	}
-
-	private GoogleMap.OnMyLocationChangeListener mOnMyLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-		@Override
-		public void onMyLocationChange(Location location) {
-			if (!mAnimatedToMyPosition && mMap != null) {
-				CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16);
-				mMap.moveCamera(cameraUpdate);
-				mAnimatedToMyPosition = true;
-				mMap.setOnMyLocationChangeListener(null);
-			}
-		}
-	};
-
-	private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-		@Override
-		public void onRefresh() {
-
-			mShowLoading = false;
-			if (mUniversityDataModel != null) {
-				mUniversityDataModel.getNews();
-			}
-		}
-	};
+                            addMarker(p, BitmapDescriptorFactory.fromBitmap(bitmap));
 
 
-	private View.OnClickListener mOnCategoryClickListener = new View.OnClickListener() {
+                        }
 
-		@Override
-		public void onClick(View v) {
-			int pos = 0;
-			switch (v.getId()) {
-				case R.id.cat_1:
-					pos = 0;
-					break;
-				case R.id.cat_2:
-					pos = 1;
-					break;
-				case R.id.cat_3:
-					pos = 2;
-					break;
-			}
-			HomeActivity a = (HomeActivity) getActivity();
-			a.showFragment(GeoCampusFragment.newInstance(pos, -1, -1, -1), GeoCampusFragment.class.getName(), false);
-		}
-	};
-	private View.OnClickListener mViewAllNewsClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			HomeActivity a = (HomeActivity) getActivity();
-			a.showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), false);
-		}
-	};
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
 
-	private UniversityDataModel.UniversityModelListener mUniversityModelListener = new UniversityDataModel.UniversityModelListener() {
+                            Drawable d = getResources().getDrawable(R.drawable.ic_category_temp);
+                            BitmapDrawable bd = (BitmapDrawable) d.getCurrent();
+                            Bitmap b = bd.getBitmap();
+
+                            Resources r = getResources();
+                            int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, r.getDisplayMetrics());
+                            Bitmap bhalfsize = Bitmap.createScaledBitmap(b, px, px, false);
+                            addMarker(p, BitmapDescriptorFactory.fromBitmap(bhalfsize));
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
+                }
+            }
+        }
+    }
 
 
-		@Override
-		public void updateNews(List<News> news) {
-			mSwipeRefreshLayout.setRefreshing(false);
-			getView().findViewById(R.id.news_container).setVisibility(View.VISIBLE);
+    private void addMarker(Poi p, BitmapDescriptor des) {
+        if (mMap != null) {
+            MarkerOptions options = new MarkerOptions();
+            if (des != null) {
+                options.icon(des);
+            }
+            options.anchor(0.5f, 0.5f);
+            options.position(new LatLng(Double.parseDouble(p.getLat()), Double.parseDouble(p.getLng())));
+            options.title(p.getName());
+            Marker m = mMap.addMarker(options);
+        }
+    }
+
+    private void initMap() {
+        int geoTabs = ((HomeActivity) getActivity()).mGeoTabs;
+        if (geoTabs != 0) {
+            // Gets the MapView from the XML layout and creates it
+            mMapView = (MapView) getView().findViewById(R.id.mapview);
+
+            // Gets to GoogleMap from the MapView and does initialization stuff
+            if (mMapView != null) {
+                mMapView.onCreate(null);
+
+                mMap = mMapView.getMap();
+                if (mMap != null) {
+                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    mMap.setMyLocationEnabled(true);
+                    mMap.getUiSettings().setAllGesturesEnabled(false);
+                    mMap.setOnMarkerClickListener(null);
+                    mMap.setOnMyLocationChangeListener(mOnMyLocationChangeListener);
+                }
+            }
+
+            MapsInitializer.initialize(this.getActivity());
+
+            if (!UniversitiesDataModel.getSavedUniversity(getActivity()).getRegionName().equals(UniversitiesDataModel.FRANCE_REGION)) {
+                getView().findViewById(R.id.cat_2).setVisibility(View.GONE);
+                getView().findViewById(R.id.cat_3).setVisibility(View.GONE);
+            }
+        } else {
+            getView().findViewById(R.id.mapview).setVisibility(View.GONE);
+            getView().findViewById(R.id.tabs).setVisibility(View.GONE);
+            getView().findViewById(R.id.map_title).setVisibility(View.GONE);
+
+        }
+
+        if ((geoTabs & 1) != 1) {
+            getView().findViewById(R.id.cat_1).setVisibility(View.GONE);
+            getView().findViewById(R.id.separator1).setVisibility(View.GONE);
+        }
+        if ((geoTabs & 2) != 2) {
+            getView().findViewById(R.id.cat_2).setVisibility(View.GONE);
+            getView().findViewById(R.id.separator2).setVisibility(View.GONE);
+        }
+        if ((geoTabs & 4) != 4) {
+            getView().findViewById(R.id.cat_3).setVisibility(View.GONE);
+            getView().findViewById(R.id.separator2).setVisibility(View.GONE);
+        }
+        getView().findViewById(R.id.cat_1).setOnClickListener(mOnCategoryClickListener);
+        getView().findViewById(R.id.cat_2).setOnClickListener(mOnCategoryClickListener);
+        getView().findViewById(R.id.cat_3).setOnClickListener(mOnCategoryClickListener);
+    }
+
+    private void populateNews(List<News> news) {
+        if (news == null || news.size() == 0) {
+            getView().findViewById(R.id.news_container).setVisibility(View.GONE);
+        } else {
+            ImageView mainArticleImage = (ImageView) getView().findViewById(R.id.main_article_image);
+            //mainArticleImage.setImageResource(R.drawable.ic_launcher);
+            if (news.get(0).getImageUrl() != null) {
+                Picasso.with(getActivity()).load(news.get(0).getImageUrl()).into(mainArticleImage);
+            }
+
+            try {
+                TextView dateView = (TextView) getView().findViewById(R.id.main_article_time);
+                Date dateValue = mDateFormat.parse(news.get(0).getPublishedDate());
+
+                SimpleDateFormat formatNew = new SimpleDateFormat("dd/MM/yyyy");
+                String dateString = formatNew.format(dateValue);
+
+                dateView.setText(dateString);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            TextView title = (TextView) getView().findViewById(R.id.main_article_title);
+            title.setText(news.get(0).getTitle());
+
+            TextView description = (TextView) getView().findViewById(R.id.main_article_content);
+            description.setText(news.get(0).getDescription());
+
+            TextView button = (TextView) getView().findViewById(R.id.main_article_action_button);
+            if (news.get(0).getLink() != null) {
+                try {
+                    URL url = new URL(news.get(0).getLink());
+
+                    final String urlString = news.get(0).getLink();
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                            getActivity().startActivity(i);
+                        }
+                    });
+
+                } catch (MalformedURLException e) {
+                    button.setVisibility(View.GONE);
+                    e.printStackTrace();
+                }
+            } else {
+                button.setVisibility(View.GONE);
+            }
+
+            NewsItemView news1 = (NewsItemView) getView().findViewById(R.id.news1);
+            if (news.size() > 1) {
+                news1.populate(news.get(1), mDateFormat, 0);
+                news1.setVisibility(View.VISIBLE);
+            } else {
+                news1.setVisibility(View.GONE);
+            }
+
+            NewsItemView news2 = (NewsItemView) getView().findViewById(R.id.news2);
+            if (news.size() > 2) {
+                news2.populate(news.get(2), mDateFormat, 0);
+                news2.setVisibility(View.VISIBLE);
+            } else {
+                news2.setVisibility(View.GONE);
+            }
+
+            NewsItemView news3 = (NewsItemView) getView().findViewById(R.id.news3);
+            if (news.size() > 3) {
+                news3.populate(news.get(3), mDateFormat, 0);
+                news3.setVisibility(View.VISIBLE);
+            } else {
+                news3.setVisibility(View.GONE);
+            }
+
+            NewsItemView news4 = (NewsItemView) getView().findViewById(R.id.news4);
+            if (news.size() > 4) {
+                news4.populate(news.get(4), mDateFormat, 0);
+                news4.setVisibility(View.VISIBLE);
+            } else {
+                news4.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
+    private GoogleMap.OnMyLocationChangeListener mOnMyLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            if (!mAnimatedToMyPosition && mMap != null) {
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16);
+                mMap.moveCamera(cameraUpdate);
+                mAnimatedToMyPosition = true;
+                mMap.setOnMyLocationChangeListener(null);
+            }
+        }
+    };
+
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+
+            mShowLoading = false;
+            if (mUniversityDataModel != null) {
+                mUniversityDataModel.getNews();
+            }
+        }
+    };
+
+
+    private View.OnClickListener mOnCategoryClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            int pos = 0;
+            switch (v.getId()) {
+                case R.id.cat_1:
+                    pos = 0;
+                    break;
+                case R.id.cat_2:
+                    pos = 1;
+                    break;
+                case R.id.cat_3:
+                    pos = 2;
+                    break;
+            }
+            HomeActivity a = (HomeActivity) getActivity();
+            a.showFragment(GeoCampusFragment.newInstance(pos, -1, -1, -1), GeoCampusFragment.class.getName(), false);
+        }
+    };
+    private View.OnClickListener mViewAllNewsClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            HomeActivity a = (HomeActivity) getActivity();
+            a.showFragment(new UniversityNewsFragment(), UniversityNewsFragment.class.getName(), false);
+        }
+    };
+
+    private UniversityDataModel.UniversityModelListener mUniversityModelListener = new UniversityDataModel.UniversityModelListener() {
+
+
+        @Override
+        public void updateNews(List<News> news) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            getView().findViewById(R.id.news_container).setVisibility(View.VISIBLE);
             getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			populateNews(news);
-		}
+            populateNews(news);
+        }
 
-		@Override
-		public void updatePois(List<Poi> pois) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			populatePois(pois);
+        @Override
+        public void updatePois(List<Poi> pois) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+            populatePois(pois);
 
-		}
+        }
 
-		@Override
-		public void showErrorMessage(ErrorEntity error) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			getView().findViewById(R.id.news_container).setVisibility(View.GONE);
+        @Override
+        public void showErrorMessage(ErrorEntity error) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+            getView().findViewById(R.id.news_container).setVisibility(View.GONE);
 
-		}
+        }
 
-		@Override
-		public void onError(ErrorEntity mError) {
-			getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-			handleError(mError);
-		}
-	};
+        @Override
+        public void onError(ErrorEntity mError) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+            getView().findViewById(R.id.news_container).setVisibility(View.GONE);
+            handleError(mError);
+        }
+    };
 }

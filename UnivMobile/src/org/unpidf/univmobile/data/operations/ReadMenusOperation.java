@@ -38,6 +38,7 @@ public class ReadMenusOperation extends AbsOperation<List<NavigationMenu>> {
 				JSONObject menuJson = menusJson.getJSONObject(i);
 				NavigationMenu menu = new Gson().fromJson(menuJson.toString(), NavigationMenu.class);
 				if (menu.isActive()) {
+                    //if(!menu.getName().equals("Que faire à Paris"))
 					menus.add(menu);
 				}
 			}
