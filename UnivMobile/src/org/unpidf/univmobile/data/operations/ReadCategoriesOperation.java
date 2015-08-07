@@ -16,7 +16,7 @@ import java.util.List;
  * Created by rviewniverse on 2015-02-09.
  */
 public class ReadCategoriesOperation extends AbsOperation<List<Category>> {
-	public static final String CATEGORIES_IMAGE_URL = BASE_URL + "files/categoriesicons/";
+	public static final String CATEGORIES_IMAGE_URL = BASE_URL_ASSETS + "categoriesicons/";
 	private static final String CATEGORIES = "categories/";
 	private static final String CATEGORIES_CHILDREN = "categories/%d/children/";
 	private int mCategoryID;

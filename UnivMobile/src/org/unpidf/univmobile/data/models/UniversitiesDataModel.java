@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class UniversitiesDataModel extends AbsDataModel {
 
-	public static final String UNIVERSITY_IMAGE_URL = "http://univmobile-dev.univ-paris1.fr/admin/files/universitieslogos/";
+	public static final String UNIVERSITY_IMAGE_URL = AbsOperation.BASE_URL_ASSETS + "universitieslogos/";
 	public static final String FRANCE_REGION = "Île de France";
 	private static final String PREF_UNIVERSITY_NAME = "pref_university_name";
 	private static final String PREF_UNIVERSITY_ID = "pref_university_id";

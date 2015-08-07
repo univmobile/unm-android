@@ -31,8 +31,8 @@ public abstract class AbsOperation<T> extends AsyncTask<Void, T, T> {
 
 	public static final String TAG = "UnivMobile";
 
-	protected static final String BASE_URL_ASSETS = "http://univmobile-dev.univ-paris1.fr/admin/";
-	protected static final String BASE_URL = "http://univmobile-dev.univ-paris1.fr/admin/";
+	public static final String BASE_URL_ASSETS = "http://admin.unpidf.univmobile.fr/admin/files/";
+	protected static final String BASE_URL = "https://admin.unpidf.univmobile.fr/admin/";
 	protected static final String BASE_URL_API = BASE_URL + "api/";
 
 	protected enum REQUEST {POST, GET, DELETE}
