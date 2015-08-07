@@ -123,7 +123,8 @@
 					android:textSize="@dimen/title_size"
 					android:textColor="@android:color/black"
 					android:text="@string/view_all_news"
-					android:gravity="right"/>
+					android:gravity="right"
+                    android:paddingBottom="7dp"/>
 			</LinearLayout>
 
 			<LinearLayout
@@ -137,7 +138,6 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:id="@+id/map_title"
-					android:layout_marginTop="7dp"
 					android:paddingTop="5dp"
 					android:paddingBottom="3dp"
 					android:paddingLeft="@dimen/horizontal"

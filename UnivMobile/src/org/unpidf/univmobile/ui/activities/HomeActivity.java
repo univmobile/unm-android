@@ -88,6 +88,7 @@ public class HomeActivity extends AbsActivity {
     private boolean mOnBackClicked = false;
 
     public int mGeoTabs = 0; //used to identicate which tabs should be shown. 1 - first tab. 2 - second tab. 4 - third tab
+    public boolean showNews = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,7 +358,7 @@ public class HomeActivity extends AbsActivity {
         mMenusDataModel = new MenusDataModel(this);
         mMenusDataModel.getMenus(new MenusDataModel.MenusModelListener() {
             @Override
-            public void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus) {
+            public void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus, List<NavigationMenu> auMenus) {
 
                 mDrawerLayout.findViewById(R.id.navigation_progress).setVisibility(View.GONE);
                 List<NavigationMenu> menuGroups = new ArrayList<NavigationMenu>();
@@ -367,7 +368,12 @@ public class HomeActivity extends AbsActivity {
                 }
 
                 //second menu
-                menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
+                if(auMenus.size() > 0) {
+                    menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
+                    showNews = true;
+                } else {
+                    showNews = false;
+                }
 
 //				//third menu
                 if (ttMenus.size() > 0) {
@@ -384,16 +390,16 @@ public class HomeActivity extends AbsActivity {
 
                     menuGroups.add(new NavigationMenu(3, getString(R.string.menu_interests), R.drawable.ic_menu_third, menus));
 
-                    for(NavigationMenu menu : menus) {
-                        if(menu.getId() == GEO_MENU_ID ) {
+                    for (NavigationMenu menu : menus) {
+                        if (menu.getId() == GEO_MENU_ID) {
                             mGeoTabs = mGeoTabs | 1;
                         }
 
-                        if(menu.getId() == GEO_UNIV_MENU_ID ) {
+                        if (menu.getId() == GEO_UNIV_MENU_ID) {
                             mGeoTabs = mGeoTabs | 2;
                         }
 
-                        if(menu.getId() == BONPLAN_MENU_ID ) {
+                        if (menu.getId() == BONPLAN_MENU_ID) {
                             mGeoTabs = mGeoTabs | 4;
                         }
                     }
@@ -600,18 +606,18 @@ public class HomeActivity extends AbsActivity {
         mOnBackClicked = false;
         FragmentManager manager = getFragmentManager();
         Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
-       // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
-            FragmentTransaction transaction = manager.beginTransaction();
-            if (add) {
-                transaction.add(R.id.main_content, fragment, tag);
-                transaction.addToBackStack(tag);
-            } else {
-                manager.popBackStack();
-                transaction.replace(R.id.main_content, fragment, tag);
-            }
+        // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
+        FragmentTransaction transaction = manager.beginTransaction();
+        if (add) {
+            transaction.add(R.id.main_content, fragment, tag);
+            transaction.addToBackStack(tag);
+        } else {
+            manager.popBackStack();
+            transaction.replace(R.id.main_content, fragment, tag);
+        }
 
-            transaction.commit();
-      //  }
+        transaction.commit();
+        //  }
 
         if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
             mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -643,13 +649,14 @@ public class HomeActivity extends AbsActivity {
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
             if (scanResult != null && scanResult.getContents() != null) {
                 Uri data = Uri.parse(scanResult.getContents());
-                String id = data.getQueryParameter("im");
-                if (id != null) {
-                    id = id.replaceAll("\\s", "");
-                    id = id.replaceAll("\\n", "");
+                String im = data.getQueryParameter("im");
+                String poi = data.getQueryParameter("poi");
+                if (im != null) {
+                    im = im.replaceAll("\\s", "");
+                    im = im.replaceAll("\\n", "");
                     FragmentManager manager = getFragmentManager();
                     GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
-                    f.showImageMap(Integer.parseInt(id));
+                    f.showImageMap(Integer.parseInt(im), Integer.parseInt(poi));
                 }
             }
         }

@@ -75,7 +75,7 @@ public class MediaFragment extends AbsFragment {
 				handleError(error);
 			}
 
-			if (result == null || result.size() > 0) {
+			if (result == null || result.size() == 0) {
 				result = new ArrayList<Link>();
 				Link l = new Link();
 				l.setLabel(getString(R.string.no_media));

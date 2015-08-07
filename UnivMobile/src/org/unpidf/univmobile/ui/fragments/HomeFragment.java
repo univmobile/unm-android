@@ -158,8 +158,14 @@ public class HomeFragment extends AbsFragment {
 
 
         mUniversityDataModel = new UniversityDataModel(getActivity(), mUniversityModelListener);
-        mUniversityDataModel.getNews();
-        mUniversityDataModel.getCategories();
+        if(((HomeActivity)getActivity()).showNews) {
+            mUniversityDataModel.getNews();
+        } else {
+            view.findViewById(R.id.news_container).setVisibility(View.GONE);
+        }
+        if(((HomeActivity)getActivity()).mGeoTabs != 0) {
+            mUniversityDataModel.getCategories();
+        }
 
         initMap();
 

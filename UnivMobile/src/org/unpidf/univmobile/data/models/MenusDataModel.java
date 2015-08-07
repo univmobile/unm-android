@@ -75,8 +75,9 @@ public class MenusDataModel extends AbsDataModel {
 
 					List<NavigationMenu> msMenu = getMenuWithGrouping(result, "MS");
 					List<NavigationMenu> muMenu = getMenuWithGrouping(result, "MU");
-					List<NavigationMenu> tttMenu = getMenuWithGrouping(result, "TT");
-					mListener.menusReceived(msMenu, muMenu, tttMenu);
+					List<NavigationMenu> ttMenu = getMenuWithGrouping(result, "TT");
+                    List<NavigationMenu> auMenu = getMenuWithGrouping(result, "AU");
+					mListener.menusReceived(msMenu, muMenu, ttMenu, auMenu);
 				}
 			}
 		}
@@ -88,6 +89,6 @@ public class MenusDataModel extends AbsDataModel {
 
 
 	public interface MenusModelListener extends ModelListener {
-		void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus);
+		void menusReceived(List<NavigationMenu> msMenus, List<NavigationMenu> muMenus, List<NavigationMenu> ttMenus, List<NavigationMenu> auMenus);
 	}
 }

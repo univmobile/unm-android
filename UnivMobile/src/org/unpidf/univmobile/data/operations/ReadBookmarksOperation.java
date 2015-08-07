@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ReadBookmarksOperation extends AbsOperation<List<Bookmark>> {
 
-	private static final String BOOKMARKS = "bookmarks?user=%s";
+	private static final String BOOKMARKS = "users/%s/bookmarks";
 	private String mUserId;
 
 
