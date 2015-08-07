@@ -657,6 +657,8 @@ public class HomeActivity extends AbsActivity {
                     FragmentManager manager = getFragmentManager();
                     GeoCampusFragment f = (GeoCampusFragment) manager.findFragmentByTag(GeoCampusFragment.class.getName());
                     f.showImageMap(Integer.parseInt(im), Integer.parseInt(poi));
+
+                    //showFragment(f, GeoCampusFragment.class.getName(), false);
                 }
             }
         }

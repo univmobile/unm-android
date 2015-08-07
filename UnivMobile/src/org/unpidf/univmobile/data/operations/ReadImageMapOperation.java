@@ -23,7 +23,7 @@ import java.net.URL;
 public class ReadImageMapOperation extends AbsOperation<ImageMap> {
 
 	private static final String IMAGE_MAP_DETAILS = "imageMaps/%d";
-	private static final String IMAGE_MAP_CONTENT = BASE_URL_ASSETS + "files/imagemaps/";
+	private static final String IMAGE_MAP_CONTENT = BASE_URL_ASSETS + "imagemaps/";
 
 
 	private int mID;

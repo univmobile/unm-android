@@ -183,8 +183,6 @@ public class MyCustomMapView extends MapView {
             public void run() {
                 GoogleMap map = getMap();
                 if (map != null) {
-                    getMap().getUiSettings().setZoomControlsEnabled(false);
-                    map.getUiSettings().setAllGesturesEnabled(false);
 
                     mGestureDetector = new GestureDetector(mContext, mGestudeListener);
                     mScaleGestureDetector = new ScaleGestureDetector(mContext, mScaleGestudeListener);
@@ -205,10 +203,16 @@ public class MyCustomMapView extends MapView {
 
     public void controlScroll(boolean control) {
         mControlScroll = control;
-        if(control) {
-            GoogleMap map = getMap();
-            if(map != null) {
-               // mLastCorrectRegion = map.getProjection().getVisibleRegion();
+
+        GoogleMap map = getMap();
+        if(map != null) {
+            if (control) {
+                map.getUiSettings().setZoomControlsEnabled(false);
+                map.getUiSettings().setAllGesturesEnabled(false);
+            } else {
+                map.getUiSettings().setZoomControlsEnabled(true);
+                map.getUiSettings().setAllGesturesEnabled(true);
+
             }
         }
     }
