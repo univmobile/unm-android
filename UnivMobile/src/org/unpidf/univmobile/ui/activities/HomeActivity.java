@@ -603,24 +603,26 @@ public class HomeActivity extends AbsActivity {
     }
 
     public void showFragment(Fragment fragment, String tag, boolean add) {
-        mOnBackClicked = false;
-        FragmentManager manager = getFragmentManager();
-        Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
-        // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
-        FragmentTransaction transaction = manager.beginTransaction();
-        if (add) {
-            transaction.add(R.id.main_content, fragment, tag);
-            transaction.addToBackStack(tag);
-        } else {
-            manager.popBackStack();
-            transaction.replace(R.id.main_content, fragment, tag);
-        }
+        if(!isDestroyed()) {
+            mOnBackClicked = false;
+            FragmentManager manager = getFragmentManager();
+            Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
+            // if (currentFragment == null || !currentFragment.getTag().equals(tag)) {
+            FragmentTransaction transaction = manager.beginTransaction();
+            if (add) {
+                transaction.add(R.id.main_content, fragment, tag);
+                transaction.addToBackStack(tag);
+            } else {
+                manager.popBackStack();
+                transaction.replace(R.id.main_content, fragment, tag);
+            }
 
-        transaction.commit();
-        //  }
+            transaction.commit();
+            //  }
 
-        if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
+            if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
         }
     }
 

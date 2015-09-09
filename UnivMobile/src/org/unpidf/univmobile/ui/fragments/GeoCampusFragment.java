@@ -527,10 +527,11 @@ public class GeoCampusFragment extends AbsFragment {
                 }
 
                 mDataModelListener.populatePois(map.getPois());
-                Bitmap resized = scaleBitmap(map.getImage());
-                GroundOverlayOptions newarkMap = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromBitmap(resized)).anchor(0.5f, 0.5f).position(new LatLng(0, 0), 1000, 1000);
-                mImageOverlay = mMap.addGroundOverlay(newarkMap);
-
+                if(map.getImage() != null) {
+                    Bitmap resized = scaleBitmap(map.getImage());
+                    GroundOverlayOptions newarkMap = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromBitmap(resized)).anchor(0.5f, 0.5f).position(new LatLng(0, 0), 1000, 1000);
+                    mImageOverlay = mMap.addGroundOverlay(newarkMap);
+                }
                 mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(0, 0), 17));
 
@@ -615,26 +616,28 @@ public class GeoCampusFragment extends AbsFragment {
 
 
     private Bitmap scaleBitmap(Bitmap bitmap) {
-        int maxDimension = 2048;
         Bitmap resizedBitmap = null;
-        int originalWidth = bitmap.getWidth();
-        int originalHeight = bitmap.getHeight();
-        int newWidth = -1;
-        int newHeight = -1;
-        float multFactor = -1.0F;
-        if (originalHeight > originalWidth) {
-            newHeight = maxDimension;
-            multFactor = (float) originalWidth / (float) originalHeight;
-            newWidth = (int) (newHeight * multFactor);
-        } else if (originalWidth > originalHeight) {
-            newWidth = maxDimension;
-            multFactor = (float) originalHeight / (float) originalWidth;
-            newHeight = (int) (newWidth * multFactor);
-        } else if (originalHeight == originalWidth) {
-            newHeight = maxDimension;
-            newWidth = maxDimension;
+        if (bitmap != null) {
+            int maxDimension = 2048;
+            int originalWidth = bitmap.getWidth();
+            int originalHeight = bitmap.getHeight();
+            int newWidth = -1;
+            int newHeight = -1;
+            float multFactor = -1.0F;
+            if (originalHeight > originalWidth) {
+                newHeight = maxDimension;
+                multFactor = (float) originalWidth / (float) originalHeight;
+                newWidth = (int) (newHeight * multFactor);
+            } else if (originalWidth > originalHeight) {
+                newWidth = maxDimension;
+                multFactor = (float) originalHeight / (float) originalWidth;
+                newHeight = (int) (newWidth * multFactor);
+            } else if (originalHeight == originalWidth) {
+                newHeight = maxDimension;
+                newWidth = maxDimension;
+            }
+            resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
         }
-        resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
         return resizedBitmap;
     }
 

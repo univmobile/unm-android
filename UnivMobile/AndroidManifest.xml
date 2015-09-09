@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  package="org.unpidf.univmobile"
-		  android:versionCode="20">
+		  package="org.unpidf.univmobile">
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,7 +25,9 @@
 			android:value="@integer/google_play_services_version"/>
 		<meta-data
 			android:name="com.google.android.maps.v2.API_KEY"
-			android:value="AIzaSyBkD2LE0vX7f4pxPKwRztu9dSxIx86OqUM"/>
+			android:value="AIzaSyD7lZ4KjLfjG66FZiFvvi0HS3yCkJ37Gug"/>
+
+		<!--android:value="AIzaSyBkD2LE0vX7f4pxPKwRztu9dSxIx86OqUM"/>-->
 
 		<activity
 			android:name=".ui.activities.SplashScreenActivity"
