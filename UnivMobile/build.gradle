@@ -34,9 +34,9 @@ android {
     signingConfigs {
         config {
             keyAlias "univmobile"
-            keyPassword "mobiluniv@1"
-            storeFile file("key/UniveMobile.jks")
-            storePassword "mobiluniv@1"
+            keyPassword "Unpidf2011;"
+            storeFile file("key/univmobile.keystore")
+            storePassword "Unpidf2011;"
         }
     }
 
