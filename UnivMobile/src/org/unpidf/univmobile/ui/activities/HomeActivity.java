@@ -225,7 +225,12 @@ public class HomeActivity extends AbsActivity {
             @Override
             public void onClick(View v) {
                 University univ = UniversitiesDataModel.getSavedUniversity(HomeActivity.this);
-                if (univ.getMobileShibbolethUrl() == null) {
+                String url = univ.getMobileShibbolethUrl();
+                if(url != null) {
+                    url = url.trim();
+                    url = url.replaceAll("\\s+","");
+                }
+                if (url == null || url.length() == 0) {
                     showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
                 } else {
                     showFragment(ShibbolethLoginFragment.newInstance(), ShibbolethLoginFragment.class.getName(), true);

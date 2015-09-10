@@ -22,7 +22,7 @@ public class LoginDataModel extends AbsDataModel {
 
 	public static final String API_KEY = "toto";
 
-	public static final String TEST_URL_SHIBBOLETH = "https://univmobile-dev.univ-paris1.fr/";
+	public static final String TEST_URL_SHIBBOLETH = "https://admin.unpidf.univmobile.fr/";
 	public static String TEST_URL_SHIBBOLETH_SUCCESS = TEST_URL_SHIBBOLETH  + "admin/success";
 	private Context mContext;
 
