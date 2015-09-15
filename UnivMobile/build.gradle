@@ -44,7 +44,8 @@ android {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 17
         targetSdkVersion 21
-        versionName = "4.0"
+        versionCode 23
+        versionName = "4.0.3"
     }
 
     sourceSets {
