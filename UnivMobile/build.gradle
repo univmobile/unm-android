@@ -6,7 +6,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.3.0'
         classpath 'io.fabric.tools:gradle:1.+'
     }
 }
@@ -27,9 +27,9 @@ repositories {
 
 
 android {
-
-    compileSdkVersion 21
-    buildToolsVersion '20.0.0'
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     signingConfigs {
         config {
@@ -42,10 +42,10 @@ android {
 
     defaultConfig {
         applicationId 'org.unpidf.univmobile'
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion 15
+        targetSdkVersion 23
         versionCode 23
-        versionName = "4.0.3"
+        versionName "4.0.4"
     }
 
     sourceSets {
@@ -90,16 +90,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:22.0.0'
+
+    compile 'com.android.support:support-v4:23.0.1'
     compile 'org.apache.httpcomponents:httpmime:4.1.1'
-    compile 'com.google.android.gms:play-services:6.5.87'
+    compile 'com.google.android.gms:play-services:7.8.0'
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.google.zxing:android-core:3.2.0'
     compile 'com.google.zxing:android-integration:3.2.0'
     compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'com.segment.analytics.android:analytics-integration-flurry:3.0.1'
-    compile 'com.google.maps.android:android-maps-utils:0.3+'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
         transitive = true;
     }

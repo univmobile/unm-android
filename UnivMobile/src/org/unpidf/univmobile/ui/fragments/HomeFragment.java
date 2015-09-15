@@ -444,9 +444,11 @@ public class HomeFragment extends AbsFragment {
 
         @Override
         public void showErrorMessage(ErrorEntity error) {
-            mSwipeRefreshLayout.setRefreshing(false);
-            getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
-            getView().findViewById(R.id.news_container).setVisibility(View.GONE);
+            if(!isDetached() && isVisible()) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
+                getView().findViewById(R.id.news_container).setVisibility(View.GONE);
+            }
 
         }
 
