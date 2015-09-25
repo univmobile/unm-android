@@ -85,8 +85,8 @@ public class MyProfileFragment extends AbsFragment {
 
 	private void laodData() {
 		UnivMobileApp ap = (UnivMobileApp) getActivity().getApplication();
-		TextView name = (TextView) getView().findViewById(R.id.logout);
-		View logout = getView().findViewById(R.id.name);
+		TextView name = (TextView) getView().findViewById(R.id.name);
+		View logout = getView().findViewById(R.id.logout);
 		if (ap.getLogin() != null) {
 			name.setVisibility(View.VISIBLE);
 			name.setText(ap.getLogin().getName());

@@ -16,7 +16,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:textColor="@android:color/white"
-			android:text="Patrick Termian"
 			android:padding="@dimen/horizontal"
 			android:textSize="@dimen/title_size_extra"/>
 
