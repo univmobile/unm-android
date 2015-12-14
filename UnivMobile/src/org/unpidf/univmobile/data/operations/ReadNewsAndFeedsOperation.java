@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ReadNewsAndFeedsOperation extends AbsOperation<List<News>> {
 
-	private static final String NEWS_SEARCH_UNIV = "news/search/findNewsForUniversity?universityId=%d";
+	private static final String NEWS_SEARCH_UNIV = "news/search/findNewsForUniversityAndFeeds?universityId=%d";
 
 	private int mUniversityID;
 	private int mPage;

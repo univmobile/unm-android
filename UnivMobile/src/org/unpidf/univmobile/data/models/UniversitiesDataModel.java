@@ -176,6 +176,8 @@ public class UniversitiesDataModel extends AbsDataModel {
 		SharedPreferencesRepo.saveString(mContext, PREF_REGION_NAME, university.getRegionName());
 		SharedPreferencesRepo.saveString(mContext, PREF_SHIBBOLETH, university.getMobileShibbolethUrl());
 		SharedPreferencesRepo.saveString(mContext, PREF_URL, university.getLogoUrl());
+		SharedPreferencesRepo.saveString(mContext, PREF_URL, university.getLogoUrl());
+		SharedPreferencesRepo.saveString(mContext,"MyFeedArray", "");
 	}
 
 

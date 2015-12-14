@@ -33,6 +33,7 @@
 
 	<color name="geo_orange_light">#ffb103</color>
 	<color name="geo_orange_dark">#d39202</color>
+	<color name="geo_orange_feed_background">#DE9900</color>
 
 	<color name="geo_purple_light">#a54078</color>
 	<color name="geo_purple_dark">#7f2456</color>

@@ -71,6 +71,7 @@ public class ReadNewsOperation extends AbsOperation<List<News>> {
 		if (mPage != 0) {
 			url += "&page=" + mPage;
 		}
+
 		return url;
 	}
 ////

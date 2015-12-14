@@ -5,6 +5,7 @@ import android.content.Context;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.News;
 import org.unpidf.univmobile.data.operations.OperationListener;
+import org.unpidf.univmobile.data.operations.ReadNewsAndFeedsOperation;
 import org.unpidf.univmobile.data.operations.ReadNewsOperation;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class NewsAndFeedsDataModel extends AbsDataModel {
 	private Context mContext;
 	private NewsModelListener mListener;
 
-	private ReadNewsOperation mReadNewsOperation;
+	private ReadNewsAndFeedsOperation mReadNewsOperation;
 
 	private List<News> mNews;
 	private List<Integer> mFeedList;
@@ -42,7 +43,7 @@ public class NewsAndFeedsDataModel extends AbsDataModel {
 
 	public void loadData() {
 		int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 0, mFeedList);
+		mReadNewsOperation = new ReadNewsAndFeedsOperation(mContext, mReadNewsListener, univID, 0, 0, mFeedList);
 		mReadNewsOperation.startOperation();
 	}
 
@@ -53,7 +54,7 @@ public class NewsAndFeedsDataModel extends AbsDataModel {
 			mReadNewsOperation = null;
 
 			int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, nextPage, 0, mFeedList);
+			mReadNewsOperation = new ReadNewsAndFeedsOperation(mContext, mReadNewsListener, univID, nextPage, 0, mFeedList);
 			mReadNewsOperation.startOperation();
 		} else {
 			loadData();

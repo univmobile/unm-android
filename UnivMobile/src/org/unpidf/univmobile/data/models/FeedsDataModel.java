@@ -4,7 +4,10 @@ import android.content.Context;
 
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.News;
+import org.unpidf.univmobile.data.entities.NewsFeed;
+import org.unpidf.univmobile.data.operations.AbsOperation;
 import org.unpidf.univmobile.data.operations.OperationListener;
+import org.unpidf.univmobile.data.operations.ReadFeedsOperation;
 import org.unpidf.univmobile.data.operations.ReadNewsOperation;
 
 import java.util.List;
@@ -15,11 +18,9 @@ import java.util.List;
 public class FeedsDataModel extends AbsDataModel {
 
 	private Context mContext;
-	private NewsModelListener mListener;
+	private FeedsModelListener mListener;
 
-	private ReadNewsOperation mReadNewsOperation;
-
-	private List<News> mNews;
+	private ReadFeedsOperation mReadNewsOperation;
 
 	public FeedsDataModel(Context c) {
 		mContext = c;
@@ -34,39 +35,19 @@ public class FeedsDataModel extends AbsDataModel {
 		mListener = null;
 	}
 
-	public void setListener(NewsModelListener listener) {
+	public void setListener(FeedsModelListener listener) {
 		mListener = listener;
 	}
 
-	public void loadData() {
+	public void getFeeds() {
 		int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-		mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, 0, 0);
+		mReadNewsOperation = new ReadFeedsOperation(mContext, mReadNewsListener, univID);
 		mReadNewsOperation.startOperation();
 	}
 
-	public void loadNextPage() {
-		if (mReadNewsOperation != null && mReadNewsOperation.hasNextPage()) {
-			int nextPage = mReadNewsOperation.getNextPage();
-			clearOperation(mReadNewsOperation);
-			mReadNewsOperation = null;
 
-			int univID = UniversitiesDataModel.getSavedUniversity(mContext).getId();
-			mReadNewsOperation = new ReadNewsOperation(mContext, mReadNewsListener, univID, nextPage, 0);
-			mReadNewsOperation.startOperation();
-		} else {
-			loadData();
-		}
-	}
 
-	public boolean hasNewPage() {
-		if (mReadNewsOperation != null) {
-			return mReadNewsOperation.hasNextPage();
-		} else {
-			return true;
-		}
-	}
-
-	private OperationListener<List<News>> mReadNewsListener = new OperationListener<List<News>>() {
+	private OperationListener<List<NewsFeed>> mReadNewsListener = new OperationListener<List<NewsFeed>>() {
 		@Override
 		public void onOperationStarted() {
 			if (mListener != null) {
@@ -75,7 +56,7 @@ public class FeedsDataModel extends AbsDataModel {
 		}
 
 		@Override
-		public void onOperationFinished(ErrorEntity error, List<News> result) {
+		public void onOperationFinished(ErrorEntity error, List<NewsFeed> result) {
 			if (error != null && mListener != null) {
 				mListener.onError(error);
 			}
@@ -89,18 +70,17 @@ public class FeedsDataModel extends AbsDataModel {
 		}
 
 		@Override
-		public void onPageDownloaded(List<News> result) {
+		public void onPageDownloaded(List<NewsFeed> result) {
 		}
 	};
 
 
-	public interface NewsModelListener extends ModelListener{
-		void showLoadingIndicator();
-
-		void updateNewsWithOnePage(List<News> news);
+	public interface FeedsModelListener extends ModelListener{
 
 		void showErrorMessage(ErrorEntity error);
 
-		void showNews(List<News> news);
+		void showNews(List<NewsFeed> news);
+
+		void showLoadingIndicator();
 	}
 }

@@ -1,4 +1,40 @@
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@android:color/white">
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/geo_orange_light">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="16sp"
+				android:textColor="@android:color/white"
+				android:id="@+id/univ_name_textView"
+				android:textStyle="bold"
+				android:layout_margin="10dp" />
+		</LinearLayout>
+		<HorizontalScrollView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/container_horizontalScrollView"
+			android:background="@color/geo_orange_feed_background">
+
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/feeds_container_linearLayout"
+			android:orientation="horizontal"></LinearLayout>
+
+		</HorizontalScrollView>
+	</LinearLayout>
+<android.support.v4.widget.SwipeRefreshLayout
 											  android:id="@+id/swipe_container"
 											  android:layout_width="match_parent"
 											  android:layout_height="match_parent"
@@ -23,3 +59,4 @@
 		android:visibility="gone"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

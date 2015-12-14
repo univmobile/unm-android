@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/geo_orange_light"
+    android:foregroundGravity="center"
+    android:paddingBottom="20dp"
+    app:cardPreventCornerOverlap="false">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sittttttsasdasdasd"
+        android:id="@+id/feed_name_textView"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp" />
 
 </android.support.v7.widget.CardView>

@@ -21,7 +21,6 @@ public class NewsDataModel extends AbsDataModel {
 	private ReadNewsOperation mReadNewsOperation;
 
 	private List<News> mNews;
-
 	public NewsDataModel(Context c) {
 		mContext = c;
 	}
