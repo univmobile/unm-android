@@ -98,7 +98,9 @@ public class HomeActivity extends AbsActivity {
         initActionBar();
         initDrawer();
         initNotifications();
+        mInstanceSaved = false;
     }
+
 
     public void logout() {
         ((UnivMobileApp) getApplication()).logout();
@@ -114,6 +116,7 @@ public class HomeActivity extends AbsActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mDestroyed = true;
         if (mNotificationsDataModel != null) {
             mNotificationsDataModel.clear();
             mNotificationsDataModel = null;
@@ -226,9 +229,9 @@ public class HomeActivity extends AbsActivity {
             public void onClick(View v) {
                 University univ = UniversitiesDataModel.getSavedUniversity(HomeActivity.this);
                 String url = univ.getMobileShibbolethUrl();
-                if(url != null) {
+                if (url != null) {
                     url = url.trim();
-                    url = url.replaceAll("\\s+","");
+                    url = url.replaceAll("\\s+", "");
                 }
                 if (url == null || url.length() == 0) {
                     showFragment(StandartLoginFragment.newInstance(), StandartLoginFragment.class.getName(), true);
@@ -373,7 +376,7 @@ public class HomeActivity extends AbsActivity {
                 }
 
                 //second menu
-                if(auMenus.size() > 0) {
+                if (auMenus.size() > 0) {
                     menuGroups.add(new NavigationMenu(2, getString(R.string.menu_university), R.drawable.ic_menu_second, null));
                     showNews = true;
                 } else {
@@ -608,7 +611,7 @@ public class HomeActivity extends AbsActivity {
     }
 
     public void showFragment(Fragment fragment, String tag, boolean add) {
-        if(!isDestroyed()) {
+        if (!mDestroyed && !mInstanceSaved) {
             mOnBackClicked = false;
             FragmentManager manager = getFragmentManager();
             Fragment currentFragment = (Fragment) manager.findFragmentById(R.id.main_content);
@@ -648,6 +651,9 @@ public class HomeActivity extends AbsActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if(resultCode == -1) {
+            return;
+        }
         if (requestCode == 111) {
             if (resultCode == 222) {
                 finish();

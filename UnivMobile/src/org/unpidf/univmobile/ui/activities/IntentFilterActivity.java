@@ -4,35 +4,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-
-import org.unpidf.univmobile.R;
 
 /**
  * Created by rviewniverse on 2015-02-22.
  */
 public class IntentFilterActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		Uri data = getIntent().getData();
-		String id = data.getQueryParameter("ID");
-		String poiID = data.getQueryParameter("poiID");
+        Uri data = getIntent().getData();
+        if (data != null) {
+            String id = data.getQueryParameter("ID");
+            String poiID = data.getQueryParameter("poiID");
 
-		if(id != null && id.length() > 0) {
-			Intent intent = new Intent(this, HomeActivity.class);
-			intent.putExtra(HomeActivity.EXTRA_IMAGE_MAP_ID, Integer.parseInt(id));
-			intent.putExtra(HomeActivity.EXTRA_POI_ID, Integer.parseInt(poiID));
-			startActivity(intent);
-		}
-
-		finish();
-	}
+            if (id != null && id.length() > 0) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra(HomeActivity.EXTRA_IMAGE_MAP_ID, Integer.parseInt(id));
+                intent.putExtra(HomeActivity.EXTRA_POI_ID, Integer.parseInt(poiID));
+                startActivity(intent);
+            }
+        }
+        finish();
+    }
 }

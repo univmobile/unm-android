@@ -20,7 +20,7 @@ public class NewsAndFeedsDataModel extends AbsDataModel {
 
 	private ReadNewsAndFeedsOperation mReadNewsOperation;
 
-	private List<News> mNews;
+	//private List<News> mNews;
 	private List<Integer> mFeedList;
 
 	public NewsAndFeedsDataModel(Context c, List<Integer> feedList) {

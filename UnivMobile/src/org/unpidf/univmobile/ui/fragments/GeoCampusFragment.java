@@ -27,7 +27,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -257,7 +256,9 @@ public class GeoCampusFragment extends AbsFragment {
 
     private void addNewPoi() {
         AddNewPoiView view = (AddNewPoiView) getView().findViewById(R.id.new_poi_view);
-        view.setCity(mCity);
+        if (mCity != null) {
+            view.setCity(mCity);
+        }
         view.show(mAddNewPoiViewInterface);
     }
 
@@ -527,7 +528,7 @@ public class GeoCampusFragment extends AbsFragment {
                 }
 
                 mDataModelListener.populatePois(map.getPois());
-                if(map.getImage() != null) {
+                if (map.getImage() != null) {
                     Bitmap resized = scaleBitmap(map.getImage());
                     GroundOverlayOptions newarkMap = new GroundOverlayOptions().image(BitmapDescriptorFactory.fromBitmap(resized)).anchor(0.5f, 0.5f).position(new LatLng(0, 0), 1000, 1000);
                     mImageOverlay = mMap.addGroundOverlay(newarkMap);
@@ -773,7 +774,9 @@ public class GeoCampusFragment extends AbsFragment {
                     List<Address> addresses;
                     geocoder = new Geocoder(getActivity(), Locale.getDefault());
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    mCity = addresses.get(0).getLocality();
+                    if (addresses.size() > 0) {
+                        mCity = addresses.get(0).getLocality();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

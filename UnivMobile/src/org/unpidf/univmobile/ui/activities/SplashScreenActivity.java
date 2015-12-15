@@ -172,7 +172,7 @@ public class SplashScreenActivity extends AbsActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (mModel.universities() != null && mModel.regions() != null && mModel.regions().size() > 0) {
+		if (mModel != null && mModel.universities() != null && mModel.regions() != null && mModel.regions().size() > 0) {
 			mModel.setUniversities(null);
 
 			List<String> list = new ArrayList<String>();
