@@ -79,8 +79,6 @@ public class UniversityNewsFragment extends AbsFragment {
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.geo_orange_light);
         TextView univName = (TextView) view.findViewById(R.id.univ_name_textView);
-        String name = UniversitiesDataModel.getSavedUniversity(getActivity()).getTitle();
-        univName.setText(name);
 
         mFontHelper = ((UnivMobileApp) getActivity().getApplicationContext()).getFontHelper();
         mFontHelper.loadFont(univName, FontHelper.FONT.EXO_BOLD);

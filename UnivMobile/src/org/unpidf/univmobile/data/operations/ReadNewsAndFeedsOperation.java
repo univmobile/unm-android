@@ -66,7 +66,7 @@ public class ReadNewsAndFeedsOperation extends AbsOperation<List<News>> {
 
 	@Override
 	protected String getOperationUrl(int page) {
-		String url = BASE_URL_API + String.format(NEWS_SEARCH_UNIV, 38);
+		String url = BASE_URL_API + String.format(NEWS_SEARCH_UNIV, mUniversityID);
 		if (mTotalSize != 0) {
 			url += "&size=" + mTotalSize;
 		}

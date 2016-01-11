@@ -60,7 +60,7 @@ public class ReadFeedsOperation extends AbsOperation<List<NewsFeed>> {
 
 	@Override
 	protected String getOperationUrl(int page) {
-		String url = BASE_URL_API + String.format(NEWS_SEARCH_UNIV, 38);
+		String url = BASE_URL_API + String.format(NEWS_SEARCH_UNIV, mUniversityID);
 		/*for (int i = 0; i<mFeedsList.size(); i++) {
 			url += "&feedIds=" + mFeedsList.get(i);
 		}*/

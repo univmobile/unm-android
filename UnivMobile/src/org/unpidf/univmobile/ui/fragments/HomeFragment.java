@@ -35,17 +35,21 @@ import org.unpidf.univmobile.R;
 import org.unpidf.univmobile.UnivMobileApp;
 import org.unpidf.univmobile.data.entities.ErrorEntity;
 import org.unpidf.univmobile.data.entities.News;
+import org.unpidf.univmobile.data.entities.NewsFeed;
 import org.unpidf.univmobile.data.entities.Poi;
+import org.unpidf.univmobile.data.models.FeedsDataModel;
 import org.unpidf.univmobile.data.models.UniversitiesDataModel;
 import org.unpidf.univmobile.data.models.UniversityDataModel;
 import org.unpidf.univmobile.data.operations.ReadCategoriesOperation;
 import org.unpidf.univmobile.ui.activities.HomeActivity;
+import org.unpidf.univmobile.ui.adapters.NewsAdapter;
 import org.unpidf.univmobile.ui.uiutils.FontHelper;
 import org.unpidf.univmobile.ui.views.NewsItemView;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +73,7 @@ public class HomeFragment extends AbsFragment {
 
 
     private final Object lock = new Object();
+    private FeedsDataModel mFeedsDataModel;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -95,6 +100,11 @@ public class HomeFragment extends AbsFragment {
             mUniversityDataModel.clear();
             mUniversityDataModel = null;
         }
+        if (mFeedsDataModel != null) {
+            mFeedsDataModel.clear();
+            mFeedsDataModel = null;
+        }
+
     }
 
     @Override
@@ -159,7 +169,18 @@ public class HomeFragment extends AbsFragment {
 
         mUniversityDataModel = new UniversityDataModel(getActivity(), mUniversityModelListener);
         if(((HomeActivity)getActivity()).showNews) {
-            mUniversityDataModel.getNews();
+            if(FeedsDataModel.retrieveSavedFeeds(getActivity()).size()==0){
+                if (mFeedsDataModel == null) {
+                    mFeedsDataModel = new FeedsDataModel(getActivity());
+                    mFeedsDataModel.setListener(mFeedsDataModelListener);
+                }
+
+                mFeedsDataModel.downloadFeeds();
+            }
+            else {
+                mUniversityDataModel.getNews();
+            }
+
         } else {
             view.findViewById(R.id.news_container).setVisibility(View.GONE);
         }
@@ -458,6 +479,29 @@ public class HomeFragment extends AbsFragment {
             getView().findViewById(R.id.progressBar1).setVisibility(View.GONE);
             getView().findViewById(R.id.news_container).setVisibility(View.GONE);
             handleError(mError);
+        }
+    };
+
+    private FeedsDataModel.FeedsModelListener mFeedsDataModelListener = new FeedsDataModel.FeedsModelListener() {
+        @Override
+        public void showLoadingIndicator() {
+
+        }
+
+        @Override
+        public void showErrorMessage(ErrorEntity error) {
+
+        }
+
+        @Override
+        public void onFeedsReceived(List<NewsFeed> feeds) {
+
+            mFeedsDataModel.saveFeedsInPrefs(getActivity(), mFeedsDataModel.getSelectedFeeds());
+            mUniversityDataModel.getNews();
+        }
+
+        @Override
+        public void onError(ErrorEntity mError) {
         }
     };
 }

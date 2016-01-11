@@ -44,7 +44,7 @@ android {
         applicationId 'org.unpidf.univmobile'
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 25
+        versionCode 27
         versionName "4.0.7"
     }
 
@@ -101,7 +101,7 @@ dependencies {
     compile 'com.google.zxing:android-integration:3.2.0'
     compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'com.segment.analytics.android:analytics-integration-flurry:3.0.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
 }
